@@ -1,9 +1,21 @@
 package com.seniordesign.team1.aaapp2;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -102,6 +114,37 @@ public class MainActivity extends FragmentActivity implements
 	public void onTabReselected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
 	}
+	
+	private class GetQuoteTask extends AsyncTask<String,Void,String>{
+		@Override
+		protected String doInBackground(String... urls){
+			String quote = "";
+			for(String url : urls){
+				String response = "";
+				DefaultHttpClient client = new DefaultHttpClient();
+				HttpGet httpGet = new HttpGet(url);
+				try{
+					
+					HttpResponse execute = client.execute(httpGet);
+					InputStream content = execute.getEntity().getContent();
+
+                    BufferedReader buffer = new BufferedReader(
+                            new InputStreamReader(content));
+                    String s = "";
+                    while ((s = buffer.readLine()) != null) {
+                        response += s;
+                    }
+				} 
+				catch(Exception e){
+					e.printStackTrace();
+				}
+				String[] r1 = response.split("<div id=\"content\" align=\"center\">");
+				String[] r2 = r1[1].split("<tr>");
+				quote = r2[6].split("</?i>")[1];
+			}
+			return quote;
+		}
+	}
 
 	/**
 	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -120,9 +163,21 @@ public class MainActivity extends FragmentActivity implements
 			// below) with the page number as its lone argument.
 			Fragment fragment;
 			if(position == 0){
+				GetQuoteTask quoteTask = new GetQuoteTask();
+				quoteTask.execute("http://www.aa.org/lang/en/aareflections.cfm");
 				fragment = new QuoteFragment();
 				Bundle args = new Bundle();
-				args.putString(QuoteFragment.ARG_SECTION_NUMBER, "Hello Fucking World!");
+				String quote = "";
+				try {
+					quote = quoteTask.get(5, TimeUnit.SECONDS);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					e.printStackTrace();
+				} catch (TimeoutException e) {
+					e.printStackTrace();
+				}
+				args.putString(QuoteFragment.QUOTE, quote);
 				fragment.setArguments(args);
 				return fragment;
 			}
@@ -165,7 +220,8 @@ public class MainActivity extends FragmentActivity implements
 		 * The fragment argument representing the section number for this
 		 * fragment.
 		 */
-		public static final String ARG_SECTION_NUMBER = "1";
+		public static final String ARG_SECTION_NUMBER = "2";
+		
 
 		public DummySectionFragment() {
 		}
@@ -184,7 +240,7 @@ public class MainActivity extends FragmentActivity implements
 	}
 	public static class QuoteFragment extends Fragment {
 		
-		public static final String ARG_SECTION_NUMBER = "2";
+		public static final String QUOTE = "Default Quote";
 		
 		public QuoteFragment(){
 			
@@ -197,7 +253,7 @@ public class MainActivity extends FragmentActivity implements
 			TextView dummyTextView = (TextView) rootView
 					.findViewById(R.id.section_label);
 			dummyTextView.setText(getArguments().getString(
-					ARG_SECTION_NUMBER));
+					QUOTE));
 			return rootView;
 		}
 	}
