@@ -63,8 +63,8 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
 	@Override
 	public int getCount() {
-		// Show 3 total pages.
-		return 3;
+		// Show 4 total pages.
+		return 4;
 	}
 
 	@Override
@@ -77,6 +77,8 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 			return this.mainActivity.getString(R.string.title_section2).toUpperCase(l);
 		case 2:
 			return this.mainActivity.getString(R.string.title_section3).toUpperCase(l);
+		case 3:
+			return this.mainActivity.getString(R.string.title_section4).toUpperCase(l);
 		}
 		return null;
 	}
