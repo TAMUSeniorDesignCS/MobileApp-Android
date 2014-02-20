@@ -6,5 +6,9 @@
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
+    <string name="pref_privacySettings">Privacy Settings</string>
+    <string name="pref_sharePhone">Share your phone #?</string>
+    <string name="pref_sharePhone_summ">Would you like to share your phone # with your home group?</string>
+    <string name="title_activity_settings">Settings</string>
 
 </resources>
