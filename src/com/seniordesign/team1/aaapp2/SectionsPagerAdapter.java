@@ -39,8 +39,11 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 			fragment = new QuoteFragment();
 			Bundle args = new Bundle();
 			String quote = "";
+			String title = "";
 			try {
-				quote = quoteTask.get(5, TimeUnit.SECONDS);
+				String[] r1 = quoteTask.get(5, TimeUnit.SECONDS).split("\\+\\+\\+");
+				quote = r1[0];
+				title = r1[1];
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			} catch (ExecutionException e) {
@@ -48,6 +51,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 			} catch (TimeoutException e) {
 				e.printStackTrace();
 			}
+			args.putString(QuoteFragment.TITLE, title);
 			args.putString(QuoteFragment.QUOTE, quote);
 			fragment.setArguments(args);
 			return fragment;

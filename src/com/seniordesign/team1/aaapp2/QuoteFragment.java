@@ -10,6 +10,7 @@ import android.widget.TextView;
 public class QuoteFragment extends Fragment {
 	
 	public static final String QUOTE = "Default Quote";
+	public static final String TITLE = "Default Title";
 	
 	public QuoteFragment(){
 		
@@ -19,10 +20,16 @@ public class QuoteFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_main_quote,
 				container, false);
-		TextView dummyTextView = (TextView) rootView
-				.findViewById(R.id.section_label);
-		dummyTextView.setText(getArguments().getString(
+		TextView bodyTextView = (TextView) rootView
+				.findViewById(R.id.QuoteBody);
+		TextView titleTextView = (TextView) rootView
+				.findViewById(R.id.QuoteTitle);
+		bodyTextView.setText(getArguments().getString(
 				QUOTE));
+		titleTextView.setText(getArguments().getString(
+				TITLE));
+		titleTextView.setTextSize(16);
+		bodyTextView.setTextSize(12);
 		return rootView;
 	}
 }

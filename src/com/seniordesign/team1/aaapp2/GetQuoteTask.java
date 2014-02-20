@@ -16,6 +16,7 @@ class GetQuoteTask extends AsyncTask<String,Void,String>{
 		String quote = "";
 		for(String url : urls){
 			String response = "";
+			String title = "";
 			DefaultHttpClient client = new DefaultHttpClient();
 			HttpGet httpGet = new HttpGet(url);
 			try{
@@ -36,6 +37,8 @@ class GetQuoteTask extends AsyncTask<String,Void,String>{
 			String[] r1 = response.split("<div id=\"content\" align=\"center\">");
 			String[] r2 = r1[1].split("<tr>");
 			quote = r2[6].split("</?i>")[1];
+			title = r2[4].split("</?td.+?>")[1];
+			quote += "+++" + title;
 		}
 		return quote;
 	}
