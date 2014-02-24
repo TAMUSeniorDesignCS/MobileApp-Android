@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory 
+        android:title="@string/pref_privacySettings"
+        android:key="pref_privacySettings">
+        <CheckBoxPreference
+	        android:key="pref_sharePhone"
+	        android:title="@string/pref_sharePhone"
+	        android:summary="@string/pref_sharePhone_summ"
+	        android:defaultValue="false" />
+        <CheckBoxPreference
+	        android:key="pref_shareEmail"
+	        android:title="@string/pref_shareEmail"
+	        android:summary="@string/pref_shareEmail_summ"
+	        android:defaultValue="false" />
+    </PreferenceCategory>
+    <PreferenceCategory 
+        android:title="@string/pref_postSettings"
+        android:key="pref_postSettings">
+        <CheckBoxPreference
+	        android:key="pref_postTimeCheck"
+	        android:title="@string/pref_postTimeCheck"
+	        android:summary="@string/pref_postTimeCheck_summ"
+	        android:defaultValue="true" />
+        <CheckBoxPreference
+	        android:key="pref_messTimeCheck"
+	        android:title="@string/pref_messTimeCheck"
+	        android:summary="@string/pref_messTimeCheck_summ"
+	        android:defaultValue="false" />
+    </PreferenceCategory>
+    <PreferenceCategory 
+        android:title="@string/pref_geoSettings"
+        android:key="pref_geoSettings">
+        <CheckBoxPreference
+	        android:key="pref_geoAlerts"
+	        android:title="@string/pref_geoAlerts"
+	        android:summary="@string/pref_geoAlerts_summ"
+	        android:defaultValue="false" />
+        <CheckBoxPreference
+	        android:key="pref_alertSpon"
+	        android:title="@string/pref_alertSpons"
+	        android:summary="@string/pref_alertSpons_summ"
+	        android:defaultValue="false"
+	        android:dependency="pref_geoAlerts" />
+    </PreferenceCategory>
+</PreferenceScreen>

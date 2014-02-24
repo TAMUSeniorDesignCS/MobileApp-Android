@@ -75,3 +75,6 @@ $RECYCLE.BIN/
 *.msi
 *.msm
 *.msp
+
+# kdiff original
+*.orig

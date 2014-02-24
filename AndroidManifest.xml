@@ -23,6 +23,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity 
+            android:name="com.seniordesign.team1.aaapp2.SettingsActivity"
+            android:label="@string/title_activity_settings"
+        	android:parentActivityName="com.seniordesign.team1.aaapp2.MainActivity">
+            <meta-data
+            	android:name="android.support.PARENT_ACTIVITY"
+            	android:value="com.seniordesign.team1.aaapp2.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
