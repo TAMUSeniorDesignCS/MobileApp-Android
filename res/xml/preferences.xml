@@ -22,6 +22,12 @@
 	        android:title="@string/pref_postTimeCheck"
 	        android:summary="@string/pref_postTimeCheck_summ"
 	        android:defaultValue="true" />
+        <com.seniordesign.team1.aaapp2.NumberPickerPreference 
+            android:key="pref_postTimeAmmount"
+            android:title="@string/pref_postTimeAmmount"
+            android:summary="@string/pref_postTimeAmmount"
+            android:dependency="pref_postTimeCheck"
+            />
         <CheckBoxPreference
 	        android:key="pref_messTimeCheck"
 	        android:title="@string/pref_messTimeCheck"
