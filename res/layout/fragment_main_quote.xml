@@ -8,17 +8,40 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity$QuoteSectionFragment" >
 
-    <TextView
-        android:id="@+id/QuoteTitle"
+    <ScrollView
+        android:id="@+id/scrollView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="bold" 
-        android:text="Hello World!"/>
+        android:scrollbars="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+            
+            <TextView
+            android:id="@+id/QuoteTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hello World!"
+            android:textStyle="bold" />
+
+        	<TextView
+            android:id="@+id/QuoteBody"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hello World!" />
+        </LinearLayout>
+        
+    </ScrollView>
     
-    <TextView
-        android:id="@+id/QuoteBody"
+    <Button
+        android:id="@+id/button1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" 
-        android:text="Hello World!"/>
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="22dp"
+        android:text="Call Sponsor" />
 
 </RelativeLayout>

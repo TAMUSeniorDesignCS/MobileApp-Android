@@ -33,7 +33,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 		// Return a DummySectionFragment (defined as a static inner class
 		// below) with the page number as its lone argument.
 		Fragment fragment;
-		if(position == 0){
+		if(position == 0){ //Home page fragment
 			GetQuoteTask quoteTask = new GetQuoteTask();
 			quoteTask.execute("http://www.aa.org/lang/en/aareflections.cfm");
 			fragment = new QuoteFragment();
@@ -55,7 +55,9 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 			args.putString(QuoteFragment.QUOTE, quote);
 			fragment.setArguments(args);
 			return fragment;
-		}
+		}//else if (position == 1){ //Posts page fragment
+			
+		//}
 		else{
 			fragment = new DummySectionFragment();
 			Bundle args = new Bundle();
