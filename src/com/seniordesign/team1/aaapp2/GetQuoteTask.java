@@ -36,8 +36,8 @@ class GetQuoteTask extends AsyncTask<String,Void,String>{
 			}
 			String[] r1 = response.split("<div id=\"content\" align=\"center\">");
 			String[] r2 = r1[1].split("<tr>");
-			quote = r2[6].split("</?i>")[1];
 			title = r2[4].split("</?td.+?>")[1];
+			quote = "\"" + r2[6].split("</?i>")[1] + "\"" + "\n\n" + r2[8].split("</?td.+?>")[1] + "\n\n" + r2[10].split("</?td.+?>")[1]; //builds the multiple-paragraph quote
 			quote += "+++" + title;
 		}
 		return quote;
