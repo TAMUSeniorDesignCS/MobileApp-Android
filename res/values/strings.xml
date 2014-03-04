@@ -16,16 +16,18 @@
     <string name="pref_geoSettings">Proximity Inspirations</string>
     <string name="pref_geoAlerts">Alert you in tempting areas?</string>
     <string name="pref_geoAlerts_summ">Would you like positive messages if you are near a bar?</string>
-    <string name="pref_alertSpons">Alert your sponsor when in tempting areas?</string>
+    <string name="pref_alertSpons">Activate sponsor alerts?</string>
     <string name="pref_alertSpons_summ">Would you like to alert your sponsor if you are near a bar?</string>
     <string name="pref_postSettings">Post/Message Settings</string>
-    <string name="pref_postTimeCheck">Forget your posts after set time?</string>
+    <string name="pref_postTimeCheck">Set post time limit?</string>
     <string name="pref_postTimeCheck_summ">Permanently forget and delete your posts after set time?</string>
-    <string name="pref_postTimeAmmount">Forget after how many hours?</string>
+    <string name="pref_postTimeAmmount">Tap to select time limit</string>
     <string name="pref_postTimeAmmount_summ">Permanently forget and delete your posts after how many hours?</string>
-    <string name="pref_messTimeCheck">Forget your messages after set time?</string>
+    <string name="pref_messTimeCheck">Set message time limit?</string>
     <string name="pref_messTimeCheck_summ">Permanently forget and delete your messages after set time?</string>
+    <string name="pref_messTimeAmmount">Tap to select time limit</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="empty"></string>
 
 </resources>

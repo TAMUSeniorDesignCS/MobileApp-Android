@@ -25,7 +25,7 @@
         <com.seniordesign.team1.aaapp2.NumberPickerPreference 
             android:key="pref_postTimeAmmount"
             android:title="@string/pref_postTimeAmmount"
-            android:summary="@string/pref_postTimeAmmount"
+            android:summary="@string/empty"
             android:dependency="pref_postTimeCheck"
             android:defaultValue="24"
             />
@@ -34,6 +34,12 @@
 	        android:title="@string/pref_messTimeCheck"
 	        android:summary="@string/pref_messTimeCheck_summ"
 	        android:defaultValue="false" />
+        <com.seniordesign.team1.aaapp2.NumberPickerPreference 
+            android:key="pref_messTimeAmmount"
+            android:title="@string/pref_messTimeAmmount"
+            android:summary="@string/empty"
+            android:dependency="pref_messTimeCheck"
+            />
     </PreferenceCategory>
     <PreferenceCategory 
         android:title="@string/pref_geoSettings"
