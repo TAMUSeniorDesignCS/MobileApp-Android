@@ -27,6 +27,7 @@
             android:title="@string/pref_postTimeAmmount"
             android:summary="@string/pref_postTimeAmmount"
             android:dependency="pref_postTimeCheck"
+            android:defaultValue="24"
             />
         <CheckBoxPreference
 	        android:key="pref_messTimeCheck"

@@ -9,14 +9,14 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.NumberPicker;
 
-public class NumberPickerPreference extends DialogPreference {
+public class NumberPickerPreference extends DialogPreference implements NumberPicker.OnValueChangeListener{
 	private int mNewValue;
 	private int mCurrentValue;
 	private NumberPicker mNumberPicker = null;
 	
 	private final int DEFAULT_VALUE = 24;
 	
-	private static class SavedState extends BaseSavedState {
+	private static class SavedState extends BaseSavedState  {
 	    // Member that holds the setting's value
 	    // Change this data type to match the type saved by your Preference
 	    int value;
@@ -55,13 +55,23 @@ public class NumberPickerPreference extends DialogPreference {
     public NumberPickerPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
         
+        mCurrentValue = attrs.getAttributeIntValue("android", "defaultValue", DEFAULT_VALUE);
+        
+        //mCurrentValue = DEFAULT_VALUE;
+        
         setDialogLayoutResource(R.layout.numberpicker_dialog);
         setPositiveButtonText(android.R.string.ok);
         setNegativeButtonText(android.R.string.cancel);
         
+        
         setDialogIcon(null);
  
     }
+    
+    @Override
+    public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+    	this.mNewValue = newVal;
+     }
     
     @Override
 	protected void onBindDialogView(View view) {
@@ -72,13 +82,16 @@ public class NumberPickerPreference extends DialogPreference {
 		//if ( this.initialValue != null ) picker.setCurrent(initialValue);
 		this.mNumberPicker.setMinValue(1);
 	    this.mNumberPicker.setMaxValue(96);
+	    this.mNumberPicker.setValue(mCurrentValue);
+	    this.mNumberPicker.setOnValueChangedListener(this);
 	}
     
     @Override
     protected void onDialogClosed(boolean positiveResult) {
         // When the user selects "OK", persist the new value
         if (positiveResult) {
-            persistInt(mNewValue);
+        	this.mCurrentValue = this.mNewValue;
+            persistInt(this.mNewValue);
         }
     }
     
@@ -86,7 +99,12 @@ public class NumberPickerPreference extends DialogPreference {
     protected void onSetInitialValue(boolean restorePersistedValue, Object defaultValue) {
         if (restorePersistedValue) {
             // Restore existing state
-            mCurrentValue = this.getPersistedInt(DEFAULT_VALUE);
+        	if(shouldPersist()){
+        		mCurrentValue = this.getPersistedInt(DEFAULT_VALUE);
+        	}
+        	else{
+        		mCurrentValue = DEFAULT_VALUE;
+        	}
         } else {
             // Set default state from the XML attribute
             mCurrentValue = (Integer) defaultValue;
