@@ -39,6 +39,7 @@
             android:title="@string/pref_messTimeAmmount"
             android:summary="@string/empty"
             android:dependency="pref_messTimeCheck"
+            android:defaultValue="48"
             />
     </PreferenceCategory>
     <PreferenceCategory 
