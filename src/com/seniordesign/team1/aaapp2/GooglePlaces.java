@@ -14,20 +14,22 @@ import javax.crypto.spec.SecretKeySpec;
 import android.location.Location;
 import android.util.Base64;
 
+/*
+ * I have serious reservations about doing this. It really should be implemented on the server side instead of client side. Implementing it client side exposes the API key.
+ */
 public class GooglePlaces {
 	private Location loc;
 	private int radius;
-	private String clientId;
 	private String privKey;
 	private boolean sensor;
-	private URL url;
 	
-	private static String googleJSONUrlString = "http://maps.google.com/maps/api/place/search/json";
+	private static String googleJSONUrlString = "https://maps.google.com/maps/api/place/search/json";
 	
 	/*
 	 * http://blog.brianbuikema.com/2010/08/android-development-part-1-using-googles-places-api-to-develop-compelling-location-based-mobile-applications/
 	 */
 	private class UrlSigner{
+		//aparently, we won't need this because the places api does not use a signature...
 		private byte[] key;
 		public UrlSigner(String keyString) throws IOException {
 			// Convert the key from 'web safe' base 64 to binary
@@ -65,15 +67,13 @@ public class GooglePlaces {
 	
 	
 
-	public GooglePlaces(Location loc, int radius, String clientId,
+	public GooglePlaces(Location loc, int radius,
 			String privKey, boolean sensor) throws MalformedURLException {
 		super();
 		this.loc = loc;
 		this.radius = radius;
-		this.clientId = clientId;
 		this.privKey = privKey;
 		this.sensor = sensor;
-		this.url = new URL(GooglePlaces.googleJSONUrlString);
 	}
 
 
@@ -97,16 +97,6 @@ public class GooglePlaces {
 	}
 
 
-	public String getClientId() {
-		return clientId;
-	}
-
-
-	public void setClientId(String clientId) {
-		this.clientId = clientId;
-	}
-
-
 	public String getPrivKey() {
 		return privKey;
 	}
@@ -127,6 +117,12 @@ public class GooglePlaces {
 	}
 	
 	public String sendRequest(){
+		String urlString = new String(GooglePlaces.googleJSONUrlString);
+		urlString += "?location=" + this.loc.getLatitude() + "," + this.loc.getLongitude();
+		urlString += "&radius=" + this.radius;
+		urlString += "&sensor=" + this.sensor;
+		urlString += "&key=" + this.privKey;
+		//TODO: use the web call class to call the api
 		return "OMGWTF";
 	}
 }
