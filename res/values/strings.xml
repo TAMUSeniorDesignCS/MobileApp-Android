@@ -12,7 +12,11 @@
     <string name="pref_sharePhone_summ">Would you like to share your phone # with your home group?</string>
     <string name="pref_shareEmail">Share your email?</string>
     <string name="pref_shareEmail_summ">Would you like to share your email with your home group?</string>
+    <string name="pref_rememberMe">Remember me?</string>
+    <string name="pref_rememberMe_summ">Keep this account logged in.</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_login">Login</string>
+    <string name="title_activity_create_acct">Create Account</string>
     <string name="pref_geoSettings">Proximity Inspirations</string>
     <string name="pref_geoAlerts">Alert you in tempting areas?</string>
     <string name="pref_geoAlerts_summ">Would you like positive messages if you are near a bar?</string>
@@ -26,8 +30,22 @@
     <string name="pref_messTimeCheck">Set message time limit?</string>
     <string name="pref_messTimeCheck_summ">Permanently forget and delete your messages after set time?</string>
     <string name="pref_messTimeAmmount">Tap to select time limit</string>
+    <string name="create_account">Create Account</string>
+    <string name="enter_firstname">Enter First Name</string>
+    <string name="enter_username">Create Username</string>
+    <string name="enter_password">Create Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="enter_groupid">Enter Group ID</string>
+    <string name="firstname_hint">Enter your first name as you would use at a meeting</string>
+    <string name="username_hint">Enter a username</string>
+    <string name="password_hint">Enter a password</string>
+    <string name="confirm_password_entry">Re-enter the password</string>
+    <string name="groupid_hint">Enter the group ID provided at meeting</string>
+    <string name="welcome_message">Welcome to AApp!</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="login">Login</string>
+    <string name="hello">Hello</string>
     <string name="empty"></string>
 
 </resources>
