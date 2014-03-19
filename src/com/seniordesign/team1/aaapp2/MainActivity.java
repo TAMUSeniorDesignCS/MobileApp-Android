@@ -55,6 +55,7 @@ public class MainActivity extends FragmentActivity implements
 		
 		if(!logged_in){
 			Intent intent = new Intent(this, LoginActivity.class);
+			//intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			startActivity(intent);
 		}else if(logged_in){
 			
@@ -127,8 +128,20 @@ public class MainActivity extends FragmentActivity implements
 		switch (item.getItemId()){
 			case R.id.action_settings:
 				//show settings menu
-				Intent intent = new Intent(this, SettingsActivity.class);
-				startActivity(intent);
+				Intent intent_settings = new Intent(this, SettingsActivity.class);
+				startActivity(intent_settings);
+				return true;
+			case R.id.action_logout:
+				//log out
+				SharedPreferences login_prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+				Editor login_editor = login_prefs.edit();
+				
+				login_editor.clear();
+				login_editor.commit();
+				
+				Intent intent_logout = new Intent(this, LoginActivity.class);
+				intent_logout.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+				startActivity(intent_logout);
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);

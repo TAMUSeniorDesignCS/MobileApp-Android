@@ -58,15 +58,22 @@ public class CreateAcctActivity extends Activity  {
 		
 		@Override
         public void onClick(View v) {
-        	
+			firstname = etFirstName.getText().toString();
         	username = etUsername.getText().toString();  
         	password = etPassword.getText().toString();  
         	conf_password = etConf_password.getText().toString();
+        	groupid = etGroupID.getText().toString();
     		
            // try {
-            	
-            	if(password.equals(conf_password)){//
-            		
+            	if(firstname.length()==0){
+            		alert.showAlertDialog(CreateAcctActivity.this, "Entry error", "You must enter your first name.", false);
+            	} else if(username.length()==0){
+            		alert.showAlertDialog(CreateAcctActivity.this, "Entry error", "You must create a username.", false);
+            	}else if(password.length()==0){
+            		alert.showAlertDialog(CreateAcctActivity.this, "Entry error", "You must create a password.", false);
+            	}else if(groupid.length()==0){
+            		alert.showAlertDialog(CreateAcctActivity.this, "Entry error", "You must enter the group ID.", false);
+            	}else if(password.equals(conf_password)){//
             		//commit settings locally
             		login_editor.putString("FIRSTNAME", firstname);// value to store
 	                login_editor.putString("USERNAME", username); 
@@ -80,11 +87,12 @@ public class CreateAcctActivity extends Activity  {
 	                
 	                //return to MainActivity
 	                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+	                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 	                startActivity(i);
 	                finish();
             	} else {
             		//display "passwords don't match" error
-            		alert.showAlertDialog(CreateAcctActivity.this, "Passwords don't match.", "Try again.", false);
+            		alert.showAlertDialog(CreateAcctActivity.this, "Entry error", "Passwords don't match, please try again.", false);
             	}
             //} catch (Exception e) {
                 //setResult(e.toString());
