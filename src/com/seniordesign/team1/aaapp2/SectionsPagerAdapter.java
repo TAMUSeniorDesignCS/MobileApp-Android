@@ -34,8 +34,8 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 		// below) with the page number as its lone argument.
 		Fragment fragment;
 		if(position == 0){ //Home page fragment
-			GetQuoteTask quoteTask = new GetQuoteTask();
-			quoteTask.execute("http://www.aa.org/lang/en/aareflections.cfm");
+			NetworkAsyncTask quoteTask = new NetworkAsyncTask();
+			quoteTask.execute(NetworkAsyncTask.quoteLit);
 			fragment = new QuoteFragment();
 			Bundle args = new Bundle();
 			String quote = "";
