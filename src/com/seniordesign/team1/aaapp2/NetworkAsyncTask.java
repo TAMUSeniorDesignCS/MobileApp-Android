@@ -33,18 +33,25 @@ public class NetworkAsyncTask extends AsyncTask<String, Void, String> {
 			if(url.equals(quoteLit)){
 				String quote = "";
 				String title = "";
+				String secondHalf = "";
 				String response = doNetworkCall(quoteURL);
 				String[] r1 = response.split("<div id=\"content\" align=\"center\">");
 				String[] r2 = r1[1].split("<tr>");
+				String[] r3 = r2[10].split("</?p>"); //to deal with multiple paragraphs within the second half
+				for(int i = 1; i < r3.length-1; i++){ //1 to get rid of "justify", -1 to get rid of /td and /tr
+					secondHalf += r3[i] + "\n";	
+				}
+				
 				title = r2[4].split("</?td.+?>")[1];
-				quote = "\"" + r2[6].split("</?i>")[1] + "\"" + "\n\n" + r2[8].split("</?td.+?>")[1] + "\n\n" + r2[10].split("</?td.+?>")[1]; //builds the multiple-paragraph quote
+				quote = "\"" + r2[6].split("</?i>")[1] + "\"" + "\n\n" + r2[8].split("</?td.+?>")[1] + "\n\n" + secondHalf; //builds the multiple-paragraph quote
 				quote += "+++" + title;
 				retAppend(quote);
 			}
 			//if starts with serverLit, then it's a server command
-			else if(url.length() > serverLit.length() && url.substring(0, serverLit.length()-1).equals(serverLit)){
+			else if(url.length() >= serverLit.length() && url.substring(0, serverLit.length()).equals(serverLit)){
 				String command = url.substring(serverLit.length());
-				retAppend(doNetworkCall(serverURL + command));
+				//retAppend(doNetworkCall(serverURL + command));
+				retAppend(doNetworkCall(serverURL));
 			}
 			else{
 				retAppend(doNetworkCall(url));

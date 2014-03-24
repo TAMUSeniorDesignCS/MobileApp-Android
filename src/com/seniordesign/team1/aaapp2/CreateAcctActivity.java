@@ -1,5 +1,7 @@
 package com.seniordesign.team1.aaapp2;
 
+import java.util.concurrent.TimeUnit;
+
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorActivity;
 import android.accounts.AccountManager;
@@ -30,6 +32,8 @@ public class CreateAcctActivity extends Activity  {
 	String conf_password = "";
 	String firstname = "";
 	String groupid = "";
+	String sponsorid = null;
+	String email = null;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,6 +67,7 @@ public class CreateAcctActivity extends Activity  {
         	password = etPassword.getText().toString();  
         	conf_password = etConf_password.getText().toString();
         	groupid = etGroupID.getText().toString();
+        	String response = "";
     		
            // try {
             	if(firstname.length()==0){
@@ -83,13 +88,31 @@ public class CreateAcctActivity extends Activity  {
 	                login_editor.commit();
 	                
 	                //commit settings to server
+	                String urlVariables = "member/new?groupid = " + groupid + "&firstname=" + firstname + "&username=" + username + "&sponsorid=" + sponsorid + "&password=" + password + "&email=" + email; 
+	                NetworkAsyncTask createAcctTask = new NetworkAsyncTask();
+	                createAcctTask.execute(NetworkAsyncTask.serverLit + urlVariables);
 	                
-	                
-	                //return to MainActivity
-	                Intent i = new Intent(getApplicationContext(), MainActivity.class);
-	                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-	                startActivity(i);
-	                finish();
+	                try{
+                		String[] r1 = createAcctTask.get(5, TimeUnit.SECONDS).split("===");
+                		response = r1[0];
+                	}catch (Exception e){
+                		alert.showAlertDialog(CreateAcctActivity.this, "Exception", "Response from app: " + e, false);
+                	}
+                	if(response.equals("Your request is invalid.")){
+                		alert.showAlertDialog(CreateAcctActivity.this, "Invalid request", "Response from server: " + response, false);
+                        return;
+                	}//else if(){ //SQL error checking
+                		
+                	//}
+                	
+                	else{ //retrieve data from JSON member object
+                	
+		                //return to MainActivity
+		                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+		                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+		                startActivity(i);
+		                finish();
+                	}
             	} else {
             		//display "passwords don't match" error
             		alert.showAlertDialog(CreateAcctActivity.this, "Entry error", "Passwords don't match, please try again.", false);
