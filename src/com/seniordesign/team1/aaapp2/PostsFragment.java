@@ -1,17 +1,21 @@
 package com.seniordesign.team1.aaapp2;
 
-import android.app.Fragment;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class PostsFragment extends Fragment {
 	
-	public static final String QUOTE = "Default Quote";
-	public static final String TITLE = "Default Title";
-	public static final String USER = "Defualt User";
+	public static final String POSTS = "";
 
 	public PostsFragment() {
 		super();
@@ -19,23 +23,28 @@ public class PostsFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_main_quote,
+		View rootView = inflater.inflate(R.layout.fragment_main_posts,
 				container, false);
-		TextView userTextView = (TextView) rootView
-				.findViewById(R.id.UserDisplay);
-		TextView bodyTextView = (TextView) rootView
-				.findViewById(R.id.QuoteBody);
-		TextView titleTextView = (TextView) rootView
-				.findViewById(R.id.QuoteTitle);
-		userTextView.setText(getArguments().getString(
-				USER));
-		bodyTextView.setText(getArguments().getString(
-				QUOTE));
-		titleTextView.setText(getArguments().getString(
-				TITLE));
-		userTextView.setTextSize(24);
-		titleTextView.setTextSize(16);
-		bodyTextView.setTextSize(12);
+		LinearLayout postsView = (LinearLayout) rootView.findViewById(R.id.postsView);
+		JSONArray json = null;
+		try {
+			json = new JSONArray(getArguments().getString(POSTS));
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		for(int i=0; i<json.length(); i++){
+			try {
+				JSONObject jsonPost = json.getJSONObject(i);
+				TextView newPost = new TextView(container.getContext());
+				newPost.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT));
+				newPost.setText(jsonPost.getString("message"));
+				postsView.addView(newPost);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		return rootView;
 	}
 

@@ -56,10 +56,22 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 			fragment.setArguments(args);
 			return fragment;
 		}else if (position == 1){ //Posts page fragment
-			NetworkAsyncTask quoteTask = new NetworkAsyncTask();
-			quoteTask.execute(NetworkAsyncTask.serverLit + "/post/refresh");
-			//TODO: make PostsFragment
-			fragment = new DummySectionFragment();
+			NetworkAsyncTask postsTask = new NetworkAsyncTask();
+			postsTask.execute(NetworkAsyncTask.serverLit + "post/refresh");
+			fragment = new PostsFragment();
+			Bundle args = new Bundle();
+			String response = "";
+			try{
+				response = postsTask.get(5, TimeUnit.SECONDS);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+			} catch (TimeoutException e) {
+				e.printStackTrace();
+			}
+			args.putString(PostsFragment.POSTS, response);
+			fragment.setArguments(args);
 			return fragment;
 		}
 		else{

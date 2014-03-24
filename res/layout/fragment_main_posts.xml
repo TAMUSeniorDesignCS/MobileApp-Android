@@ -12,12 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
-	    <TextView
-	    android:id="@+id/UserDisplay"
-	    android:layout_width="wrap_content"
-	    android:layout_height="50dp"
-	    android:text="Hello, World!"
-	    android:textStyle="bold" />
     
 		    <ScrollView
 		        android:id="@+id/scrollView1"
@@ -26,33 +20,22 @@
 		        android:scrollbars="vertical" >
 		
 		        <LinearLayout
+		            android:id="@+id/postsView"
 			        android:layout_width="match_parent"
 			        android:layout_height="wrap_content"
 			        android:orientation="vertical" >
 		            
-		            <TextView
-		            android:id="@+id/QuoteTitle"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:text="Hello World!"
-		            android:textStyle="bold" />
-		
-		        	<TextView
-		            android:id="@+id/QuoteBody"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:text="Hello World!" />
 		         </LinearLayout>
 		    </ScrollView>
     </LinearLayout>
     
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/button_refresh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="22dp"
-        android:text="Call Sponsor" />
+        android:text="Refresh" />
 
 </RelativeLayout>
