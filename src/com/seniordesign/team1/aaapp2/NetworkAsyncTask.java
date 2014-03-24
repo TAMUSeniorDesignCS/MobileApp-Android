@@ -42,7 +42,7 @@ public class NetworkAsyncTask extends AsyncTask<String, Void, String> {
 				retAppend(quote);
 			}
 			//if starts with serverLit, then it's a server command
-			else if(url.length() > serverLit.length() && url.substring(0, serverLit.length()-1).equals(serverLit)){
+			else if(url.length() > serverLit.length() && url.substring(0, serverLit.length()).equals(serverLit)){
 				String command = url.substring(serverLit.length());
 				retAppend(doNetworkCall(serverURL + command));
 			}
