@@ -14,7 +14,7 @@ public class QuoteFragment extends Fragment {
 	public static final String USER = "Defualt User";
 	
 	public QuoteFragment(){
-		
+		super();
 	}
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,

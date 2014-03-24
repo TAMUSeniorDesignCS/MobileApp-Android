@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Preference xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference 
+        android:key="pref_loggedIn"
+        android:defaultValue="false"
+        android:persistent="true"
+    />
+        <CheckBoxPreference
+	        android:key="pref_rememberMe"
+	        android:title="@string/pref_rememberMe"
+	        android:summary="@string/pref_rememberMe_summ"
+	        android:defaultValue="false" />
+</Preference>
