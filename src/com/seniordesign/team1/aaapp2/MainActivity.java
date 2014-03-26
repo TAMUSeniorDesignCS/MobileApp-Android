@@ -47,10 +47,8 @@ public class MainActivity extends FragmentActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//SharedPreferences login_settings = getSharedPreferences("login_preferences.xml", 0);
 		SharedPreferences login_settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		Editor login_editor = login_settings.edit();
-		//login_editor.putBoolean("loggedIn", );
 		boolean logged_in = login_settings.getBoolean("loggedIn", false); 						//Is going to need to be a persistent data object
 		
 		if(!logged_in){

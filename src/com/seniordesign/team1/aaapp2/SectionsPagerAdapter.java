@@ -5,7 +5,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -38,8 +40,11 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 			quoteTask.execute(NetworkAsyncTask.quoteLit);
 			fragment = new QuoteFragment();
 			Bundle args = new Bundle();
+			SharedPreferences user_prefs = PreferenceManager.getDefaultSharedPreferences(this.mainActivity);
 			String quote = "";
 			String title = "";
+			String userWelcome = "Hi, " + user_prefs.getString("FIRSTNAME", "[name not found]") + "!";
+			String qotd = "Quote of the Day";
 			try {
 				String[] r1 = quoteTask.get(5, TimeUnit.SECONDS).split("\\+\\+\\+");
 				quote = r1[0];
@@ -53,6 +58,8 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 			}
 			args.putString(QuoteFragment.TITLE, title);
 			args.putString(QuoteFragment.QUOTE, quote);
+			args.putString(QuoteFragment.USER, userWelcome);
+			args.putString(QuoteFragment.QOTD, qotd);
 			fragment.setArguments(args);
 			return fragment;
 		}else if (position == 1){ //Posts page fragment

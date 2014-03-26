@@ -16,6 +16,7 @@ public class QuoteFragment extends Fragment {
 	public static final String QUOTE = "Default Quote";
 	public static final String TITLE = "Default Title";
 	public static final String USER = "Defualt User";
+	public static final String QOTD = "Default QotD";
 	public static final String TEMPSPONSORNUMBER = "5555555555";
 	
 	public QuoteFragment(){
@@ -32,13 +33,18 @@ public class QuoteFragment extends Fragment {
 				.findViewById(R.id.QuoteBody);
 		TextView titleTextView = (TextView) rootView
 				.findViewById(R.id.QuoteTitle);
+		TextView qotdTextView = (TextView) rootView
+				.findViewById(R.id.QotD);
 		userTextView.setText(getArguments().getString(
 				USER));
 		bodyTextView.setText(getArguments().getString(
 				QUOTE));
 		titleTextView.setText(getArguments().getString(
 				TITLE));
+		qotdTextView.setText(getArguments().getString(
+				QOTD));
 		userTextView.setTextSize(24);
+		qotdTextView.setTextSize(20);
 		titleTextView.setTextSize(16);
 		bodyTextView.setTextSize(12);
 		
@@ -57,10 +63,6 @@ public class QuoteFragment extends Fragment {
 				Intent intent = new Intent(Intent.ACTION_DIAL);
 			    intent.setData(Uri.parse("tel:" + TEMPSPONSORNUMBER));
 			    startActivity(intent);
-	            
- 
-	             
-	             
 	        }
 	};
 }	
