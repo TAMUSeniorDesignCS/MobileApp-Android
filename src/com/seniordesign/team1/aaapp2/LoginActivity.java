@@ -116,6 +116,11 @@ public class LoginActivity extends Activity{
 						login_editor.putString("SPONSORID", Integer.toString(sponsorid));
 						login_editor.putBoolean("loggedIn", true);		//logs the user in for future opening of app
 						login_editor.commit();
+						
+						Intent i = new Intent(getApplicationContext(), MainActivity.class);
+		                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+		                startActivity(i);
+		                finish();
 					}
 				}
 			} catch (Exception e) {
