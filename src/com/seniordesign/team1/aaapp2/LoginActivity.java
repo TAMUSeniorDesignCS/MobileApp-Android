@@ -2,6 +2,7 @@ package com.seniordesign.team1.aaapp2;
 
 import java.util.concurrent.TimeUnit;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -59,7 +60,9 @@ public class LoginActivity extends Activity{
 		public void onClick(View v) {
 			EditText etUsername = (EditText)findViewById(R.id.username_entry);
 			EditText etPassword = (EditText)findViewById(R.id.password_entry);
-			String username, password, firstname = "", groupid = "", email = "", sponsorid = "";
+			String username, password, firstname = "", email = "";
+			int groupid;
+			int sponsorid;
 			String response = "";
 			SharedPreferences login_prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 			Editor login_editor = login_prefs.edit();
@@ -81,7 +84,7 @@ public class LoginActivity extends Activity{
 
 					try{
 						response = loginTask.get(5, TimeUnit.SECONDS);
-						json_return = new JSONObject(response);
+						json_return = new JSONArray(response).getJSONObject(0);
 
 					}catch (JSONException e){//NOT a JSON object
 
@@ -97,20 +100,20 @@ public class LoginActivity extends Activity{
 
 						setResult(e.toString());
 					}
-					if(json_return.getString(username) == username && json_return.getString(password) == password){ //server recognizes the username and password entered; now ask for other user info
+					if(json_return.getString("username").equals(username) && json_return.getString("password").equals(password)){ //server recognizes the username and password entered; now ask for other user info
 
-						firstname = json_return.getString(firstname);
-						groupid = json_return.getString(groupid);
-						email = json_return.getString(email);
-						sponsorid = json_return.getString(sponsorid);
+						firstname = json_return.getString("firstname");
+						groupid = json_return.getInt("groupid");
+						email = json_return.getString("email");
+						sponsorid = json_return.getInt("sponsorid");
 						
 						//values to store locally
 						login_editor.putString("FIRSTNAME", firstname);	// value to store
 						login_editor.putString("USERNAME", username); 
 						login_editor.putString("PASSWORD", password);
-						login_editor.putString("GROUPID", groupid);
+						login_editor.putString("GROUPID", Integer.toString(groupid));
 						login_editor.putString("EMAIL", email);
-						login_editor.putString("SPONSORID", sponsorid);
+						login_editor.putString("SPONSORID", Integer.toString(sponsorid));
 						login_editor.putBoolean("loggedIn", true);		//logs the user in for future opening of app
 						login_editor.commit();
 					}
