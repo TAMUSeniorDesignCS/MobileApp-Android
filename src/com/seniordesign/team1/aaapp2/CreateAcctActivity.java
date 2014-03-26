@@ -79,18 +79,19 @@ public class CreateAcctActivity extends Activity  {
             	}else if(groupid.length()==0){
             		alert.showAlertDialog(CreateAcctActivity.this, "Entry error", "You must enter the group ID.", false);
             	}else if(password.equals(conf_password)){//
-            		//commit settings locally
+            		
+	                //commit settings to server
+	                String urlVariables = "member/new?groupid = " + groupid + "&firstname=" + firstname + "&username=" + username + "&sponsorid=" + sponsorid + "&password=" + password + "&email=" + email; 
+	                NetworkAsyncTask createAcctTask = new NetworkAsyncTask();
+	                createAcctTask.execute(NetworkAsyncTask.serverLit + urlVariables);
+	                
+	                //commit settings locally
             		login_editor.putString("FIRSTNAME", firstname);// value to store
 	                login_editor.putString("USERNAME", username); 
 	                login_editor.putString("PASSWORD", password);
 	                login_editor.putString("GROUPID", groupid);
 	                login_editor.putBoolean("loggedIn", true);		//logs the user in for future opening of app
 	                login_editor.commit();
-	                
-	                //commit settings to server
-	                String urlVariables = "member/new?groupid = " + groupid + "&firstname=" + firstname + "&username=" + username + "&sponsorid=" + sponsorid + "&password=" + password + "&email=" + email; 
-	                NetworkAsyncTask createAcctTask = new NetworkAsyncTask();
-	                createAcctTask.execute(NetworkAsyncTask.serverLit + urlVariables);
 	                
 	                try{
                 		String[] r1 = createAcctTask.get(5, TimeUnit.SECONDS).split("===");
