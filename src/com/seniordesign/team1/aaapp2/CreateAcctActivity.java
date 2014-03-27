@@ -2,6 +2,10 @@ package com.seniordesign.team1.aaapp2;
 
 import java.util.concurrent.TimeUnit;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorActivity;
 import android.accounts.AccountManager;
@@ -31,8 +35,8 @@ public class CreateAcctActivity extends Activity  {
 	String password = "";
 	String conf_password = "";
 	String firstname = "";
-	String groupid = "";
-	String sponsorid = null;
+	int groupid;
+	int sponsorid;
 	String email = null;
 	
 	@Override
@@ -66,9 +70,10 @@ public class CreateAcctActivity extends Activity  {
         	username = etUsername.getText().toString();  
         	password = etPassword.getText().toString();  
         	conf_password = etConf_password.getText().toString();
-        	groupid = etGroupID.getText().toString();
+        	groupid = Integer.parseInt(etGroupID.getText().toString());
         	String response = "";
-    		
+        	JSONObject json_return = null;
+        	
            // try {
             	if(firstname.length()==0){
             		alert.showAlertDialog(CreateAcctActivity.this, "Entry error", "You must enter your first name.", false);
@@ -76,44 +81,42 @@ public class CreateAcctActivity extends Activity  {
             		alert.showAlertDialog(CreateAcctActivity.this, "Entry error", "You must create a username.", false);
             	}else if(password.length()==0){
             		alert.showAlertDialog(CreateAcctActivity.this, "Entry error", "You must create a password.", false);
-            	}else if(groupid.length()==0){
+            	}else if(groupid==0){
             		alert.showAlertDialog(CreateAcctActivity.this, "Entry error", "You must enter the group ID.", false);
             	}else if(password.equals(conf_password)){//
             		
 	                //commit settings to server
-	                String urlVariables = "member/new?groupid = " + groupid + "&firstname=" + firstname + "&username=" + username + "&sponsorid=" + sponsorid + "&password=" + password + "&email=" + email; 
+	                String urlVariables = "member/new?groupid=" + groupid + "&firstname=" + firstname + "&username=" + username + "&sponsorid=" + sponsorid + "&password=" + password + "&email=" + email; 
 	                NetworkAsyncTask createAcctTask = new NetworkAsyncTask();
 	                createAcctTask.execute(NetworkAsyncTask.serverLit + urlVariables);
 	                
-	                //commit settings locally
+	                
+	                
+	                try{
+	                	response = createAcctTask.get();
+	                	json_return = new JSONArray(response).getJSONObject(0);
+                	}catch (JSONException e){//NOT a JSON object
+                		if(response.equals("Your request is invalid.")){
+                			alert.showAlertDialog(CreateAcctActivity.this, "Invalid request", "Response from server: " + response, false);
+                			return;
+                		}
+                	}
+	                catch (Exception e){
+                		alert.showAlertDialog(CreateAcctActivity.this, "Exception", "Response from app: " + e, false);
+                	}
+                	//commit settings locally
             		login_editor.putString("FIRSTNAME", firstname);// value to store
 	                login_editor.putString("USERNAME", username); 
 	                login_editor.putString("PASSWORD", password);
-	                login_editor.putString("GROUPID", groupid);
+	                login_editor.putInt("GROUPID", groupid);
 	                login_editor.putBoolean("loggedIn", true);		//logs the user in for future opening of app
 	                login_editor.commit();
 	                
-	                try{
-                		String[] r1 = createAcctTask.get(5, TimeUnit.SECONDS).split("===");
-                		response = r1[0];
-                	}catch (Exception e){
-                		alert.showAlertDialog(CreateAcctActivity.this, "Exception", "Response from app: " + e, false);
-                	}
-                	if(response.equals("Your request is invalid.")){
-                		alert.showAlertDialog(CreateAcctActivity.this, "Invalid request", "Response from server: " + response, false);
-                        return;
-                	}//else if(){ //SQL error checking
-                		
-                	//}
+	                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+	                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+	                startActivity(i);
+	                finish();
                 	
-                	else{ //retrieve data from JSON member object
-                	
-		                //return to MainActivity
-		                Intent i = new Intent(getApplicationContext(), MainActivity.class);
-		                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-		                startActivity(i);
-		                finish();
-                	}
             	} else {
             		//display "passwords don't match" error
             		alert.showAlertDialog(CreateAcctActivity.this, "Entry error", "Passwords don't match, please try again.", false);

@@ -134,7 +134,14 @@ public class MainActivity extends FragmentActivity implements
 				SharedPreferences login_prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 				Editor login_editor = login_prefs.edit();
 				
-				login_editor.clear();
+				//login_editor.clear();
+				login_editor.remove("FIRSTNAME");// value to clear
+                login_editor.remove("USERNAME"); 
+                login_editor.remove("PASSWORD");
+                login_editor.remove("GROUPID");
+                login_editor.remove("EMAIL");
+                login_editor.remove("SPONSORID");
+                login_editor.putBoolean("loggedIn", false);
 				login_editor.commit();
 				
 				Intent intent_logout = new Intent(this, LoginActivity.class);

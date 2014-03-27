@@ -43,10 +43,13 @@ public class NetworkAsyncTask extends AsyncTask<String, Void, String> {
 				String[] r1 = response.split("<div id=\"content\" align=\"center\">");
 				String[] r2 = r1[1].split("<tr>");
 				String[] r3 = r2[10].split("</?p>"); //to deal with multiple paragraphs within the second half
-				for(int i = 1; i < r3.length-1; i++){ //1 to get rid of "justify", -1 to get rid of /td and /tr
-					secondHalf += r3[i] + "\n";	
+				if(r3.length > 1){
+					for(int i = 1; i < r3.length-1; i++){ //1 to get rid of "justify", -1 to get rid of /td and /tr
+						secondHalf += r3[i] + "\n";	
+					}
+				}else{
+					secondHalf = r3[0].split("</?td.+?>")[1];
 				}
-				
 				title = r2[4].split("</?td.+?>")[1];
 				quote = "\"" + r2[6].split("</?i>")[1] + "\"" + "\n\n" + r2[8].split("</?td.+?>")[1] + "\n\n" + secondHalf; //builds the multiple-paragraph quote
 				quote += "+++" + title;
