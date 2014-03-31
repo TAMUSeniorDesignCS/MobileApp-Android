@@ -36,7 +36,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 		// below) with the page number as its lone argument.
 		Fragment fragment;
 		if(position == 0){ //Home page fragment
-			NetworkAsyncTask quoteTask = new NetworkAsyncTask();
+			NetworkAsyncTask quoteTask = new NetworkAsyncTask(this.mainActivity);
 			quoteTask.execute(NetworkAsyncTask.quoteLit);
 			fragment = new QuoteFragment();
 			Bundle args = new Bundle();
@@ -63,7 +63,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 			fragment.setArguments(args);
 			return fragment;
 		}else if (position == 1){ //Posts page fragment
-			NetworkAsyncTask postsTask = new NetworkAsyncTask();
+			NetworkAsyncTask postsTask = new NetworkAsyncTask(this.mainActivity);
 			postsTask.execute(NetworkAsyncTask.serverLit + "post/refresh");
 			fragment = new PostsFragment();
 			Bundle args = new Bundle();

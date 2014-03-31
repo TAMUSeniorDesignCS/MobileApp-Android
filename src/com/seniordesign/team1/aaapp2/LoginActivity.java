@@ -26,6 +26,7 @@ public class LoginActivity extends Activity{
 	private AccountManager _accountMgr = null;
 	private LoginActivity _this;
 	AlertDialogManager alert = new AlertDialogManager();
+	NetworkAsyncTask loginTask;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -33,7 +34,8 @@ public class LoginActivity extends Activity{
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_page);
-
+		
+		loginTask = new NetworkAsyncTask(this);
 		Button createActBtn = (Button) findViewById(R.id.create_account);
 		createActBtn.setOnClickListener(mCreateAcctListener);
 		Button loginBtn = (Button) findViewById(R.id.login);
@@ -79,7 +81,6 @@ public class LoginActivity extends Activity{
 					alert.showAlertDialog(LoginActivity.this, "Entry error", "You must enter a password.", false);
 					return;
 				}else { //attempt login communication with server
-					NetworkAsyncTask loginTask = new NetworkAsyncTask();
 					loginTask.execute(NetworkAsyncTask.serverLit + "member/auth?username=" + username + "&password=" + password);
 
 					try{
