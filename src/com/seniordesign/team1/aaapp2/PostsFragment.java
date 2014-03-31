@@ -29,22 +29,23 @@ public class PostsFragment extends Fragment {
 		JSONArray json = null;
 		try {
 			json = new JSONArray(getArguments().getString(POSTS));
+			for(int i=0; i<json.length(); i++){
+				try {
+					JSONObject jsonPost = json.getJSONObject(i);
+					TextView newPost = new TextView(container.getContext());
+					newPost.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT));
+					newPost.setText(jsonPost.getString("message"));
+					postsView.addView(newPost);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		for(int i=0; i<json.length(); i++){
-			try {
-				JSONObject jsonPost = json.getJSONObject(i);
-				TextView newPost = new TextView(container.getContext());
-				newPost.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT));
-				newPost.setText(jsonPost.getString("message"));
-				postsView.addView(newPost);
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+		
 		return rootView;
 	}
 

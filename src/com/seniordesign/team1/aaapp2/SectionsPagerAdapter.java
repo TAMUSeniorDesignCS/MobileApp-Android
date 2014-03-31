@@ -46,9 +46,16 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 			String userWelcome = "Hi, " + user_prefs.getString("FIRSTNAME", "[name not found]") + "!";
 			String qotd = "Quote of the Day";
 			try {
-				String[] r1 = quoteTask.get(5, TimeUnit.SECONDS).split("\\+\\+\\+");
-				quote = r1[0];
-				title = r1[1];
+				String resp = quoteTask.get(5, TimeUnit.SECONDS);
+				if(!resp.equals(NetworkAsyncTask.errorLit)){
+					String[] r1 = resp.split("\\+\\+\\+");
+					quote = r1[0];
+					title = r1[1];
+				}
+				else{
+					quote = "";
+					title = "Sorry, no network connection."; //TODO: don't have strings out of xml
+				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			} catch (ExecutionException e) {
