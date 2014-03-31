@@ -1,14 +1,9 @@
 package com.seniordesign.team1.aaapp2;
 
-import java.util.concurrent.TimeUnit;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.accounts.Account;
-import android.accounts.AccountAuthenticatorActivity;
-import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
