@@ -28,7 +28,7 @@
     	    android:textStyle="bold" />
 
 		    <ScrollView
-		        android:id="@+id/scrollView1"
+		        android:id="@+id/quoteScrollView"
 		        android:layout_width="match_parent"
 		        android:layout_height="375dp"
 		        android:scrollbars="vertical"

@@ -6,36 +6,53 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity$PostsSectionFragment" >
-    
-   <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
-    
-		    <ScrollView
-		        android:id="@+id/scrollView1"
-		        android:layout_width="match_parent"
-		        android:layout_height="375dp"
-		        android:scrollbars="vertical" >
-		
-		        <LinearLayout
-		            android:id="@+id/postsView"
-			        android:layout_width="match_parent"
-			        android:layout_height="wrap_content"
-			        android:orientation="vertical" >
-		            
-		         </LinearLayout>
-		    </ScrollView>
+    tools:context=".MainActivity$PostsSectionFragment" 
+   >
+
+   <ScrollView
+       android:id="@+id/postScrollView"
+       android:layout_width="match_parent"
+       android:layout_height="400dp"
+       android:layout_weight="1"
+       android:scrollbars="vertical" >
+
+        <LinearLayout
+            android:id="@+id/postsView"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical" >
+         </LinearLayout>
+    </ScrollView>
+	<LinearLayout  
+	    android:id="@+id/postButtonLayout"
+	    android:layout_height="wrap_content"  
+	    android:layout_width="fill_parent" 
+	    android:gravity = "center_horizontal"
+	    android:layout_below="@id/postScrollView"
+	    android:weightSum="1.0">     
+	    <EditText
+		    android:id="@+id/write_post"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_weight=".70"
+		    android:hint="@string/write_post_hint"
+		    android:inputType="text" />
+	    <Button
+	        android:id="@+id/write_post_button"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"	
+	        android:layout_weight=".30"
+	        android:text="Post" />
     </LinearLayout>
-    
+
     <Button
         android:id="@+id/button_refresh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentBottom="false"
+        android:layout_below="@id/postButtonLayout"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="22dp"
+        android:layout_marginBottom="0dp"
         android:text="Refresh" />
 
 </RelativeLayout>

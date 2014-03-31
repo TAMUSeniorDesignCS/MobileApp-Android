@@ -48,7 +48,7 @@ public class QuoteFragment extends Fragment {
 		titleTextView.setTextSize(16);
 		bodyTextView.setTextSize(12);
 		
-		Button callSponsor = (Button) rootView.findViewById(R.id.callSponsorButton);
+		Button callSponsor = (Button) rootView.findViewById(R.id.write_post_button);
 		callSponsor.setOnClickListener(mCallSponsorButton);
 		
 		
