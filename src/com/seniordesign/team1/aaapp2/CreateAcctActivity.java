@@ -38,6 +38,7 @@ public class CreateAcctActivity extends Activity  {
 	int groupid;
 	int sponsorid;
 	String email = null;
+	NetworkAsyncTask createAcctTask;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,7 @@ public class CreateAcctActivity extends Activity  {
 		etConf_password = (EditText)findViewById(R.id.confirm_password_entry);
 		etGroupID = (EditText)findViewById(R.id.groupid_entry);
 		
+		createAcctTask = new NetworkAsyncTask(this);
 		Button createAcct = (Button) findViewById(R.id.create_account);
 		createAcct.setOnClickListener(mCreateAcctListener);
 	}
@@ -88,7 +90,6 @@ public class CreateAcctActivity extends Activity  {
             		
 	                //commit settings to server
 	                String urlVariables = "member/new?groupid=" + groupid + "&firstname=" + firstname + "&username=" + username + "&sponsorid=" + sponsorid + "&password=" + password + "&email=" + email; 
-	                NetworkAsyncTask createAcctTask = new NetworkAsyncTask();
 	                createAcctTask.execute(NetworkAsyncTask.serverLit + urlVariables);
 	                
 	                try{
