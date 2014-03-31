@@ -72,7 +72,8 @@ public class CreateAcctActivity extends Activity  {
         	conf_password = etConf_password.getText().toString();
         	groupid = Integer.parseInt(etGroupID.getText().toString());
         	String response = "";
-        	JSONObject json_return = null;
+        	JSONArray json_array = null;
+        	JSONObject json_object = null;
         	
            // try {
             	if(firstname.length()==0){
@@ -90,33 +91,35 @@ public class CreateAcctActivity extends Activity  {
 	                NetworkAsyncTask createAcctTask = new NetworkAsyncTask();
 	                createAcctTask.execute(NetworkAsyncTask.serverLit + urlVariables);
 	                
-	                
-	                
 	                try{
 	                	response = createAcctTask.get();
-	                	json_return = new JSONArray(response).getJSONObject(0);
+	                	json_array = new JSONArray(response);
+	                	json_object = json_array.getJSONObject(json_array.length()-1);
+	                	if(json_object.getBoolean("valid")){ //server returns valid = true
+		                	//commit settings locally
+		            		login_editor.putString("FIRSTNAME", firstname);// value to store
+			                login_editor.putString("USERNAME", username); 
+			                login_editor.putString("PASSWORD", password);
+			                login_editor.putInt("GROUPID", groupid);
+			                login_editor.putBoolean("loggedIn", true);		//logs the user in for future opening of app
+			                login_editor.commit();
+			                
+			                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+			                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			                startActivity(i);
+			                finish();
+		                } else {//server returns valid = false
+		                	alert.showAlertDialog(CreateAcctActivity.this, "Invalid request", "Request was not recognized by the server.", false);
+		                }
                 	}catch (JSONException e){//NOT a JSON object
-                		if(response.equals("Your request is invalid.")){
-                			alert.showAlertDialog(CreateAcctActivity.this, "Invalid request", "Response from server: " + response, false);
+                		//if(response.equals("Your request is invalid.")){ //old implementation
+                			alert.showAlertDialog(CreateAcctActivity.this, "Invalid request", "Response from server: " + e, false);
                 			return;
-                		}
+                		//}
                 	}
 	                catch (Exception e){
                 		alert.showAlertDialog(CreateAcctActivity.this, "Exception", "Response from app: " + e, false);
                 	}
-                	//commit settings locally
-            		login_editor.putString("FIRSTNAME", firstname);// value to store
-	                login_editor.putString("USERNAME", username); 
-	                login_editor.putString("PASSWORD", password);
-	                login_editor.putInt("GROUPID", groupid);
-	                login_editor.putBoolean("loggedIn", true);		//logs the user in for future opening of app
-	                login_editor.commit();
-	                
-	                Intent i = new Intent(getApplicationContext(), MainActivity.class);
-	                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-	                startActivity(i);
-	                finish();
-                	
             	} else {
             		//display "passwords don't match" error
             		alert.showAlertDialog(CreateAcctActivity.this, "Entry error", "Passwords don't match, please try again.", false);
