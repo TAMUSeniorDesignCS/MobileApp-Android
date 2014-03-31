@@ -58,10 +58,16 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
+				quote = "";
+				title = "Sorry, no network connection."; //TODO: don't have strings out of xml
 			} catch (ExecutionException e) {
 				e.printStackTrace();
+				quote = "";
+				title = "Sorry, no network connection."; //TODO: don't have strings out of xml
 			} catch (TimeoutException e) {
 				e.printStackTrace();
+				quote = "";
+				title = "Sorry, no network connection."; //TODO: don't have strings out of xml
 			}
 			args.putString(QuoteFragment.TITLE, title);
 			args.putString(QuoteFragment.QUOTE, quote);
