@@ -95,8 +95,7 @@ public class CreateAcctActivity extends Activity  {
 	                try{
 	                	response = createAcctTask.get();
 	                	json_array = new JSONArray(response);
-	                	json_object = json_array.getJSONObject(json_array.length()-1);
-	                	if(json_object.getBoolean("valid")){ //server returns valid = true
+	                	if(HelperFunctions.isJSONValid(json_array)){ //server returns valid = true
 		                	//commit settings locally
 		            		login_editor.putString("FIRSTNAME", firstname);// value to store
 			                login_editor.putString("USERNAME", username); 
@@ -114,7 +113,7 @@ public class CreateAcctActivity extends Activity  {
 		                }
                 	}catch (JSONException e){//NOT a JSON object
                 		//if(response.equals("Your request is invalid.")){ //old implementation
-                			alert.showAlertDialog(CreateAcctActivity.this, "Invalid request", "Response from server: " + e, false);
+                			alert.showAlertDialog(CreateAcctActivity.this, "Invalid request", "Response from server: " + response, false);
                 			return;
                 		//}
                 	}
