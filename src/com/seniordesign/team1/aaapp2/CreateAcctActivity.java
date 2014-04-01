@@ -1,14 +1,9 @@
 package com.seniordesign.team1.aaapp2;
 
-import java.util.concurrent.TimeUnit;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.accounts.Account;
-import android.accounts.AccountAuthenticatorActivity;
-import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -48,6 +43,7 @@ public class CreateAcctActivity extends Activity  {
 		
 		//login_prefs = getApplicationContext().getSharedPreferences(PREF_NAME, 0);
 		login_prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		//TODO check lint warning. no .commit()
 		login_editor = login_prefs.edit();
 		etFirstName = (EditText)findViewById(R.id.firstname_entry);
 		etUsername = (EditText)findViewById(R.id.username_entry);
