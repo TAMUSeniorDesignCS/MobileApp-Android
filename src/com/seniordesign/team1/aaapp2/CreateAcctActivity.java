@@ -43,6 +43,7 @@ public class CreateAcctActivity extends Activity  {
 		
 		//login_prefs = getApplicationContext().getSharedPreferences(PREF_NAME, 0);
 		login_prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		//TODO check lint warning. no .commit()
 		login_editor = login_prefs.edit();
 		etFirstName = (EditText)findViewById(R.id.firstname_entry);
 		etUsername = (EditText)findViewById(R.id.username_entry);

@@ -34,6 +34,7 @@ public class MainActivity extends FragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		SharedPreferences login_settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		//TODO: no commit?
 		Editor login_editor = login_settings.edit();
 		boolean logged_in = login_settings.getBoolean("loggedIn", false); 						//Is going to need to be a persistent data object
 		
