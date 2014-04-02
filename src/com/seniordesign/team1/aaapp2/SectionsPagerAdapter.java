@@ -77,18 +77,22 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 			return fragment;
 		}else if (position == 1){ //Posts page fragment
 			NetworkAsyncTask postsTask = new NetworkAsyncTask(this.mainActivity);
-			postsTask.execute(NetworkAsyncTask.serverLit + "post/refresh");
-			fragment = new PostsFragment();
-			Bundle args = new Bundle();
+			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.mainActivity.getApplicationContext());
+			int groupNo = prefs.getInt("GROUPID", -1);
 			String response = "";
-			try{
-				response = postsTask.get(5, TimeUnit.SECONDS);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			} catch (ExecutionException e) {
-				e.printStackTrace();
-			} catch (TimeoutException e) {
-				e.printStackTrace();
+			Bundle args = new Bundle();
+			fragment = new PostsFragment();
+			if(groupNo >= 0){
+				postsTask.execute(NetworkAsyncTask.serverLit + "post/refresh?groupid=" + groupNo);
+				try{
+					response = postsTask.get(5, TimeUnit.SECONDS);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					e.printStackTrace();
+				} catch (TimeoutException e) {
+					e.printStackTrace();
+				}
 			}
 			args.putString(PostsFragment.POSTS, response);
 			fragment.setArguments(args);
