@@ -107,7 +107,7 @@ public class LoginActivity extends Activity{
 								login_editor.putString("FIRSTNAME", firstname);	// value to store
 								login_editor.putString("USERNAME", username); 
 								login_editor.putString("PASSWORD", password);
-								login_editor.putString("GROUPID", Integer.toString(groupid));
+								login_editor.putInt("GROUPID", groupid);
 								login_editor.putString("EMAIL", email);
 								login_editor.putString("SPONSORID", sponsorid);
 								login_editor.putBoolean("loggedIn", true);		//logs the user in for future opening of app
