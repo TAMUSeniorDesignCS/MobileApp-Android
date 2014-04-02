@@ -38,6 +38,10 @@ public class NumberPickerPreference extends DialogPreference implements NumberPi
 	        dest.writeInt(value);  // Change this to write the appropriate data type
 	    }
 
+	    /*
+	     * TODO: delete this comment if nothing breaks.
+	     * If something breaks, uncomment, and figure out what the fuck is going on.
+	     
 	    // Standard creator object using an instance of this class
 	    public static final Parcelable.Creator<SavedState> CREATOR =
 	            new Parcelable.Creator<SavedState>() {
@@ -50,6 +54,7 @@ public class NumberPickerPreference extends DialogPreference implements NumberPi
 	            return new SavedState[size];
 	        }
 	    };
+	    */
 	}
 	
     public NumberPickerPreference(Context context, AttributeSet attrs) {

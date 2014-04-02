@@ -27,6 +27,7 @@ public class AlertDialogManager {
             // Setting alert dialog icon
             //alertDialog.setIcon((status) ? R.drawable.success : R.drawable.fail);
         	alertDialog.setIcon((status) ? R.drawable.ic_aapp : R.drawable.ic_aapp);
+        //TODO: why deprecated?
         // Setting OK Button
         alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {

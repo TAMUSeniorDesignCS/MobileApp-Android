@@ -41,11 +41,24 @@ public class PostsFragment extends Fragment {
 		JSONArray json = null;
 		try {
 			json = new JSONArray(getArguments().getString(POSTS));
+			for(int i=0; i<json.length(); i++){
+				try {
+					JSONObject jsonPost = json.getJSONObject(i);
+					TextView newPost = new TextView(container.getContext());
+					newPost.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT));
+					newPost.setText(jsonPost.getString("message"));
+					postsView.addView(newPost);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		for(int i=0; i<json.length(); i++){
+
+		/*for(int i=0; i<json.length(); i++){
 			try {
 				JSONObject jsonPost = json.getJSONObject(i);
 				TextView newPost = new TextView(container.getContext());
@@ -56,10 +69,11 @@ public class PostsFragment extends Fragment {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
+		}*/
 		
 		Button writePostButton = (Button) rootView.findViewById(R.id.callSponsorButton);
 		writePostButton.setOnClickListener(mWritePostButton);
+
 		return rootView;
 	}
 	
@@ -82,7 +96,7 @@ public class PostsFragment extends Fragment {
 				//SharedPreferences login_prefs = PreferenceManager.getDefaultSharedPreferences(v.getContext());
 				//int post_timeout = login_prefs.getInt("pref_postTimeAmmount", false);
 				
-				NetworkAsyncTask sendPostTask = new NetworkAsyncTask();
+				NetworkAsyncTask sendPostTask = new NetworkAsyncTask(v.getContext());
 				sendPostTask.execute(NetworkAsyncTask.serverLit + "post/new?posterid=" + username + "&message=" + newPostString + "&timeout=" + timeout);
 				try{
 					response = sendPostTask.get(5, TimeUnit.SECONDS);

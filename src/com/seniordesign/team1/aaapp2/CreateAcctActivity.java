@@ -1,14 +1,9 @@
 package com.seniordesign.team1.aaapp2;
 
-import java.util.concurrent.TimeUnit;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.accounts.Account;
-import android.accounts.AccountAuthenticatorActivity;
-import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -38,6 +33,7 @@ public class CreateAcctActivity extends Activity  {
 	int groupid;
 	int sponsorid;
 	String email = null;
+	NetworkAsyncTask createAcctTask;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,6 +43,7 @@ public class CreateAcctActivity extends Activity  {
 		
 		//login_prefs = getApplicationContext().getSharedPreferences(PREF_NAME, 0);
 		login_prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		//TODO check lint warning. no .commit()
 		login_editor = login_prefs.edit();
 		etFirstName = (EditText)findViewById(R.id.firstname_entry);
 		etUsername = (EditText)findViewById(R.id.username_entry);
@@ -54,6 +51,7 @@ public class CreateAcctActivity extends Activity  {
 		etConf_password = (EditText)findViewById(R.id.confirm_password_entry);
 		etGroupID = (EditText)findViewById(R.id.groupid_entry);
 		
+		createAcctTask = new NetworkAsyncTask(this);
 		Button createAcct = (Button) findViewById(R.id.create_account);
 		createAcct.setOnClickListener(mCreateAcctListener);
 	}
@@ -72,7 +70,8 @@ public class CreateAcctActivity extends Activity  {
         	conf_password = etConf_password.getText().toString();
         	groupid = Integer.parseInt(etGroupID.getText().toString());
         	String response = "";
-        	JSONObject json_return = null;
+        	JSONArray json_array = null;
+        	JSONObject json_object = null;
         	
            // try {
             	if(firstname.length()==0){
@@ -87,36 +86,36 @@ public class CreateAcctActivity extends Activity  {
             		
 	                //commit settings to server
 	                String urlVariables = "member/new?groupid=" + groupid + "&firstname=" + firstname + "&username=" + username + "&sponsorid=" + sponsorid + "&password=" + password + "&email=" + email; 
-	                NetworkAsyncTask createAcctTask = new NetworkAsyncTask();
 	                createAcctTask.execute(NetworkAsyncTask.serverLit + urlVariables);
-	                
-	                
 	                
 	                try{
 	                	response = createAcctTask.get();
-	                	json_return = new JSONArray(response).getJSONObject(0);
+	                	json_array = new JSONArray(response);
+	                	if(HelperFunctions.isJSONValid(json_array)){ //server returns valid = true
+		                	//commit settings locally
+		            		login_editor.putString("FIRSTNAME", firstname);// value to store
+			                login_editor.putString("USERNAME", username); 
+			                login_editor.putString("PASSWORD", password);
+			                login_editor.putInt("GROUPID", groupid);
+			                login_editor.putBoolean("loggedIn", true);		//logs the user in for future opening of app
+			                login_editor.commit();
+			                
+			                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+			                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			                startActivity(i);
+			                finish();
+		                } else {//server returns valid = false
+		                	alert.showAlertDialog(CreateAcctActivity.this, "Invalid request", "Request was not recognized by the server.", false);
+		                }
                 	}catch (JSONException e){//NOT a JSON object
-                		if(response.equals("Your request is invalid.")){
+                		//if(response.equals("Your request is invalid.")){ //old implementation
                 			alert.showAlertDialog(CreateAcctActivity.this, "Invalid request", "Response from server: " + response, false);
                 			return;
-                		}
+                		//}
                 	}
 	                catch (Exception e){
                 		alert.showAlertDialog(CreateAcctActivity.this, "Exception", "Response from app: " + e, false);
                 	}
-                	//commit settings locally
-            		login_editor.putString("FIRSTNAME", firstname);// value to store
-	                login_editor.putString("USERNAME", username); 
-	                login_editor.putString("PASSWORD", password);
-	                login_editor.putInt("GROUPID", groupid);
-	                login_editor.putBoolean("loggedIn", true);		//logs the user in for future opening of app
-	                login_editor.commit();
-	                
-	                Intent i = new Intent(getApplicationContext(), MainActivity.class);
-	                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-	                startActivity(i);
-	                finish();
-                	
             	} else {
             		//display "passwords don't match" error
             		alert.showAlertDialog(CreateAcctActivity.this, "Entry error", "Passwords don't match, please try again.", false);
