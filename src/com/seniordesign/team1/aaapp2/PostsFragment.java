@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +35,7 @@ public class PostsFragment extends Fragment {
 					JSONObject jsonPost = json.getJSONObject(i);
 					TextView newPost = new TextView(container.getContext());
 					newPost.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT));
-					newPost.setText(jsonPost.getString("message"));
+					newPost.setText(Html.fromHtml("<b>" + jsonPost.getString("firstname") + "</b> @" + jsonPost.getString("username") + "<br/>" + jsonPost.getString("message")));
 					postsView.addView(newPost);
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
