@@ -39,9 +39,6 @@ public class NetworkAsyncTask extends AsyncTask<String, Void, String> {
 		
 		for(String url : urls){
 			if(isNetworkAvailable()){
-				/*
-				 * WHY!!! JAVA 6!!!!!!!!
-				 */
 				if(url.equals(quoteLit)){
 					String quote = "";
 					String title = "";
