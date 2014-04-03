@@ -55,7 +55,7 @@ public class LoginActivity extends Activity{
 		}
 	};
 	
-	private class MyOnClickListener implements OnClickListener{
+private class MyOnClickListener implements OnClickListener{
 		
 		private Context context;
 		public MyOnClickListener(Context context){

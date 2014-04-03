@@ -42,6 +42,7 @@
     <string name="password_hint">Enter a password</string>
     <string name="confirm_password_entry">Re-enter the password</string>
     <string name="groupid_hint">Enter the group ID</string>
+    <string name="write_post_hint">Write a post</string>
     <string name="welcome_message">Welcome to AApp!</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
