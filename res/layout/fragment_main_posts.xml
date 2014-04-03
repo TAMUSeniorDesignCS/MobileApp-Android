@@ -36,7 +36,8 @@
 		    android:layout_height="wrap_content"
 		    android:layout_weight=".70"
 		    android:hint="@string/write_post_hint"
-		    android:inputType="text" />
+		    android:inputType="text"
+		    android:imeOptions="actionDone" />
 	    <Button
 	        android:id="@+id/write_post_button"
 	        android:layout_width="wrap_content"

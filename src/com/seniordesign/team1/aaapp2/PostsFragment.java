@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -71,22 +72,31 @@ public class PostsFragment extends Fragment {
 			}
 		}*/
 		
-		Button writePostButton = (Button) rootView.findViewById(R.id.callSponsorButton);
+		Button writePostButton = (Button) rootView.findViewById(R.id.write_post_button);
 		writePostButton.setOnClickListener(mWritePostButton);
 
 		return rootView;
 	}
 	
-	private OnClickListener mWritePostButton = new OnClickListener() { 	
+	
+	private class MyOnClickListener implements OnClickListener{ 
+		
+		private Context context;
+		public MyOnClickListener(Context context){
+			this.context = context;
+		}
 		
 		@Override
         public void onClick(View v) {
-			EditText newPost = (EditText)v.findViewById(R.id.write_post);
+			SharedPreferences login_prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+			EditText newPost = (EditText)getActivity().findViewById(R.id.write_post);
 			String newPostString = newPost.getText().toString();
-			String username = "9"; //this will change to use the username once server is updated
+			String username = login_prefs.getString("USERNAME", "defualt value"); 
 			int timeout = 48; //this will change to use the settings preference
 			String response = "";
-			JSONObject json_return = null;
+			JSONArray json_array = null;
+			JSONObject json_object = null;
+			
 			
 			if (newPostString.length() == 0) {
 				alert.showAlertDialog(v.getContext(), "Entry error", "No text to send.", false);
@@ -97,22 +107,25 @@ public class PostsFragment extends Fragment {
 				//int post_timeout = login_prefs.getInt("pref_postTimeAmmount", false);
 				
 				NetworkAsyncTask sendPostTask = new NetworkAsyncTask(v.getContext());
-				sendPostTask.execute(NetworkAsyncTask.serverLit + "post/new?posterid=" + username + "&message=" + newPostString + "&timeout=" + timeout);
+				sendPostTask.execute(NetworkAsyncTask.serverLit + "post/new?username=" + username + "&message=" + newPostString + "&timeout=" + timeout);
 				try{
 					response = sendPostTask.get(5, TimeUnit.SECONDS);
-					json_return = new JSONArray(response).getJSONObject(0);
-
-				}catch (JSONException e){//NOT a JSON object
-
-					if(response.equals("Your request is invalid.")){
-						alert.showAlertDialog(v.getContext(), "Invalid request", "Response from server: " + response, false);
+					json_array = new JSONArray(response);
+					
+					if(HelperFunctions.isJSONValid(json_array)){
+						json_object = json_array.getJSONObject(0); //this is the message object that we just sent
+						
+						//TODO when refresh is working, do a refresh here
 						return;
-					}else if(response.equals("Request Handled successfully.")){
-						//refresh
-						Intent i = new Intent(v.getContext(), MainActivity.class);
-		                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-		                startActivity(i);
+					} else {//invalid JSON object
+						
+						alert.showAlertDialog(v.getContext(), "Invalid request", "Server sent 'JSON is not valid'", false);
+						return;
 					}
+				}catch (JSONException e){//NOT a JSON object
+					alert.showAlertDialog(v.getContext(), "Invalid request", "Response from server: " + e.toString(), false);
+					return;
+					
 				}
 				catch (Exception e){
 					alert.showAlertDialog(v.getContext(), "Exception", "System message: " + e.toString(), false);
@@ -121,6 +134,7 @@ public class PostsFragment extends Fragment {
 			}
 			
         }
+		
 };
-
+private OnClickListener mWritePostButton = new MyOnClickListener(this.getActivity());
 }
