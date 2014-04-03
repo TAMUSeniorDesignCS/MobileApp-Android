@@ -55,7 +55,7 @@ public class PostsFragment extends Fragment {
 					params.setMargins(6, 4, 6, 4); //substitute parameters for left, top, right, bottom
 					newPost.setLayoutParams(params);
 					if (Build.VERSION.SDK_INT >= 16){
-						newPost.setBackground(getResources().getDrawable(R.drawable.bg_card));
+						newPost.setBackground(getResources().getDrawable(R.drawable.bg_card)); 
 					} 
 					else{
 					    newPost.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_card));
