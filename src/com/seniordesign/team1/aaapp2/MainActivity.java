@@ -88,6 +88,7 @@ public class MainActivity extends FragmentActivity implements
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
+		
 	}
 
 	@Override
@@ -134,6 +135,11 @@ public class MainActivity extends FragmentActivity implements
 				Intent intent_logout = new Intent(this, LoginActivity.class);
 				intent_logout.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				startActivity(intent_logout);
+				return true;
+			case R.id.action_new_post:
+				//launch new_post_activity
+				Intent intent_new_post = new Intent(this, WritePostActivity.class);
+				startActivity(intent_new_post);
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
