@@ -87,9 +87,10 @@ public class PostsFragment extends Fragment {
 			}
 		}*/
 		
+		/*
 		Button writePostButton = (Button) rootView.findViewById(R.id.write_post_button);
 		writePostButton.setOnClickListener(mWritePostButton);
-
+		*/
 		return rootView;
 	}
 	
@@ -104,8 +105,11 @@ public class PostsFragment extends Fragment {
 		@Override
         public void onClick(View v) {
 			SharedPreferences login_prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+			/******************Deprecated---newpost now in actionbar, WritePostActivity*********************/
+			/*
 			EditText newPost = (EditText)getActivity().findViewById(R.id.write_post);
 			String newPostString = newPost.getText().toString();
+			
 			String username = login_prefs.getString("USERNAME", "defualt value"); 
 			int timeout = 48; //this will change to use the settings preference
 			String response = "";
@@ -146,7 +150,7 @@ public class PostsFragment extends Fragment {
 					alert.showAlertDialog(v.getContext(), "Exception", "System message: " + e.toString(), false);
 					//setResult(e.toString());
 				}
-			}
+			}*/
 			
         }
 		

@@ -3,12 +3,19 @@
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/action_settings"/>
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/action_settings"
+        android:icon="@drawable/ic_action_settings"/>
     <item
         android:id="@+id/action_logout"
         android:orderInCategory="101"
         android:showAsAction="never"
         android:title="@string/action_logout"/>
+    <item
+        android:id="@+id/action_new_post"
+        android:orderInCategory="99"
+        android:showAsAction="always"
+        android:title="@string/action_new_post"
+        android:icon="@drawable/ic_action_new_event"/>
 
 </menu>

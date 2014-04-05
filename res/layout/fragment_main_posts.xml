@@ -27,21 +27,9 @@
 	    android:layout_width="fill_parent" 
 	    android:gravity = "center_horizontal"
 	    android:layout_above="@+id/button_refresh"
-	    android:weightSum="1.0">     
-	    <EditText
-		    android:id="@+id/write_post"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_weight=".70"
-		    android:hint="@string/write_post_hint"
-		    android:inputType="text"
-		    android:imeOptions="actionDone" />
-	    <Button
-	        android:id="@+id/write_post_button"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"	
-	        android:layout_weight=".30"
-	        android:text="Post" />
+	    android:weightSum="1.0"
+	    android:orientation="vertical">     
+	    
 	</LinearLayout>
     <Button
         android:id="@+id/button_refresh"
