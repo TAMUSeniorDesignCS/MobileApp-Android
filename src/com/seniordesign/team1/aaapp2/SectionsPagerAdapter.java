@@ -97,6 +97,28 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 			args.putString(PostsFragment.POSTS, response);
 			fragment.setArguments(args);
 			return fragment;
+		} else if(position == 2){ 	//Mail fragment
+			NetworkAsyncTask mailTask = new NetworkAsyncTask(this.mainActivity);
+			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.mainActivity.getApplicationContext());
+			String username = prefs.getString("USERNAME", null);
+			String response = "";
+			Bundle args = new Bundle();
+			fragment = new PostsFragment();
+			if(username != null){
+				mailTask.execute(NetworkAsyncTask.serverLit + "mail/refresh?username=" + username);
+				try{
+					response = mailTask.get(5, TimeUnit.SECONDS);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					e.printStackTrace();
+				} catch (TimeoutException e) {
+					e.printStackTrace();
+				}
+			}
+			args.putString(MailFragment.MAIL, response);
+			fragment.setArguments(args);
+			return fragment;
 		}
 		else{
 			fragment = new DummySectionFragment();
