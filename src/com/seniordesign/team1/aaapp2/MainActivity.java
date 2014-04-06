@@ -141,6 +141,11 @@ public class MainActivity extends FragmentActivity implements
 				Intent intent_new_post = new Intent(this, WritePostActivity.class);
 				startActivity(intent_new_post);
 				return true;
+			case R.id.action_new_mail:
+				//launch new_mail_activity
+				Intent intent_new_mail = new Intent(this, WriteMailActivity.class);
+				startActivity(intent_new_mail);
+				return true;
 			default:
 				return super.onOptionsItemSelected(item);
 		}

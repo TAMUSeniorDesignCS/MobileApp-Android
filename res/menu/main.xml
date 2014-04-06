@@ -13,9 +13,15 @@
         android:title="@string/action_logout"/>
     <item
         android:id="@+id/action_new_post"
-        android:orderInCategory="99"
+        android:orderInCategory="98"
         android:showAsAction="always"
         android:title="@string/action_new_post"
         android:icon="@drawable/ic_action_new_event"/>
+    <item
+        android:id="@+id/action_new_mail"
+        android:orderInCategory="99"
+        android:showAsAction="always"
+        android:title="@string/action_new_mail"
+        android:icon="@drawable/ic_action_new_email"/>
 
 </menu>
