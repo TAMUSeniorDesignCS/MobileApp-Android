@@ -88,7 +88,7 @@ private class MyOnClickListener implements OnClickListener{
 					return;
 				}else { //attempt login communication with server
 					NetworkAsyncTask loginTask = new NetworkAsyncTask(this.context);
-					loginTask.execute(NetworkAsyncTask.serverLit + "member/auth?username=" + username + "&password=" + password);
+					loginTask.execute(NetworkAsyncTask.serverLit + "member/auth?username=" + username + "&password=" + password + "&rusername=" + username + "&rpassword=" + password);
 
 					try{
 						response = loginTask.get(5, TimeUnit.SECONDS);

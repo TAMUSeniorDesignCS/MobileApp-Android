@@ -79,11 +79,13 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 			NetworkAsyncTask postsTask = new NetworkAsyncTask(this.mainActivity);
 			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.mainActivity.getApplicationContext());
 			int groupNo = prefs.getInt("GROUPID", -1);
+			String username = prefs.getString("USERNAME", null);
+			String password = prefs.getString("PASSWORD", null);
 			String response = "";
 			Bundle args = new Bundle();
 			fragment = new PostsFragment();
 			if(groupNo >= 0){
-				postsTask.execute(NetworkAsyncTask.serverLit + "post/refresh?groupid=" + groupNo);
+				postsTask.execute(NetworkAsyncTask.serverLit + "post/refresh?groupid=" + groupNo + "&rusername=" + username + "&rpassword=" + password);
 				try{
 					response = postsTask.get(5, TimeUnit.SECONDS);
 				} catch (InterruptedException e) {
