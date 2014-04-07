@@ -5,6 +5,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.TargetApi;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,6 +14,7 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -37,21 +40,24 @@ public class MailFragment extends Fragment {
 			for(int i=0; i<json.length(); i++){
 				try {
 					JSONObject jsonMail = json.getJSONObject(i);
-					TextView newPost = new TextView(container.getContext());
-					newPost.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
-					LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)newPost.getLayoutParams();
+					TextView newMail = new TextView(container.getContext());
+					newMail.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
+					LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)newMail.getLayoutParams();
 					params.setMargins(6, 4, 6, 4); //substitute parameters for left, top, right, bottom
-					newPost.setLayoutParams(params);
+					newMail.setLayoutParams(params);
 					if (Build.VERSION.SDK_INT >= 16){
-						newPost.setBackground(getResources().getDrawable(R.drawable.bg_card)); 
+						newMail.setBackground(getResources().getDrawable(R.drawable.bg_card)); 
 					} 
 					else{
-					    newPost.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_card));
+						newMail.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_card));
 					}
+					String my_username = jsonMail.getString("username");
+					String receiver_username = jsonMail.getString("receiversusername");
+					String message = jsonMail.getString("message");
 					
-					
-					newPost.setText(Html.fromHtml("<b>" + jsonMail.getString("firstname") + "</b> @" + jsonMail.getString("username") + "<br/>" + jsonMail.getString("message")));
-					mailView.addView(newPost);
+					newMail.setText(Html.fromHtml("<b>" + receiver_username + "</b> @" + my_username + "<br/>" + message));
+					newMail.setOnClickListener(mViewConversation);
+					mailView.addView(newMail);
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -64,4 +70,14 @@ public class MailFragment extends Fragment {
 
 		return rootView;
 	}
+	
+	private OnClickListener mViewConversation = new OnClickListener() { 	
+		
+		@Override
+        public void onClick(View v) {
+			
+			Intent view_conversation_intent = new Intent();
+		    startActivity(view_conversation_intent);
+        }
+};
 }

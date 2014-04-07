@@ -101,11 +101,12 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 			NetworkAsyncTask mailTask = new NetworkAsyncTask(this.mainActivity);
 			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.mainActivity.getApplicationContext());
 			String username = prefs.getString("USERNAME", null);
+			String password = prefs.getString("PASSWORD", null);
 			String response = "";
 			Bundle args = new Bundle();
-			fragment = new PostsFragment();
+			fragment = new MailFragment();
 			if(username != null){
-				mailTask.execute(NetworkAsyncTask.serverLit + "mail/refresh?username=" + username);
+				mailTask.execute(NetworkAsyncTask.serverLit + "directmessage/refresh?username=" + username + "&directmessageidlimit=" + "-" + "&rusername=" + username + "&rpassword=" + password);
 				try{
 					response = mailTask.get(5, TimeUnit.SECONDS);
 				} catch (InterruptedException e) {
