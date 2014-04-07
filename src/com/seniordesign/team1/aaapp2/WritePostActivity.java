@@ -48,7 +48,8 @@ public class WritePostActivity extends Activity {
 			login_prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 			EditText newPost = (EditText)findViewById(R.id.post_box);
 			String newPostString = newPost.getText().toString();
-			String username = login_prefs.getString("USERNAME", "defualt value"); 
+			String username = login_prefs.getString("USERNAME", "defualt value");
+			String password = login_prefs.getString("PASSWORD", null);
 			int timeout = 48; //this will change to use the settings preference
 			String response = "";
 			JSONArray json_array = null;
@@ -64,7 +65,7 @@ public class WritePostActivity extends Activity {
 				//int post_timeout = login_prefs.getInt("pref_postTimeAmmount", false);
 				
 				NetworkAsyncTask sendPostTask = new NetworkAsyncTask(_this);
-				sendPostTask.execute(NetworkAsyncTask.serverLit + "post/new?username=" + username + "&message=" + newPostString + "&timeout=" + timeout);
+				sendPostTask.execute(NetworkAsyncTask.serverLit + "post/new?username=" + username + "&message=" + newPostString + "&timeout=" + timeout + "&rusername=" + username + "&rpassword=" + password);
 				try{
 					response = sendPostTask.get(5, TimeUnit.SECONDS);
 					json_array = new JSONArray(response);
