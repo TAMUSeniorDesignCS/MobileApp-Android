@@ -85,10 +85,8 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 			args.putString(QuoteFragment.QOTD, qotd);
 			fragment.setArguments(args);
 			return fragment;
-		}else if (position == 1){ //Posts page fragment
-			NetworkAsyncTask postsTask = new NetworkAsyncTask(this.mainActivity);
-			//--delete
-
+		}
+		else if (position == 1){ //Posts page fragment
 			String resps[] = this.response.split("===");
 			String resp = "";
 			if(resps.length >= 2){
