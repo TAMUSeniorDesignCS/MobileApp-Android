@@ -23,10 +23,19 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 	 * 
 	 */
 	private MainActivity mainActivity;
+	private final String emptyNetwork = "---EMPTY---";
+	private String response = emptyNetwork;
+	private NetworkAsyncTask networkTask;
 
 	public SectionsPagerAdapter(MainActivity mainActivity, FragmentManager fm) {
 		super(fm);
 		this.mainActivity = mainActivity;
+		this.networkTask = new NetworkAsyncTask(this.mainActivity);
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.mainActivity.getApplicationContext());
+		int groupNo = prefs.getInt("GROUPID", -1);
+		String username = prefs.getString("USERNAME", null);
+		String password = prefs.getString("PASSWORD", null);
+		this.networkTask.execute(NetworkAsyncTask.quoteLit,NetworkAsyncTask.serverLit + "post/refresh?groupid=" + groupNo + "&rusername=" + username + "&rpassword=" + password);
 	}
 
 	@Override
@@ -34,10 +43,23 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 		// getItem is called to instantiate the fragment for the given page.
 		// Return a DummySectionFragment (defined as a static inner class
 		// below) with the page number as its lone argument.
+		if(this.response.equals(this.emptyNetwork)){
+			//get the network stuff
+			try {
+				this.response = this.networkTask.get(10, TimeUnit.SECONDS);
+			} catch (InterruptedException e) { //DAMN YOU JAVA 6!
+				this.response = NetworkAsyncTask.errorLit;
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				this.response = NetworkAsyncTask.errorLit;
+				e.printStackTrace();
+			} catch (TimeoutException e) {
+				this.response = NetworkAsyncTask.errorLit;
+				e.printStackTrace();
+			}
+		}
 		Fragment fragment;
 		if(position == 0){ //Home page fragment
-			NetworkAsyncTask quoteTask = new NetworkAsyncTask(this.mainActivity);
-			quoteTask.execute(NetworkAsyncTask.quoteLit);
 			fragment = new QuoteFragment();
 			Bundle args = new Bundle();
 			SharedPreferences user_prefs = PreferenceManager.getDefaultSharedPreferences(this.mainActivity);
@@ -45,30 +67,18 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 			String title = "";
 			String userWelcome = "Hi, " + user_prefs.getString("FIRSTNAME", "[name not found]") + "!";
 			String qotd = "Quote of the Day";
-			try {
-				String resp = quoteTask.get(5, TimeUnit.SECONDS);
-				if(!resp.equals(NetworkAsyncTask.errorLit)){
-					String[] r1 = resp.split("\\+\\+\\+");
-					quote = r1[0];
-					title = r1[1];
-				}
-				else{
-					quote = "";
-					title = "Sorry, no network connection."; //TODO: don't have strings out of xml
-				}
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-				quote = "";
-				title = "Sorry, no network connection."; //TODO: don't have strings out of xml
-			} catch (ExecutionException e) {
-				e.printStackTrace();
-				quote = "";
-				title = "Sorry, no network connection."; //TODO: don't have strings out of xml
-			} catch (TimeoutException e) {
-				e.printStackTrace();
+			
+			String resp = this.response.split("===")[0];
+			if(!resp.equals(NetworkAsyncTask.errorLit)){
+				String[] r1 = resp.split("\\+\\+\\+");
+				quote = r1[0];
+				title = r1[1];
+			}
+			else{
 				quote = "";
 				title = "Sorry, no network connection."; //TODO: don't have strings out of xml
 			}
+
 			args.putString(QuoteFragment.TITLE, title);
 			args.putString(QuoteFragment.QUOTE, quote);
 			args.putString(QuoteFragment.USER, userWelcome);
@@ -77,26 +87,16 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 			return fragment;
 		}else if (position == 1){ //Posts page fragment
 			NetworkAsyncTask postsTask = new NetworkAsyncTask(this.mainActivity);
-			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.mainActivity.getApplicationContext());
-			int groupNo = prefs.getInt("GROUPID", -1);
-			String username = prefs.getString("USERNAME", null);
-			String password = prefs.getString("PASSWORD", null);
-			String response = "";
+			//--delete
+
+			String resps[] = this.response.split("===");
+			String resp = "";
+			if(resps.length >= 2){
+				resp = resps[1];
+			}
 			Bundle args = new Bundle();
 			fragment = new PostsFragment();
-			if(groupNo >= 0){
-				postsTask.execute(NetworkAsyncTask.serverLit + "post/refresh?groupid=" + groupNo + "&rusername=" + username + "&rpassword=" + password);
-				try{
-					response = postsTask.get(5, TimeUnit.SECONDS);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				} catch (ExecutionException e) {
-					e.printStackTrace();
-				} catch (TimeoutException e) {
-					e.printStackTrace();
-				}
-			}
-			args.putString(PostsFragment.POSTS, response);
+			args.putString(PostsFragment.POSTS, resp);
 			fragment.setArguments(args);
 			return fragment;
 		}
