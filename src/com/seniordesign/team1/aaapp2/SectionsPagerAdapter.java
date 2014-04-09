@@ -1,9 +1,16 @@
 package com.seniordesign.team1.aaapp2;
 
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.seniordesign.team1.aaapp2.ContactsContract.ContactEntry;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -35,7 +42,8 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 		int groupNo = prefs.getInt("GROUPID", -1);
 		String username = prefs.getString("USERNAME", null);
 		String password = prefs.getString("PASSWORD", null);
-		this.networkTask.execute(NetworkAsyncTask.quoteLit,NetworkAsyncTask.serverLit + "post/refresh?groupid=" + groupNo + "&rusername=" + username + "&rpassword=" + password,NetworkAsyncTask.serverLit + "member/getinfo?groupid=" + groupNo + "&rusername=" + username + "&rpassword=" + password);
+		//replace www.google.com with mail stuff
+		this.networkTask.execute(NetworkAsyncTask.quoteLit,NetworkAsyncTask.serverLit + "post/refresh?groupid=" + groupNo + "&rusername=" + username + "&rpassword=" + password,"www.google.com",NetworkAsyncTask.serverLit + "member/getinfo?groupid=" + groupNo + "&rusername=" + username + "&rpassword=" + password);
 	}
 
 	@Override
@@ -47,6 +55,33 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 			//get the network stuff
 			try {
 				this.response = this.networkTask.get(10, TimeUnit.SECONDS);
+				String[] reps = this.response.split("===");
+				if(reps.length == 4){
+					try{
+						ArrayList<String> queries = new ArrayList<String>();
+						JSONArray json = new JSONArray(reps[3]);
+						for(int i=0; i<json.length(); i++){
+							JSONObject obj = json.getJSONObject(i);
+							String userName = obj.getString("username");
+							String firstName = obj.getString("firstName");
+							String phone = obj.getString("phonenumber");
+							String email = obj.getString("phonenumber");
+							String query = "INSERT INTO " + ContactEntry.TABLE_NAME + 
+									" (" + ContactEntry.COLUMN_USERNAME + ", " +
+									ContactEntry.COLUMN_FIRST_NAME + ", " +
+									ContactEntry.COLUMN_PHONE + ", " +
+									ContactEntry.COLUMN_EMAIL + ") VALUES (" +
+									userName + ", " + firstName + ", " + phone + ", " + email + ")";
+							queries.add(query);
+									
+						}
+						SQLiteAsyncSQL db = new SQLiteAsyncSQL(this.mainActivity);
+						db.doInBackground((String[])queries.toArray());
+					}
+					catch(JSONException e){
+						e.printStackTrace();
+					}
+				}
 			} catch (InterruptedException e) { //DAMN YOU JAVA 6!
 				this.response = NetworkAsyncTask.errorLit;
 				e.printStackTrace();
