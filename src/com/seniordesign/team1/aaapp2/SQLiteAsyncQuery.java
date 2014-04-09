@@ -21,9 +21,9 @@ public class SQLiteAsyncQuery extends AsyncTask<String, Void, List<Cursor>> {
 
 	@Override
 	protected List<Cursor> doInBackground(String... params) {
+		ContactDbHelper dbHelper = new ContactDbHelper(this.context);
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
 		for(String sql : params){
-			ContactDbHelper dbHelper = new ContactDbHelper(this.context);
-			SQLiteDatabase db = dbHelper.getReadableDatabase();
 			Cursor cursor = db.rawQuery(sql, null);
 			this.ret.add(cursor);
 		}
