@@ -152,6 +152,29 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 			args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
 			fragment.setArguments(args);
 			return fragment;
+		} else if(position == 2){ 	//Mail fragment
+			NetworkAsyncTask mailTask = new NetworkAsyncTask(this.mainActivity);
+			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.mainActivity.getApplicationContext());
+			String username = prefs.getString("USERNAME", null);
+			String password = prefs.getString("PASSWORD", null);
+			String response = "";
+			Bundle args = new Bundle();
+			fragment = new MailFragment();
+			if(username != null){
+				mailTask.execute(NetworkAsyncTask.serverLit + "directmessage/refresh?username=" + username + "&directmessageidlimit=" + "-" + "&rusername=" + username + "&rpassword=" + password);
+				try{
+					response = mailTask.get(5, TimeUnit.SECONDS);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					e.printStackTrace();
+				} catch (TimeoutException e) {
+					e.printStackTrace();
+				}
+			}
+			args.putString(MailFragment.MAIL, response);
+			fragment.setArguments(args);
+			return fragment;
 		}
 		else{
 			fragment = new DummySectionFragment();

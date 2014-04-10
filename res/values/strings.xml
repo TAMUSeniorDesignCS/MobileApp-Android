@@ -20,6 +20,7 @@
     <string name="title_activity_login">Login</string>
     <string name="title_activity_create_acct">Create Account</string>
     <string name="title_activity_new_post">New Post</string>
+    <string name="title_activity_conversation">Conversation</string>
     <string name="pref_geoSettings">Proximity Inspirations</string>
     <string name="pref_geoAlerts">Alert you in tempting areas?</string>
     <string name="pref_geoAlerts_summ">Would you like positive messages if you are near a bar?</string>
