@@ -15,10 +15,15 @@ public class SQLiteAsyncSQL extends AsyncTask<String, Void, Void> {
 
 	@Override
 	protected Void doInBackground(String... params) {
+		ContactDbHelper dbHelper = new ContactDbHelper(this.context);
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
 		for(String sql : params){
-			ContactDbHelper dbHelper = new ContactDbHelper(this.context);
-			SQLiteDatabase db = dbHelper.getReadableDatabase();
-			db.execSQL(sql);
+			try{
+				db.execSQL(sql);
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
 		}
 		return null;
 	}

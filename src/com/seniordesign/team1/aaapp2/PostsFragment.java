@@ -46,7 +46,7 @@ public class PostsFragment extends Fragment {
 		JSONArray json = null;
 		try {
 			json = new JSONArray(getArguments().getString(POSTS));
-			for(int i=0; i<json.length(); i++){
+			for(int i=0; i<json.length()-1; i++){
 				try {
 					JSONObject jsonPost = json.getJSONObject(i);
 					TextView newPost = new TextView(container.getContext());
