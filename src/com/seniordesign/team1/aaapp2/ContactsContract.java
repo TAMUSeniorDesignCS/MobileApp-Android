@@ -17,4 +17,13 @@ public final class ContactsContract {
         
        
     }
+    
+    public static abstract class ConversationEntry implements BaseColumns {
+        public static final String TABLE_NAME = "Conversations";
+        public static final String COLUMN_USERNAME = "username";
+        public static final String COLUMN_RECEIVERSUSERNAME = "receiversusername";
+        public static final String COLUMN_MESSAGE = "message";
+        public static final String COLUMN_MESSAGEID = "directmessageid";
+       
+    }
 }
