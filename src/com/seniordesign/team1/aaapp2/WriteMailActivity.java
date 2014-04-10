@@ -23,6 +23,7 @@ public class WriteMailActivity extends Activity {
 	private WriteMailActivity _this;
 	AlertDialogManager alert = new AlertDialogManager();
 	//NetworkAsyncTask newMailTask;
+	String receiverusername = "happy123"; //hardcoded until receiver can be selected
 	
 	public void onCreate(Bundle savedInstanceState) {
 		_this = this;
@@ -45,8 +46,9 @@ public class WriteMailActivity extends Activity {
 			login_prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 			EditText newMail = (EditText)findViewById(R.id.mail_box);
 			String newMailString = newMail.getText().toString();
-			String username = login_prefs.getString("USERNAME", "defualt value"); 
-			int timeout = 48; //this will change to use the settings preference
+			String username = login_prefs.getString("USERNAME", "defualt value");
+			String password = login_prefs.getString("PASSWORD", null);
+			int mail_timeout = login_prefs.getInt("pref_messTimeAmmount", 48);
 			String response = "";
 			JSONArray json_array = null;
 			JSONObject json_object = null;
@@ -61,9 +63,9 @@ public class WriteMailActivity extends Activity {
 				//int mail_timeout = login_prefs.getInt("pref_mailTimeAmmount", false);
 				
 				NetworkAsyncTask sendMailTask = new NetworkAsyncTask(_this);
-				sendMailTask.execute(NetworkAsyncTask.serverLit + "mail/new?username=" + username + "&message=" + newMailString + "&timeout=" + timeout);
+				sendMailTask.execute(NetworkAsyncTask.serverLit + "directmessage/new?username=" + username + "&message=" + newMailString + "&timeout=" + mail_timeout + "&receiversusername=" + receiverusername); //+ "&rusername=" + username + "&rpassword" + password);
 				try{
-					response = sendMailTask.get(5, TimeUnit.SECONDS);
+					response = sendMailTask.get(20, TimeUnit.SECONDS);
 					json_array = new JSONArray(response);
 					
 					if(HelperFunctions.isJSONValid(json_array)){
@@ -88,6 +90,7 @@ public class WriteMailActivity extends Activity {
 				catch (Exception e){
 					alert.showAlertDialog(v.getContext(), "Exception", "System message: " + e.toString(), false);
 					//setResult(e.toString());
+					return;
 				}
 			}
 			
