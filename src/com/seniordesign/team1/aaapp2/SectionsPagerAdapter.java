@@ -60,23 +60,35 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 					try{
 						ArrayList<String> queries = new ArrayList<String>();
 						JSONArray json = new JSONArray(reps[3]);
-						for(int i=0; i<json.length(); i++){
+						for(int i=0; i<json.length()-1; i++){
 							JSONObject obj = json.getJSONObject(i);
 							String userName = obj.getString("username");
-							String firstName = obj.getString("firstName");
+							String firstName = obj.getString("firstname");
 							String phone = obj.getString("phonenumber");
-							String email = obj.getString("phonenumber");
-							String query = "INSERT INTO " + ContactEntry.TABLE_NAME + 
+							String email = obj.getString("email");
+							String query = "INSERT OR IGNORE INTO " + ContactEntry.TABLE_NAME + 
 									" (" + ContactEntry.COLUMN_USERNAME + ", " +
 									ContactEntry.COLUMN_FIRST_NAME + ", " +
 									ContactEntry.COLUMN_PHONE + ", " +
 									ContactEntry.COLUMN_EMAIL + ") VALUES (" +
-									userName + ", " + firstName + ", " + phone + ", " + email + ")";
+									"'" + userName + "', " + "'" + firstName + "', ";
+							if(phone.equalsIgnoreCase("null")){
+								query += "NULL, ";
+							}
+							else{
+								query += "'" + phone + "', ";
+							}
+							if(email.equalsIgnoreCase("null")){
+								query += "NULL)";
+							}
+							else{
+								query += "'" + email + "')";
+							}
 							queries.add(query);
 									
 						}
 						SQLiteAsyncSQL db = new SQLiteAsyncSQL(this.mainActivity);
-						db.doInBackground((String[])queries.toArray());
+						db.execute(queries.toArray(new String[queries.size()]));
 					}
 					catch(JSONException e){
 						e.printStackTrace();
@@ -135,7 +147,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 		}
 		else if (position == 3){
 			//TODO 
-			fragment = new DummySectionFragment();
+			fragment = new ContactsFragment();
 			Bundle args = new Bundle();
 			args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
 			fragment.setArguments(args);

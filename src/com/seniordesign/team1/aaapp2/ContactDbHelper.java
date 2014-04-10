@@ -12,13 +12,13 @@ public class ContactDbHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "Contract.db";
     
     private static final String TEXT_TYPE = " TEXT";
-    private static final String COMMA_SEP = ",";
+    private static final String COMMA_SEP = ", ";
     private static final String SQL_CREATE_ENTRIES =
         "CREATE TABLE " + ContactEntry.TABLE_NAME + " (" +
-        ContactEntry.COLUMN_USERNAME + TEXT_TYPE + " PRIMARY KEY," +
+        ContactEntry.COLUMN_USERNAME + TEXT_TYPE + " PRIMARY KEY, " +
         ContactEntry.COLUMN_FIRST_NAME + TEXT_TYPE + COMMA_SEP +
         ContactEntry.COLUMN_EMAIL + TEXT_TYPE + COMMA_SEP +
-        ContactEntry.COLUMN_PHONE + TEXT_TYPE + COMMA_SEP +
+        ContactEntry.COLUMN_PHONE + TEXT_TYPE +
         " )";
 
     private static final String SQL_DELETE_ENTRIES =
