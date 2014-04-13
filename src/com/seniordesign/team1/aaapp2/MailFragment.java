@@ -101,5 +101,5 @@ public class MailFragment extends Fragment {
 			Intent view_conversation_intent = new Intent(getActivity(), ConversationActivity.class);
 		    startActivity(view_conversation_intent);
         }
-};
+	};
 }

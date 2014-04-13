@@ -1,6 +1,9 @@
 package com.seniordesign.team1.aaapp2;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
@@ -23,18 +26,21 @@ import android.text.Html;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class WriteMailActivity extends Activity {
+public class WriteMailActivity extends Activity implements OnCheckedChangeListener {
 	SharedPreferences login_prefs;
 	Editor login_editor; 
 	private WriteMailActivity _this;
 	AlertDialogManager alert = new AlertDialogManager();
 	//NetworkAsyncTask newMailTask;
 	String receiverusername = "happy123"; //hardcoded until receiver can be selected
-	
+	Map<CheckBox, String> contactList = new HashMap<CheckBox, String>();
 	@SuppressWarnings("deprecation")
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	@Override
@@ -56,7 +62,7 @@ public class WriteMailActivity extends Activity {
 			Cursor cursor = cursors.get(0);
 			cursor.moveToFirst();
 			while(!cursor.isAfterLast()){
-				TextView newMailContact = new TextView(getApplicationContext());
+				CheckBox newMailContact = new CheckBox(getApplicationContext());
 				newMailContact.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
 				LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)newMailContact.getLayoutParams();
 				params.setMargins(6, 4, 6, 4); //substitute parameters for left, top, right, bottom
@@ -68,9 +74,13 @@ public class WriteMailActivity extends Activity {
 					newMailContact.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_card));
 				}
 				
-				
-				newMailContact.setText(Html.fromHtml("<b>" + cursor.getString(cursor.getColumnIndex("firstname")) + "</b> @" + cursor.getString(cursor.getColumnIndex("username")) + "<br/>" ));
+				String thisFirstname = cursor.getString(cursor.getColumnIndex("firstname"));
+				String thisUsername = cursor.getString(cursor.getColumnIndex("username"));
+				newMailContact.setText(Html.fromHtml("<b>" + thisFirstname + "</b> @" + thisUsername + "<br/>" ));
 				contactsMailView.addView(newMailContact);
+				//contactsMailView.setOnClickListener(mSelectRecipient);
+				newMailContact.setOnCheckedChangeListener(this);
+				contactList.put(newMailContact, thisUsername);
 				contactsMailView.invalidate();
 				cursor.moveToNext();
 			}
@@ -111,7 +121,7 @@ public class WriteMailActivity extends Activity {
 				//int mail_timeout = login_prefs.getInt("pref_mailTimeAmmount", false);
 				
 				NetworkAsyncTask sendMailTask = new NetworkAsyncTask(_this);
-				sendMailTask.execute(NetworkAsyncTask.serverLit + "directmessage/new?username=" + username + "&message=" + newMailString + "&timeout=" + mail_timeout + "&receiversusername=" + receiverusername + "&rusername=" + username + "&rpassword" + password);
+				sendMailTask.execute(NetworkAsyncTask.serverLit + "directmessage/new?username=" + username + "&message=" + newMailString + "&timeout=" + mail_timeout + "&receiversusername=" + receiverusername + "&rusername=" + username + "&rpassword=" + password);
 				try{
 					response = sendMailTask.get(20, TimeUnit.SECONDS);
 					json_array = new JSONArray(response);
@@ -126,8 +136,8 @@ public class WriteMailActivity extends Activity {
 		                finish();
 						return;
 					} else {//invalid JSON object
-						
-						alert.showAlertDialog(v.getContext(), "Invalid request", "Server sent 'JSON is not valid'", false);
+						//commented out this alert because it was causing a WindowLeaked error due to calling the alertDialog twice
+						//alert.showAlertDialog(v.getContext(), "Invalid request", "Server sent 'JSON is not valid'", false);
 						return;
 					}
 				}catch (JSONException e){//NOT a JSON object
@@ -141,9 +151,18 @@ public class WriteMailActivity extends Activity {
 					return;
 				}
 			}
-			
         }
-		
 	};
+	
+	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+		if(isChecked){
+			receiverusername = (String)contactList.get(buttonView);
+			return;
+		} else {
+			alert.showAlertDialog(getApplicationContext(), "No recipient selected.", "Select a contact as a recipient.", false);
+			return;
+		}
+		
+	}
 }
 
