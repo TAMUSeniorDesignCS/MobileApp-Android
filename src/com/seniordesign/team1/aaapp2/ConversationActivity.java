@@ -16,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Html;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -92,15 +93,17 @@ public class ConversationActivity extends Activity{
 					newMail.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
 					LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)newMail.getLayoutParams();
 					params.setMargins(6, 4, 6, 4); //substitute parameters for left, top, right, bottom
+					newMail.setLayoutParams(params);
 					if(sender.equals(username)){//set alignment right if mine, left if reciever's
 						newMail.setText(Html.fromHtml("<b>" + sender + "</b>" +  "<br/>" + message));
-						params.gravity = RelativeLayout.ALIGN_PARENT_RIGHT;
+						newMail.setGravity(Gravity.RIGHT); //= RelativeLayout.ALIGN_PARENT_RIGHT;
 					}else if(!(sender.equals(username))){
 						newMail.setText(Html.fromHtml("<b>" + sender + "</b>"+  "<br/>" + message));
-						params.gravity = RelativeLayout.ALIGN_PARENT_LEFT;
+						//params.gravity = RelativeLayout.ALIGN_PARENT_LEFT;
+						newMail.setGravity(Gravity.LEFT);
 					}
 						
-					newMail.setLayoutParams(params);
+					
 					if (Build.VERSION.SDK_INT >= 16){
 						newMail.setBackground(getResources().getDrawable(R.drawable.bg_card)); 
 					} 

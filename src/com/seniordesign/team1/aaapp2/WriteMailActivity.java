@@ -39,7 +39,7 @@ public class WriteMailActivity extends Activity implements OnCheckedChangeListen
 	private WriteMailActivity _this;
 	AlertDialogManager alert = new AlertDialogManager();
 	//NetworkAsyncTask newMailTask;
-	String receiverusername = "happy123"; //hardcoded until receiver can be selected
+	String receiverusername = ""; //hardcoded until receiver can be selected
 	Map<CheckBox, String> contactList = new HashMap<CheckBox, String>();
 	@SuppressWarnings("deprecation")
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -115,13 +115,13 @@ public class WriteMailActivity extends Activity implements OnCheckedChangeListen
 			if (newMailString.length() == 0) {
 				alert.showAlertDialog(v.getContext(), "Entry error", "No text to send.", false);
 				return;
+			} else if (receiverusername.equals("")){
+				alert.showAlertDialog(v.getContext(), "No recipient selected.", "Select a contact as a recipient.", false);
+				return;
 			} else {
-				//get mail duration from preferences:
-				//SharedPreferences login_prefs = PreferenceManager.getDefaultSharedPreferences(v.getContext());
-				//int mail_timeout = login_prefs.getInt("pref_mailTimeAmmount", false);
-				
 				NetworkAsyncTask sendMailTask = new NetworkAsyncTask(_this);
 				sendMailTask.execute(NetworkAsyncTask.serverLit + "directmessage/new?username=" + username + "&message=" + newMailString + "&timeout=" + mail_timeout + "&receiversusername=" + receiverusername + "&rusername=" + username + "&rpassword=" + password);
+					
 				try{
 					response = sendMailTask.get(20, TimeUnit.SECONDS);
 					json_array = new JSONArray(response);
@@ -156,10 +156,11 @@ public class WriteMailActivity extends Activity implements OnCheckedChangeListen
 	
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 		if(isChecked){
-			receiverusername = (String)contactList.get(buttonView);
+			receiverusername = (String)contactList.get(buttonView); //grabs value from the hashMap
 			return;
 		} else {
-			alert.showAlertDialog(getApplicationContext(), "No recipient selected.", "Select a contact as a recipient.", false);
+			receiverusername = "";
+			//alert.showAlertDialog(getApplicationContext(), "No recipient selected.", "Select a contact as a recipient.", false);
 			return;
 		}
 		
