@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class ContactDbHelper extends SQLiteOpenHelper {
 	// If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "Contract.db";
     
     private static final String TEXT_TYPE = " TEXT";
@@ -26,7 +26,7 @@ public class ContactDbHelper extends SQLiteOpenHelper {
         ConversationEntry.COLUMN_USERNAME + TEXT_TYPE +  COMMA_SEP +
         ConversationEntry.COLUMN_RECEIVERSUSERNAME + TEXT_TYPE +  COMMA_SEP +
         ConversationEntry.COLUMN_MESSAGE + TEXT_TYPE +  COMMA_SEP +
-        ConversationEntry.COLUMN_MESSAGEID + TEXT_TYPE + "PRIMARY KEY," +
+        ConversationEntry.COLUMN_MESSAGEID + TEXT_TYPE + "PRIMARY KEY" +
         " )";
 
     private static final String SQL_DELETE_CONTACT_ENTRIES =

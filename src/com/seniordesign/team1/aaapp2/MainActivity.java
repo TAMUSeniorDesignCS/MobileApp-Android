@@ -132,6 +132,9 @@ public class MainActivity extends FragmentActivity implements
                 login_editor.putBoolean("loggedIn", false);
 				login_editor.commit();
 				
+				//delete the database
+				getApplicationContext().deleteDatabase(ContactDbHelper.DATABASE_NAME);
+				
 				Intent intent_logout = new Intent(this, LoginActivity.class);
 				intent_logout.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				startActivity(intent_logout);
