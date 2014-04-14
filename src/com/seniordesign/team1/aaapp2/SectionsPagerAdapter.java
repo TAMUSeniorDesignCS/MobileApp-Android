@@ -44,7 +44,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 		String username = prefs.getString("USERNAME", null);
 		String password = prefs.getString("PASSWORD", null);
 		//replace www.google.com with mail stuff
-		this.networkTask.execute(NetworkAsyncTask.quoteLit,NetworkAsyncTask.serverLit + "post/refresh?groupid=" + groupNo + "&rusername=" + username + "&rpassword=" + password,NetworkAsyncTask.serverLit + "directmessage/refresh?username=" + username + "&directmessageidlimit=" + "-" + "&rusername=" + username + "&rpassword=" + password,NetworkAsyncTask.serverLit + "member/getinfo?groupid=" + groupNo + "&rusername=" + username + "&rpassword=" + password);
+		this.networkTask.execute(NetworkAsyncTask.quoteLit,NetworkAsyncTask.serverLit + "post/refresh?groupid=" + groupNo + "&rusername=" + username + "&rpassword=" + password + "&postidlimit=-" ,NetworkAsyncTask.serverLit + "directmessage/refresh?username=" + username + "&directmessageidlimit=" + "-" + "&rusername=" + username + "&rpassword=" + password,NetworkAsyncTask.serverLit + "member/getinfo?groupid=" + groupNo + "&rusername=" + username + "&rpassword=" + password);
 	}
 
 	@Override
