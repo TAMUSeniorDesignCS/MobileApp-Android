@@ -18,6 +18,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
 
 
 /**
@@ -43,7 +44,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 		String username = prefs.getString("USERNAME", null);
 		String password = prefs.getString("PASSWORD", null);
 		//replace www.google.com with mail stuff
-		this.networkTask.execute(NetworkAsyncTask.quoteLit,NetworkAsyncTask.serverLit + "post/refresh?groupid=" + groupNo + "&rusername=" + username + "&rpassword=" + password,"www.google.com",NetworkAsyncTask.serverLit + "member/getinfo?groupid=" + groupNo + "&rusername=" + username + "&rpassword=" + password);
+		this.networkTask.execute(NetworkAsyncTask.quoteLit,NetworkAsyncTask.serverLit + "post/refresh?groupid=" + groupNo + "&rusername=" + username + "&rpassword=" + password,NetworkAsyncTask.serverLit + "directmessage/refresh?username=" + username + "&directmessageidlimit=" + "-" + "&rusername=" + username + "&rpassword=" + password,NetworkAsyncTask.serverLit + "member/getinfo?groupid=" + groupNo + "&rusername=" + username + "&rpassword=" + password);
 	}
 
 	@Override
@@ -60,35 +61,41 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 					try{
 						ArrayList<String> queries = new ArrayList<String>();
 						JSONArray json = new JSONArray(reps[3]);
-						for(int i=0; i<json.length()-1; i++){
-							JSONObject obj = json.getJSONObject(i);
-							String userName = obj.getString("username");
-							String firstName = obj.getString("firstname");
-							String phone = obj.getString("phonenumber");
-							String email = obj.getString("email");
-							String query = "INSERT OR IGNORE INTO " + ContactEntry.TABLE_NAME + 
-									" (" + ContactEntry.COLUMN_USERNAME + ", " +
-									ContactEntry.COLUMN_FIRST_NAME + ", " +
-									ContactEntry.COLUMN_PHONE + ", " +
-									ContactEntry.COLUMN_EMAIL + ") VALUES (" +
-									"'" + userName + "', " + "'" + firstName + "', ";
-							if(phone.equalsIgnoreCase("null")){
-								query += "NULL, ";
+						JSONObject last = json.getJSONObject(json.length()-1);
+						if(last.getBoolean("valid")){
+							for(int i=0; i<json.length()-1; i++){
+								JSONObject obj = json.getJSONObject(i);
+								String userName = obj.getString("username");
+								String firstName = obj.getString("firstname");
+								String phone = obj.getString("phonenumber");
+								String email = "Null"; //quick fix to avoid schema change. we no longer share emails
+								String query = "INSERT OR IGNORE INTO " + ContactEntry.TABLE_NAME + 
+										" (" + ContactEntry.COLUMN_USERNAME + ", " +
+										ContactEntry.COLUMN_FIRST_NAME + ", " +
+										ContactEntry.COLUMN_PHONE + ", " +
+										ContactEntry.COLUMN_EMAIL + ") VALUES (" +
+										"'" + userName + "', " + "'" + firstName + "', ";
+								if(phone.equalsIgnoreCase("null")){
+									query += "NULL, ";
+								}
+								else{
+									query += "'" + phone + "', ";
+								}
+								if(email.equalsIgnoreCase("null")){
+									query += "NULL)";
+								}
+								else{
+									query += "'" + email + "')";
+								}
+								queries.add(query);
+										
 							}
-							else{
-								query += "'" + phone + "', ";
-							}
-							if(email.equalsIgnoreCase("null")){
-								query += "NULL)";
-							}
-							else{
-								query += "'" + email + "')";
-							}
-							queries.add(query);
-									
+							SQLiteAsyncSQL db = new SQLiteAsyncSQL(this.mainActivity);
+							db.execute(queries.toArray(new String[queries.size()]));
 						}
-						SQLiteAsyncSQL db = new SQLiteAsyncSQL(this.mainActivity);
-						db.execute(queries.toArray(new String[queries.size()]));
+						else{
+							Log.e("AAApp", "valid:false");
+						}
 					}
 					catch(JSONException e){
 						e.printStackTrace();
@@ -135,7 +142,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 		}
 		else if (position == 1){ //Posts page fragment
 			String resps[] = this.response.split("===");
-			String resp = "";
+			String resp = "[ {\"valid\":false} ]";
 			if(resps.length >= 2){
 				resp = resps[1];
 			}
@@ -145,37 +152,25 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 			fragment.setArguments(args);
 			return fragment;
 		}
+		else if(position == 2){ 	//Mail fragment
+			Bundle args = new Bundle();
+			fragment = new MailFragment();
+			String[] resps = this.response.split("===");
+			String mail = "[ {\"valid\":false} ]";
+			if(resps.length >= 3){
+				mail = resps[2];
+			}
+			args.putString(MailFragment.MAIL, mail);
+			fragment.setArguments(args);
+			return fragment;
+		}
 		else if (position == 3){
-			//TODO 
 			fragment = new ContactsFragment();
 			Bundle args = new Bundle();
 			args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
 			fragment.setArguments(args);
 			return fragment;
-		} else if(position == 2){ 	//Mail fragment
-			NetworkAsyncTask mailTask = new NetworkAsyncTask(this.mainActivity);
-			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.mainActivity.getApplicationContext());
-			String username = prefs.getString("USERNAME", null);
-			String password = prefs.getString("PASSWORD", null);
-			String response = "";
-			Bundle args = new Bundle();
-			fragment = new MailFragment();
-			if(username != null){
-				mailTask.execute(NetworkAsyncTask.serverLit + "directmessage/refresh?username=" + username + "&directmessageidlimit=" + "-" + "&rusername=" + username + "&rpassword=" + password);
-				try{
-					response = mailTask.get(5, TimeUnit.SECONDS);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				} catch (ExecutionException e) {
-					e.printStackTrace();
-				} catch (TimeoutException e) {
-					e.printStackTrace();
-				}
-			}
-			args.putString(MailFragment.MAIL, response);
-			fragment.setArguments(args);
-			return fragment;
-		}
+		} 
 		else{
 			fragment = new DummySectionFragment();
 			Bundle args = new Bundle();
