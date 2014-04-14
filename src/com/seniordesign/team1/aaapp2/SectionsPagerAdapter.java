@@ -11,14 +11,21 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.seniordesign.team1.aaapp2.ContactsContract.ContactEntry;
+import com.seniordesign.team1.aaapp2.ContactsContract.ConversationEntry;
 
+import android.content.ContentValues;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.text.Html;
 import android.util.Log;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 
 /**
@@ -89,6 +96,33 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 								}
 								queries.add(query);
 										
+							}
+							JSONArray json1 = null;
+							try {
+								json1 = new JSONArray(reps[2]);
+								for(int i=0; i<json1.length()-1; i++){
+									try {
+										JSONObject jsonMail = json1.getJSONObject(i);
+										//store values
+										String my_username = jsonMail.getString("username");
+										String receiver_username = jsonMail.getString("receiversusername");
+										String message = jsonMail.getString("message");
+										String messageid = Integer.toString(jsonMail.getInt("directmessageid"));
+										String query = "INSERT OR IGNORE INTO " + ConversationEntry.TABLE_NAME + 
+												"(" + ConversationEntry.COLUMN_MESSAGEID + ", "  +
+												ConversationEntry.COLUMN_MESSAGE + ", " +
+												ConversationEntry.COLUMN_RECEIVERSUSERNAME + "," +
+												ConversationEntry.COLUMN_USERNAME + ") VALUES(" +
+												messageid + ", " + message + ", " + receiver_username + ", " + my_username + ")";
+										queries.add(query);
+									} catch (JSONException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+								}
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
 							}
 							SQLiteAsyncSQL db = new SQLiteAsyncSQL(this.mainActivity);
 							db.execute(queries.toArray(new String[queries.size()]));

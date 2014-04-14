@@ -42,8 +42,6 @@ public class MailFragment extends Fragment {
 		JSONArray json = null;
 		try {
 			json = new JSONArray(getArguments().getString(MAIL));
-			ContactDbHelper cDbHelper = new ContactDbHelper(getActivity());
-			SQLiteDatabase db = cDbHelper.getWritableDatabase();
 			for(int i=0; i<json.length()-1; i++){
 				try {
 					JSONObject jsonMail = json.getJSONObject(i);
@@ -60,21 +58,10 @@ public class MailFragment extends Fragment {
 					}
 					
 					//store values
-					String my_username = jsonMail.getString("username");
+					//String my_username = jsonMail.getString("username");
 					String receiver_username = jsonMail.getString("receiversusername");
-					String message = jsonMail.getString("message");
-					String messageid = Integer.toString(jsonMail.getInt("directmessageid"));
-					ContentValues values = new ContentValues();
-					values.put(ConversationEntry.COLUMN_MESSAGEID, messageid);
-					values.put(ConversationEntry.COLUMN_MESSAGE, message);
-					values.put(ConversationEntry.COLUMN_RECEIVERSUSERNAME, receiver_username);
-					values.put(ConversationEntry.COLUMN_USERNAME, my_username);
-					long newRowId;
-					newRowId = db.insertWithOnConflict(
-							ConversationEntry.TABLE_NAME,
-							null,
-					        values,
-					        SQLiteDatabase.CONFLICT_IGNORE);
+					//String message = jsonMail.getString("message");
+					//String messageid = Integer.toString(jsonMail.getInt("directmessageid"));
 					
 					newMail.setText(Html.fromHtml("<b>" + receiver_username + "</b>"));
 					newMail.setTag(receiver_username);
