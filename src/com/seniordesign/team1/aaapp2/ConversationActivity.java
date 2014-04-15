@@ -77,13 +77,15 @@ public class ConversationActivity extends Activity{
 				};
 					
 			Cursor our_convo = db.query(
-					ConversationEntry.TABLE_NAME,  // The table to query
+					true,									  // Distinct rows
+					ConversationEntry.TABLE_NAME,  			  // The table to query
 				    projection,                               // The columns to return
 				    selection,                                // The columns for the WHERE clause (WHERE receivername = intended receiver)
 				    selectionArgs,                            // The values for the WHERE clause
 				    null,                                     // don't group the rows
 				    null,                                     // don't filter by row groups
-				    sortOrder                                 // The sort order
+				    sortOrder,                                // The sort order
+				    null 									  // No limit
 				    );
 			our_convo.moveToFirst();
 			int sender_index = our_convo.getColumnIndex(ConversationEntry.COLUMN_USERNAME);
