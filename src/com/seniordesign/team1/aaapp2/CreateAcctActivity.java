@@ -91,6 +91,7 @@ public class CreateAcctActivity extends Activity  {
 	                try{
 	                	response = createAcctTask.get();
 	                	json_array = new JSONArray(response);
+	                	json_object = json_array.getJSONObject(1);
 	                	if(HelperFunctions.isJSONValid(json_array)){ //server returns valid = true
 		                	//commit settings locally
 		            		login_editor.putString("FIRSTNAME", firstname);// value to store
@@ -104,8 +105,9 @@ public class CreateAcctActivity extends Activity  {
 			                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			                startActivity(i);
 			                finish();
-		                } else {//server returns valid = false
-		                	alert.showAlertDialog(CreateAcctActivity.this, "Invalid request", "Request was not recognized by the server.", false);
+		                } else if (json_object.getString("duplicateusername").equals("ERROR")){//server returns valid = false
+		                	alert.showAlertDialog(CreateAcctActivity.this, "Invalid request", "Response from server: Username already taken.", false);
+		                	return;
 		                }
                 	}catch (JSONException e){//NOT a JSON object
                 		//if(response.equals("Your request is invalid.")){ //old implementation

@@ -13,11 +13,18 @@
 		    android:id="@+id/mail_box"
 		    android:layout_width="300dp"
 		    android:layout_height="wrap_content"
-		    android:minHeight="250dp"
+		    android:minHeight="100dp"
 		    android:isScrollContainer="true"
 		    android:inputType="textMultiLine"
 		    android:hint="@string/write_mail_hint"
 		    />
+	    <LinearLayout
+            android:id="@+id/contactsMailView"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical" 
+	        >
+	    </LinearLayout>
 	    
 	    <Button
 		    android:id="@+id/submit_mail"

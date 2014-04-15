@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    
+    tools:context=".MainActivity$MailSectionFragment" 
    >
 
     <ScrollView
@@ -26,17 +26,28 @@
 	    android:layout_height="wrap_content"  
 	    android:layout_width="fill_parent" 
 	    android:gravity = "center_horizontal"
-	    android:layout_above="@+id/send_message_button"
+	    android:layout_above="@+id/message_box"
 	    android:weightSum="1.0"
 	    android:orientation="vertical">     
 	    
 	</LinearLayout>
+	<EditText
+		    android:id="@+id/message_box"
+		    android:layout_width="300dp"
+		    android:layout_height="wrap_content"
+		    android:layout_above="@+id/send_message_button"
+		    android:minHeight="100dp"
+		    android:isScrollContainer="true"
+		    android:inputType="textMultiLine"
+		    android:hint="@string/write_mail_hint"
+		    />
     <Button
         android:id="@+id/send_message_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="Send" />
+        android:text="Send" 
+        />
 
 </RelativeLayout>

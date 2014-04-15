@@ -96,7 +96,7 @@ private class MyOnClickListener implements OnClickListener{
 						if(HelperFunctions.isJSONValid(json_array)){
 							json_object = json_array.getJSONObject(0);
 							
-							if(json_object.getString("username").equals(username) && json_object.getString("password").equals(password)){ //server recognizes the username and password entered; now ask for other user info
+							if(json_object.getString("username").equals(username)){ //&& json_object.getString("password").equals(password)){ //server recognizes the username and password entered; now ask for other user info
 	
 								firstname = json_object.getString("firstname");
 								groupid = json_object.getInt("groupid");
@@ -129,6 +129,7 @@ private class MyOnClickListener implements OnClickListener{
 							return;
 						}else if(!(response.equals("OK"))){
 							alert.showAlertDialog(LoginActivity.this, "Invalid request 2", "Response from server:" + response, false);
+							e.printStackTrace();
 							return;
 						}
 					}catch (Exception e){
