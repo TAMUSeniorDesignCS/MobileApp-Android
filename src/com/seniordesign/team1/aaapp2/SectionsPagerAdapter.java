@@ -50,7 +50,16 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 		int groupNo = prefs.getInt("GROUPID", -1);
 		String username = prefs.getString("USERNAME", null);
 		String password = prefs.getString("PASSWORD", null);
-		//replace www.google.com with mail stuff
+		this.networkTask.execute(NetworkAsyncTask.quoteLit,NetworkAsyncTask.serverLit + "post/refresh?groupid=" + groupNo + "&rusername=" + username + "&rpassword=" + password + "&postidlimit=-" ,NetworkAsyncTask.serverLit + "directmessage/refresh?username=" + username + "&directmessageidlimit=" + "-" + "&rusername=" + username + "&rpassword=" + password,NetworkAsyncTask.serverLit + "member/getinfo?groupid=" + groupNo + "&rusername=" + username + "&rpassword=" + password);
+	}
+	
+	public void serverRefresh(){
+		this.networkTask = new NetworkAsyncTask(this.mainActivity);
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.mainActivity.getApplicationContext());
+		int groupNo = prefs.getInt("GROUPID", -1);
+		String username = prefs.getString("USERNAME", null);
+		String password = prefs.getString("PASSWORD", null);
+		this.response = this.emptyNetwork;
 		this.networkTask.execute(NetworkAsyncTask.quoteLit,NetworkAsyncTask.serverLit + "post/refresh?groupid=" + groupNo + "&rusername=" + username + "&rpassword=" + password + "&postidlimit=-" ,NetworkAsyncTask.serverLit + "directmessage/refresh?username=" + username + "&directmessageidlimit=" + "-" + "&rusername=" + username + "&rpassword=" + password,NetworkAsyncTask.serverLit + "member/getinfo?groupid=" + groupNo + "&rusername=" + username + "&rpassword=" + password);
 	}
 
