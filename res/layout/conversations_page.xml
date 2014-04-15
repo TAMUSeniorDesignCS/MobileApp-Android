@@ -26,7 +26,7 @@
 	    android:layout_height="wrap_content"  
 	    android:layout_width="fill_parent" 
 	    android:gravity = "center_horizontal"
-	    android:layout_above="@+id/send_message_button"
+	    android:layout_above="@+id/message_box"
 	    android:weightSum="1.0"
 	    android:orientation="vertical">     
 	    
@@ -35,6 +35,7 @@
 		    android:id="@+id/message_box"
 		    android:layout_width="300dp"
 		    android:layout_height="wrap_content"
+		    android:layout_above="@+id/send_message_button"
 		    android:minHeight="100dp"
 		    android:isScrollContainer="true"
 		    android:inputType="textMultiLine"
@@ -46,6 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="Send" />
+        android:text="Send" 
+        />
 
 </RelativeLayout>

@@ -51,6 +51,8 @@ public class ConversationActivity extends Activity{
 				//container, false);
 		//ViewGroup vg = findViewById(R.layout.conversations_page);
 		LinearLayout conversationView = (LinearLayout) findViewById(R.id.conversationView);
+		Button writeMailButton = (Button) findViewById(R.id.send_message_button);
+		writeMailButton.setOnClickListener(mSendMessageButton);
 		
 		try {
 			
@@ -149,7 +151,7 @@ public class ConversationActivity extends Activity{
 			String password = user_prefs.getString("PASSWORD", null);
 			int mail_timeout = user_prefs.getInt("pref_messTimeAmmount", 32);
 			String response = "";
-			String receiverusername = "";
+			String receiverusername = MailFragment.selected_receiver;
 			JSONArray json_array = null;
 			JSONObject json_object = null;
 			
