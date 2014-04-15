@@ -31,6 +31,15 @@
 	    android:orientation="vertical">     
 	    
 	</LinearLayout>
+	<EditText
+		    android:id="@+id/message_box"
+		    android:layout_width="300dp"
+		    android:layout_height="wrap_content"
+		    android:minHeight="100dp"
+		    android:isScrollContainer="true"
+		    android:inputType="textMultiLine"
+		    android:hint="@string/write_mail_hint"
+		    />
     <Button
         android:id="@+id/send_message_button"
         android:layout_width="wrap_content"

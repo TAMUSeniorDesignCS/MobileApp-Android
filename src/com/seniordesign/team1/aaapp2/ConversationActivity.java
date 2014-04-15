@@ -1,5 +1,7 @@
 package com.seniordesign.team1.aaapp2;
 
+import java.util.concurrent.TimeUnit;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,6 +11,7 @@ import com.seniordesign.team1.aaapp2.ContactsContract.ConversationEntry;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -22,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -138,7 +142,58 @@ public class ConversationActivity extends Activity{
 		
 		@Override
         public void onClick(View v) {
+			user_prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+			EditText newMail = (EditText)findViewById(R.id.message_box);
+			String newMailString = newMail.getText().toString();
+			String username = user_prefs.getString("USERNAME", "defualt value");
+			String password = user_prefs.getString("PASSWORD", null);
+			int mail_timeout = user_prefs.getInt("pref_messTimeAmmount", 32);
+			String response = "";
+			String receiverusername = "";
+			JSONArray json_array = null;
+			JSONObject json_object = null;
 			
+			
+			if (newMailString.length() == 0) {
+				alert.showAlertDialog(v.getContext(), "Entry error", "No text to send.", false);
+				return;
+			} else if (receiverusername.equals("")){
+				alert.showAlertDialog(v.getContext(), "No recipient selected.", "Select a contact as a recipient.", false);
+				return;
+			} else {
+				NetworkAsyncTask sendMailTask = new NetworkAsyncTask(_this);
+				sendMailTask.execute(NetworkAsyncTask.serverLit + "directmessage/new?username=" + username + "&message=" + newMailString + "&timeout=" + mail_timeout + "&receiversusername=" + receiverusername + "&rusername=" + username + "&rpassword=" + password);
+					
+				try{
+					response = sendMailTask.get(20, TimeUnit.SECONDS);
+					json_array = new JSONArray(response);
+					
+					if(HelperFunctions.isJSONValid(json_array)){
+						json_object = json_array.getJSONObject(0); //this is the message object that we just sent
+						
+						//TODO when refresh is working, do a refresh here
+						Intent i = new Intent(getApplicationContext(), MainActivity.class);
+		                //i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+		                startActivity(i);
+		                finish();
+						return;
+					} else {//invalid JSON object
+						//commented out this alert because it was causing a WindowLeaked error due to calling the alertDialog twice
+						//alert.showAlertDialog(v.getContext(), "Invalid request", "Server sent 'JSON is not valid'", false);
+						return;
+					}
+				}catch (JSONException e){//NOT a JSON object
+					alert.showAlertDialog(v.getContext(), "Invalid request", "Response from server: " + e.toString(), false);
+					return;
+					
+				}
+				catch (Exception e){
+					alert.showAlertDialog(v.getContext(), "Exception", "System message: " + e.toString(), false);
+					//setResult(e.toString());
+					return;
+				}
+			}
+        
 		}
 	};
  }
