@@ -90,8 +90,8 @@ public class MainActivity extends FragmentActivity implements
 	
 	public void serverRefresh(){
 		this.mSectionsPagerAdapter.serverRefresh();
-		/*mViewPager = (ViewPager) findViewById(R.id.pager);
-	    Fragment newFragment = this.mSectionsPagerAdapter.getItem(mViewPager.getCurrentItem());
+		mViewPager = (ViewPager) findViewById(R.id.pager);
+	    /*Fragment newFragment = this.mSectionsPagerAdapter.getItem(mViewPager.getCurrentItem());
 	    android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 	    //transaction.replace(this.mSectionsPagerAdapter.getItemId(mViewPager.getCurrentItem()), newFragment);
 	    Fragment frag = this.mSectionsPagerAdapter.getItem(mViewPager.getCurrentItem());
@@ -102,6 +102,11 @@ public class MainActivity extends FragmentActivity implements
 	    transaction.commit();*/
 		//this.mSectionsPagerAdapter.startUpdate(findViewById(R.id.pager));
 		
+		//this.mSectionsPagerAdapter.notifyDataSetChanged();
+		this.mSectionsPagerAdapter.updatePage(mViewPager.getCurrentItem());
+		//for(int i=0; i<this.mSectionsPagerAdapter.getCount(); i++){
+		//	this.mSectionsPagerAdapter.updatePage(i);
+		//}
 		this.mSectionsPagerAdapter.notifyDataSetChanged();
 	}
 
