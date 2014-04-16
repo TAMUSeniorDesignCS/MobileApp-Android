@@ -1,0 +1,45 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity$ContactSectionFragment" 
+   >
+
+   <TextView 
+		    android:id="@+id/first_name"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:text="place holder"
+		    android:layout_marginTop="4dp"
+		    android:layout_marginBottom="4dp"
+		    android:textSize="32sp"
+		    />
+   <TextView 
+		    android:id="@+id/user_name"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:text="place holder"
+		    android:layout_marginTop="4dp"
+		    android:layout_below="@+id/first_name"
+		    android:layout_marginBottom="4dp"
+		    android:textSize="32sp"
+		    />
+    <CheckBox
+        android:id="@+id/set_sponsor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/user_name"
+        android:layout_marginBottom="72dp"
+        android:text="@string/set_sponsor" />
+
+    <CheckBox
+        android:id="@+id/checkBox2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/set_sponsor"
+        android:layout_marginBottom="28dp"
+        android:text="@string/block_user" />
+
+</RelativeLayout>   

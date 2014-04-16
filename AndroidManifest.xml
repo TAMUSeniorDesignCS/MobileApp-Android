@@ -43,6 +43,11 @@
         	android:parentActivityName="com.seniordesign.team1.aaapp2.MainActivity">
         </activity>
         <activity 
+            android:name="com.seniordesign.team1.aaapp2.ContactActivity"
+            android:label="@string/title_activity_contact"
+        	android:parentActivityName="com.seniordesign.team1.aaapp2.MainActivity">
+        </activity>
+        <activity 
             android:name="com.seniordesign.team1.aaapp2.ConversationActivity"
             android:label="@string/title_activity_conversation"
         	android:parentActivityName="com.seniordesign.team1.aaapp2.MainActivity">
