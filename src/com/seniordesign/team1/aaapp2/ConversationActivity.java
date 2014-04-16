@@ -34,13 +34,14 @@ public class ConversationActivity extends Activity{
 	private ConversationActivity _this;
 	AlertDialogManager alert = new AlertDialogManager();
 	SharedPreferences user_prefs;
-	
+	String receiverusername = MailFragment.selected_receiver;
 	//NetworkAsyncTask newPostTask;
 	
 	@SuppressWarnings("deprecation")
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		_this = this;
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.conversations_page);
 		
@@ -65,7 +66,7 @@ public class ConversationActivity extends Activity{
 					ConversationEntry.COLUMN_MESSAGEID
 				    };
 			String sortOrder =
-					ConversationEntry.COLUMN_MESSAGEID + " DESC";
+					ConversationEntry.COLUMN_MESSAGEID + " ASC";
 			String selection = //WHERE (receiver = ? AND user = ?) OR (receiver = ? AND user = ?)
 					"(" + ConversationEntry.COLUMN_RECEIVERSUSERNAME + " = ? AND " + ConversationEntry.COLUMN_USERNAME + 
 					" = ?) OR (" + ConversationEntry.COLUMN_RECEIVERSUSERNAME + " = ? AND " + ConversationEntry.COLUMN_USERNAME + " = ?)";
@@ -110,7 +111,10 @@ public class ConversationActivity extends Activity{
 						//params.gravity = RelativeLayout.ALIGN_PARENT_LEFT;
 						newMail.setGravity(Gravity.LEFT);
 					}
-						
+					if(our_convo.isLast()){
+						newMail.setFocusable(true);
+						newMail.requestFocus();
+					}
 					
 					if (Build.VERSION.SDK_INT >= 16){
 						newMail.setBackground(getResources().getDrawable(R.drawable.bg_card)); 
@@ -153,7 +157,7 @@ public class ConversationActivity extends Activity{
 			String password = user_prefs.getString("PASSWORD", null);
 			int mail_timeout = user_prefs.getInt("pref_messTimeAmmount", 32);
 			String response = "";
-			String receiverusername = MailFragment.selected_receiver;
+			//receiverusername = MailFragment.selected_receiver;
 			JSONArray json_array = null;
 			JSONObject json_object = null;
 			
@@ -166,7 +170,8 @@ public class ConversationActivity extends Activity{
 				return;
 			} else {
 				NetworkAsyncTask sendMailTask = new NetworkAsyncTask(_this);
-				sendMailTask.execute(NetworkAsyncTask.serverLit + "directmessage/new?username=" + username + "&message=" + newMailString + "&timeout=" + mail_timeout + "&receiversusername=" + receiverusername + "&rusername=" + username + "&rpassword=" + password);
+				String command = NetworkAsyncTask.serverLit + "directmessage/new?username=" + username + "&message=" + newMailString + "&timeout=" + mail_timeout + "&receiversusername=" + receiverusername + "&rusername=" + username + "&rpassword=" + password;
+				sendMailTask.execute(command);
 					
 				try{
 					response = sendMailTask.get(20, TimeUnit.SECONDS);
@@ -184,6 +189,7 @@ public class ConversationActivity extends Activity{
 					} else {//invalid JSON object
 						//commented out this alert because it was causing a WindowLeaked error due to calling the alertDialog twice
 						//alert.showAlertDialog(v.getContext(), "Invalid request", "Server sent 'JSON is not valid'", false);
+						
 						return;
 					}
 				}catch (JSONException e){//NOT a JSON object
@@ -192,8 +198,8 @@ public class ConversationActivity extends Activity{
 					
 				}
 				catch (Exception e){
-					alert.showAlertDialog(v.getContext(), "Exception", "System message: " + e.toString(), false);
-					//setResult(e.toString());
+					//alert.showAlertDialog(v.getContext(), "Exception", "System message: " + e.toString(), false);
+					e.printStackTrace();
 					return;
 				}
 			}
