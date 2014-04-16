@@ -30,6 +30,7 @@ public class CreateAcctActivity extends Activity  {
 	String password = "";
 	String conf_password = "";
 	String firstname = "";
+	String phone_number = "";
 	int groupid;
 	int sponsorid;
 	String email = null;
@@ -69,6 +70,7 @@ public class CreateAcctActivity extends Activity  {
         	password = etPassword.getText().toString();  
         	conf_password = etConf_password.getText().toString();
         	groupid = Integer.parseInt(etGroupID.getText().toString());
+        	phone_number = null;
         	String response = "";
         	JSONArray json_array = null;
         	JSONObject json_object = null;
@@ -85,7 +87,7 @@ public class CreateAcctActivity extends Activity  {
             	}else if(password.equals(conf_password)){//
             		
 	                //commit settings to server
-	                String urlVariables = "member/new?groupid=" + groupid + "&firstname=" + firstname + "&username=" + username + "&sponsorid=" + sponsorid + "&password=" + password + "&email=" + email; 
+	                String urlVariables = "member/new?groupid=" + groupid + "&firstname=" + firstname + "&username=" + username + "&sponsorid=" + sponsorid + "&password=" + password + "&email=" + email + "&phonenumber=" + phone_number; 
 	                createAcctTask.execute(NetworkAsyncTask.serverLit + urlVariables);
 	                
 	                try{

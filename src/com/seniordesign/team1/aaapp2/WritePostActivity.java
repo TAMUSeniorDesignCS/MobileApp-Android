@@ -50,7 +50,7 @@ public class WritePostActivity extends Activity {
 			String newPostString = newPost.getText().toString();
 			String username = login_prefs.getString("USERNAME", "defualt value");
 			String password = login_prefs.getString("PASSWORD", null);
-			int timeout = 48; //this will change to use the settings preference
+			int timeout = login_prefs.getInt("pref_postTimeAmmount", 32); //this will change to use the settings preference
 			String response = "";
 			JSONArray json_array = null;
 			JSONObject json_object = null;
