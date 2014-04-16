@@ -41,17 +41,63 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 	private final String emptyNetwork = "---EMPTY---";
 	private String response = emptyNetwork;
 	private NetworkAsyncTask networkTask;
+	private boolean[] pageUpdate;
+	private Fragment[] fragments;
+	FragmentManager fragMan;
 
 	public SectionsPagerAdapter(MainActivity mainActivity, FragmentManager fm) {
 		super(fm);
 		this.mainActivity = mainActivity;
+		this.fragMan = fm;
+		this.pageUpdate = new boolean[getCount()];
+		this.fragments = new Fragment[getCount()];
+		for(int i=0; i<pageUpdate.length; i++){
+			pageUpdate[i] = false;
+		}
+//		this.networkTask = new NetworkAsyncTask(this.mainActivity);
+//		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.mainActivity.getApplicationContext());
+//		int groupNo = prefs.getInt("GROUPID", -1);
+//		String username = prefs.getString("USERNAME", null);
+//		String password = prefs.getString("PASSWORD", null);
+//		this.networkTask.execute(NetworkAsyncTask.quoteLit,NetworkAsyncTask.serverLit + "post/refresh?groupid=" + groupNo + "&rusername=" + username + "&rpassword=" + password + "&postidlimit=-" ,NetworkAsyncTask.serverLit + "directmessage/refresh?username=" + username + "&directmessageidlimit=" + "-" + "&rusername=" + username + "&rpassword=" + password,NetworkAsyncTask.serverLit + "member/getinfo?groupid=" + groupNo + "&rusername=" + username + "&rpassword=" + password);
+		this.serverRefresh();
+	}
+	
+	public void serverRefresh(){
 		this.networkTask = new NetworkAsyncTask(this.mainActivity);
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.mainActivity.getApplicationContext());
 		int groupNo = prefs.getInt("GROUPID", -1);
 		String username = prefs.getString("USERNAME", null);
 		String password = prefs.getString("PASSWORD", null);
-		//replace www.google.com with mail stuff
+		this.response = this.emptyNetwork;
 		this.networkTask.execute(NetworkAsyncTask.quoteLit,NetworkAsyncTask.serverLit + "post/refresh?groupid=" + groupNo + "&rusername=" + username + "&rpassword=" + password + "&postidlimit=-" ,NetworkAsyncTask.serverLit + "directmessage/refresh?username=" + username + "&directmessageidlimit=" + "-" + "&rusername=" + username + "&rpassword=" + password,NetworkAsyncTask.serverLit + "member/getinfo?groupid=" + groupNo + "&rusername=" + username + "&rpassword=" + password);
+	}
+	
+	public void updatePage(int i){
+		this.fragMan.beginTransaction().remove(fragments[i]).commit();
+		this.fragments[i] = this.getItem(i);
+		this.pageUpdate[i] = true;
+	}
+	
+	@Override
+	public int getItemPosition(Object object){
+		if((object instanceof QuoteFragment && this.pageUpdate[0])){
+			this.pageUpdate[0] = false;
+			return POSITION_NONE;
+		}
+		else if(object instanceof PostsFragment && this.pageUpdate[1]){
+			this.pageUpdate[1] = false;
+			return POSITION_NONE;
+		}
+		else if(object instanceof MailFragment && this.pageUpdate[2]){
+			this.pageUpdate[2] = false;
+			return POSITION_NONE;
+		}
+		else if(object instanceof ContactsFragment && this.pageUpdate[3]){
+			this.pageUpdate[3] = false;
+			return POSITION_NONE;
+		}
+		return POSITION_UNCHANGED;
 	}
 
 	@Override
@@ -112,8 +158,8 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 												"(" + ConversationEntry.COLUMN_MESSAGEID + ", "  +
 												ConversationEntry.COLUMN_MESSAGE + ", " +
 												ConversationEntry.COLUMN_RECEIVERSUSERNAME + "," +
-												ConversationEntry.COLUMN_USERNAME + ") VALUES('" +
-												messageid + "', '" + message + "', '" + receiver_username + "', '" + my_username + "')";
+												ConversationEntry.COLUMN_USERNAME + ") VALUES(" +
+												messageid + ", " + message + ", " + receiver_username + ", " + my_username + ")";
 										queries.add(query);
 									} catch (JSONException e) {
 										// TODO Auto-generated catch block
@@ -172,7 +218,6 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 			args.putString(QuoteFragment.USER, userWelcome);
 			args.putString(QuoteFragment.QOTD, qotd);
 			fragment.setArguments(args);
-			return fragment;
 		}
 		else if (position == 1){ //Posts page fragment
 			String resps[] = this.response.split("===");
@@ -184,7 +229,6 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 			fragment = new PostsFragment();
 			args.putString(PostsFragment.POSTS, resp);
 			fragment.setArguments(args);
-			return fragment;
 		}
 		else if(position == 2){ 	//Mail fragment
 			Bundle args = new Bundle();
@@ -196,14 +240,12 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 			}
 			args.putString(MailFragment.MAIL, mail);
 			fragment.setArguments(args);
-			return fragment;
 		}
 		else if (position == 3){
 			fragment = new ContactsFragment();
 			Bundle args = new Bundle();
 			args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
 			fragment.setArguments(args);
-			return fragment;
 		} 
 		else{
 			fragment = new DummySectionFragment();
@@ -212,6 +254,8 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 			fragment.setArguments(args);
 			return fragment;
 		}
+		fragments[position] = fragment;
+		return fragment;
 	}
 
 	@Override

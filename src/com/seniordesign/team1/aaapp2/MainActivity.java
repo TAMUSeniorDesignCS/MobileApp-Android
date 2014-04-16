@@ -1,16 +1,21 @@
 package com.seniordesign.team1.aaapp2;
 
 import android.app.ActionBar;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+//import android.support.v4.app.FragmentTransaction;
+//import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 public class MainActivity extends FragmentActivity implements
 		ActionBar.TabListener {
@@ -82,6 +87,28 @@ public class MainActivity extends FragmentActivity implements
 			}
 		}
 	}
+	
+	public void serverRefresh(){
+		this.mSectionsPagerAdapter.serverRefresh();
+		mViewPager = (ViewPager) findViewById(R.id.pager);
+	    /*Fragment newFragment = this.mSectionsPagerAdapter.getItem(mViewPager.getCurrentItem());
+	    android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+	    //transaction.replace(this.mSectionsPagerAdapter.getItemId(mViewPager.getCurrentItem()), newFragment);
+	    Fragment frag = this.mSectionsPagerAdapter.getItem(mViewPager.getCurrentItem());
+	    transaction.remove(frag);
+	    //transaction.attach(frag);
+	    transaction.add(R.id.pager, newFragment);
+	    //transaction.addToBackStack(null);
+	    transaction.commit();*/
+		//this.mSectionsPagerAdapter.startUpdate(findViewById(R.id.pager));
+		
+		//this.mSectionsPagerAdapter.notifyDataSetChanged();
+		this.mSectionsPagerAdapter.updatePage(mViewPager.getCurrentItem());
+		//for(int i=0; i<this.mSectionsPagerAdapter.getCount(); i++){
+		//	this.mSectionsPagerAdapter.updatePage(i);
+		//}
+		this.mSectionsPagerAdapter.notifyDataSetChanged();
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -148,6 +175,9 @@ public class MainActivity extends FragmentActivity implements
 				//launch new_mail_activity
 				Intent intent_new_mail = new Intent(this, WriteMailActivity.class);
 				startActivity(intent_new_mail);
+				return true;
+			case R.id.action_refresh:
+				this.serverRefresh();
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
