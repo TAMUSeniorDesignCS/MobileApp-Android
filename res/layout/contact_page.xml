@@ -5,41 +5,70 @@
     tools:context=".MainActivity$ContactSectionFragment" 
    >
 
-   <TextView 
+   <LinearLayout 
 		    android:id="@+id/first_name"
-		    android:layout_width="fill_parent"
-		    android:layout_height="wrap_content"
-		    android:text="place holder"
-		    android:layout_marginTop="4dp"
-		    android:layout_marginBottom="4dp"
-		    android:textSize="32sp"
-		    />
-   <TextView 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical" 
+	        >
+   </LinearLayout>	   
+   <LinearLayout
 		    android:id="@+id/user_name"
+		    android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+		    android:layout_below="@+id/first_name"
+		    android:orientation="vertical"
+		    >
+	</LinearLayout>
+	<LinearLayout
+		    android:id="@+id/email"
+		    android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+		    android:layout_below="@+id/user_name"
+		    android:orientation="vertical"
+		    >
+	</LinearLayout>
+	<LinearLayout
+		    android:id="@+id/phone"
+		    android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+		    android:layout_below="@+id/email"
+		    android:orientation="vertical"
+		    >
+	</LinearLayout>
+	<LinearLayout
+	    	android:id="@+id/check_boxes_layout"
+		    android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+		    android:layout_below="@+id/phone"
+		    android:orientation="vertical"
+		    >
+		<TextView
+		    android:id="@+id/empty_textview"
 		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"
-		    android:text="place holder"
+		    android:text=""
 		    android:layout_marginTop="4dp"
-		    android:layout_below="@+id/first_name"
 		    android:layout_marginBottom="4dp"
 		    android:textSize="32sp"
 		    />
-    <CheckBox
-        android:id="@+id/set_sponsor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/user_name"
-        android:layout_marginBottom="72dp"
-        android:text="@string/set_sponsor" />
+	    <CheckBox
+	        android:id="@+id/set_sponsor"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_above="@+id/block_user"
+	        android:layout_alignParentRight="true"
+	        android:layout_marginRight="36dp"
+	        android:text="@string/set_sponsor" />
+	    
+	    <CheckBox
+	        android:id="@+id/block_user"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentBottom="true"
+	        android:layout_alignLeft="@+id/set_sponsor"
+	        android:layout_marginBottom="28dp"
+	        android:text="@string/block_user" />
 
-    <CheckBox
-        android:id="@+id/checkBox2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@+id/set_sponsor"
-        android:layout_marginBottom="28dp"
-        android:text="@string/block_user" />
-
+	</LinearLayout>
 </RelativeLayout>   
