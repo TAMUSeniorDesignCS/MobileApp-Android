@@ -63,6 +63,20 @@ public class PostsFragment extends Fragment {
 					
 					
 					newPost.setText(Html.fromHtml("<b>" + jsonPost.getString("firstname") + "</b> @" + jsonPost.getString("username") + "<br/>" + jsonPost.getString("message")));
+					SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.getActivity().getApplicationContext());
+					String username = prefs.getString("USERNAME", null);
+					//if the user owns this post
+					if(jsonPost.getString("username").equals(username)){
+						newPost.setOnClickListener(new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								// TODO Auto-generated method stub
+								/*
+								 * create popup with edit and delete options
+								 */
+							}
+						});
+					}
 					postsView.addView(newPost);
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
