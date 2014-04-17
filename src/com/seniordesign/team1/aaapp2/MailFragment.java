@@ -1,9 +1,12 @@
 package com.seniordesign.team1.aaapp2;
 
+import java.util.ArrayList;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.seniordesign.team1.aaapp2.ContactsContract.ContactEntry;
 import com.seniordesign.team1.aaapp2.ContactsContract.ConversationEntry;
 
 import android.annotation.TargetApi;
@@ -25,6 +28,7 @@ import android.widget.TextView;
 public class MailFragment extends Fragment {
 	
 	public static final String MAIL = "";
+	public static final String MYUSERNAME = "";
 	AlertDialogManager alert = new AlertDialogManager();
 	public static String selected_receiver;
 	
@@ -40,37 +44,56 @@ public class MailFragment extends Fragment {
 				container, false);
 		LinearLayout mailView = (LinearLayout) rootView.findViewById(R.id.mailView);
 		JSONArray json = null;
+		//SQLiteAsyncQuery db = new SQLiteAsyncQuery(this.getActivity());
+		//db.execute("SELECT " + ConversationEntry.COLUMN_USERNAME + ", " + ConversationEntry.COLUMN_RECEIVERSUSERNAME + 
+		//		" FROM " + ConversationEntry.TABLE_NAME + " WHERE " + ConversationEntry.);
 		try {
 			json = new JSONArray(getArguments().getString(MAIL));
+			String my_name = getArguments().getString(MYUSERNAME);
+			ArrayList<String> uniqueNames = new ArrayList<String>();
 			for(int i=0; i<json.length()-1; i++){
 				try {
 					JSONObject jsonMail = json.getJSONObject(i);
-					TextView newMail = new TextView(container.getContext());
-					newMail.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
-					LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)newMail.getLayoutParams();
-					params.setMargins(6, 4, 6, 4); //substitute parameters for left, top, right, bottom
-					newMail.setLayoutParams(params);
-					if (Build.VERSION.SDK_INT >= 16){
-						newMail.setBackground(getResources().getDrawable(R.drawable.bg_card)); 
-					} 
-					else{
-						newMail.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_card));
-					}
+					
 					
 					//store values
 					//String my_username = jsonMail.getString("username");
 					String receiver_username = jsonMail.getString("receiversusername");
+					String send_username = jsonMail.getString("username");
 					//String message = jsonMail.getString("message");
 					//String messageid = Integer.toString(jsonMail.getInt("directmessageid"));
+					if(my_name.equals(receiver_username)){
+						if(!uniqueNames.contains(send_username)){
+							uniqueNames.add(send_username);
+						}
+					}
+					else{//if my_name.equals(send_username)
+						if(!uniqueNames.contains(receiver_username)){
+							uniqueNames.add(receiver_username);
+						}
+					}
 					
-					newMail.setText(Html.fromHtml("<b>" + receiver_username + "</b>"));
-					newMail.setTag(receiver_username);
-					newMail.setOnClickListener(mViewConversation);
-					mailView.addView(newMail);
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+			}
+			for(String name : uniqueNames){
+				TextView newMail = new TextView(container.getContext());
+				newMail.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
+				LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)newMail.getLayoutParams();
+				params.setMargins(6, 4, 6, 4); //substitute parameters for left, top, right, bottom
+				newMail.setLayoutParams(params);
+				if (Build.VERSION.SDK_INT >= 16){
+					newMail.setBackground(getResources().getDrawable(R.drawable.bg_card)); 
+				} 
+				else{
+					newMail.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_card));
+				}
+				newMail.setText(Html.fromHtml("<b>" + name + "</b><br/>"));
+				newMail.setTag(name);
+				newMail.setOnClickListener(mViewConversation);
+				mailView.addView(newMail);
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block

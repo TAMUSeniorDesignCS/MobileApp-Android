@@ -238,6 +238,9 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 			if(resps.length >= 3){
 				mail = resps[2];
 			}
+			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.mainActivity.getApplicationContext());
+			String username = prefs.getString("USERNAME", null);
+			args.putString(MailFragment.MYUSERNAME, username);
 			args.putString(MailFragment.MAIL, mail);
 			fragment.setArguments(args);
 		}
