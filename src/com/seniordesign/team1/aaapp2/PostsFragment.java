@@ -64,7 +64,9 @@ public class PostsFragment extends Fragment {
 					
 					newPost.setText(Html.fromHtml("<b>" + jsonPost.getString("firstname") + "</b> @" + jsonPost.getString("username") + "<br/>" + jsonPost.getString("message")));
 					SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.getActivity().getApplicationContext());
-					String username = prefs.getString("USERNAME", null);
+					final String username = prefs.getString("USERNAME", null);
+					final String password = prefs.getString("PASSWORD", null);
+					final int postId = jsonPost.getInt("postid");
 					//if the user owns this post
 					if(jsonPost.getString("username").equals(username)){
 						newPost.setOnClickListener(new OnClickListener() {
@@ -74,6 +76,13 @@ public class PostsFragment extends Fragment {
 								/*
 								 * create popup with edit and delete options
 								 */
+								EditPostDialogFragment popup = new EditPostDialogFragment();
+								Bundle args = new Bundle();
+								args.putInt("postId", postId);
+								args.putString("username", username);
+								args.putString("pw", password);
+								popup.setArguments(args);
+								popup.show(getFragmentManager(), "edit_post_popup");
 							}
 						});
 					}
