@@ -25,7 +25,7 @@
         android:icon="@drawable/ic_action_new_email"/>
     <item
         android:id="@+id/action_refresh"
-        android:orderInCategory="98"
+        android:orderInCategory="97"
         android:showAsAction="ifRoom"
         android:title="@string/action_refresh"
         android:icon="@drawable/ic_action_refresh"/>
