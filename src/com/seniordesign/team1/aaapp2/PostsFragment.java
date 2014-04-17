@@ -31,6 +31,8 @@ public class PostsFragment extends Fragment {
 	
 	public static final String POSTS = "";
 	AlertDialogManager alert = new AlertDialogManager();
+	private LayoutInflater inflater;
+	private ViewGroup container;
 	
 	public PostsFragment() {
 		super();
@@ -40,6 +42,8 @@ public class PostsFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		this.inflater = inflater;
+		this.container = container;
 		View rootView = inflater.inflate(R.layout.fragment_main_posts,
 				container, false);
 		LinearLayout postsView = (LinearLayout) rootView.findViewById(R.id.postsView);
@@ -67,12 +71,12 @@ public class PostsFragment extends Fragment {
 					final String username = prefs.getString("USERNAME", null);
 					final String password = prefs.getString("PASSWORD", null);
 					final int postId = jsonPost.getInt("postid");
+					newPost.setTag(postId);
 					//if the user owns this post
 					if(jsonPost.getString("username").equals(username)){
 						newPost.setOnClickListener(new OnClickListener() {
 							@Override
 							public void onClick(View v) {
-								// TODO Auto-generated method stub
 								/*
 								 * create popup with edit and delete options
 								 */

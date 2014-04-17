@@ -8,6 +8,10 @@ import android.support.v4.app.DialogFragment;
 import android.util.Log;
 
 public class EditPostDialogFragment extends DialogFragment {
+	public interface EditPostDialogListener{
+		public void onFinishEditPostDialogFragment(int selection, int postId);
+	}
+	
 	private EditPostDialogFragment _this = null;
 	public EditPostDialogFragment(){
 		super();
@@ -37,6 +41,8 @@ public class EditPostDialogFragment extends DialogFragment {
 				else{
 					Log.e("AAApp2", "Imposible value of which in EditPostDialogFragment DialogInterface.OnClickListener");
 				}
+				MainActivity activity = (MainActivity) _this.getActivity();
+				activity.onFinishEditPostDialogFragment(which, postId);
 			}
 		});
         // Create the AlertDialog object and return it

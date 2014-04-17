@@ -13,6 +13,8 @@ import org.json.JSONObject;
 import com.seniordesign.team1.aaapp2.ContactsContract.ContactEntry;
 import com.seniordesign.team1.aaapp2.ContactsContract.ConversationEntry;
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.ContentValues;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
@@ -73,10 +75,39 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 		this.networkTask.execute(NetworkAsyncTask.quoteLit,NetworkAsyncTask.serverLit + "post/refresh?groupid=" + groupNo + "&rusername=" + username + "&rpassword=" + password + "&postidlimit=-" ,NetworkAsyncTask.serverLit + "directmessage/refresh?username=" + username + "&directmessageidlimit=" + "-" + "&rusername=" + username + "&rpassword=" + password,NetworkAsyncTask.serverLit + "member/getinfo?groupid=" + groupNo + "&rusername=" + username + "&rpassword=" + password);
 	}
 	
+	@TargetApi(19)
+	public void quickRemovePost(int id){
+		String[] resps = this.response.split("===");
+		try{
+			JSONArray posts = new JSONArray(resps[1]);
+			for(int i=0; i<posts.length(); i++){
+				JSONObject json = posts.getJSONObject(i);
+				if(json.getInt("postid") == id){
+					if (Build.VERSION.SDK_INT >= 19){
+						posts.remove(i);
+					}
+					else{
+						posts = HelperFunctions.remove(i, posts);
+					}
+					//we must break here or very bad things will happen
+					break;
+				}
+			}
+			this.response = resps[0] + "===" + posts.toString() + "===" + resps[2] + "===" + resps[3];
+		}
+		catch(JSONException e){
+			e.printStackTrace();
+		}
+	}
+	
 	public void updatePage(int i){
 		this.fragMan.beginTransaction().remove(fragments[i]).commit();
 		this.fragments[i] = this.getItem(i);
 		this.pageUpdate[i] = true;
+	}
+	
+	public Fragment getFragment(int i){
+		return this.fragments[i];
 	}
 	
 	@Override
