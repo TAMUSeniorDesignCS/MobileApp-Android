@@ -158,8 +158,8 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 												"(" + ConversationEntry.COLUMN_MESSAGEID + ", "  +
 												ConversationEntry.COLUMN_MESSAGE + ", " +
 												ConversationEntry.COLUMN_RECEIVERSUSERNAME + "," +
-												ConversationEntry.COLUMN_USERNAME + ") VALUES(" +
-												messageid + ", " + message + ", " + receiver_username + ", " + my_username + ")";
+												ConversationEntry.COLUMN_USERNAME + ") VALUES('" +
+												messageid + "', '" + message + "', '" + receiver_username + "', '" + my_username + "')";
 										queries.add(query);
 									} catch (JSONException e) {
 										// TODO Auto-generated catch block
