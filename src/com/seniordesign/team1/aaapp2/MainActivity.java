@@ -1,5 +1,7 @@
 package com.seniordesign.team1.aaapp2;
 
+import com.seniordesign.team1.aaapp2.EditPostDialogFragment.EditPostDialogListener;
+
 import android.app.ActionBar;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -18,7 +20,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 public class MainActivity extends FragmentActivity implements
-		ActionBar.TabListener {
+		ActionBar.TabListener,
+		EditPostDialogListener{
 
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -108,6 +111,15 @@ public class MainActivity extends FragmentActivity implements
 		//	this.mSectionsPagerAdapter.updatePage(i);
 		//}
 		this.mSectionsPagerAdapter.notifyDataSetChanged();
+	}
+	
+	@Override
+	public void onFinishEditPostDialogFragment(int selection, int postId){
+		if(selection == 1){
+			this.mSectionsPagerAdapter.quickRemovePost(postId);
+			this.mSectionsPagerAdapter.updatePage(1);
+			this.mSectionsPagerAdapter.notifyDataSetChanged();
+		}
 	}
 
 	@Override

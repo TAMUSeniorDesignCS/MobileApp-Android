@@ -31,6 +31,8 @@ public class PostsFragment extends Fragment {
 	
 	public static final String POSTS = "";
 	AlertDialogManager alert = new AlertDialogManager();
+	private LayoutInflater inflater;
+	private ViewGroup container;
 	
 	public PostsFragment() {
 		super();
@@ -40,6 +42,8 @@ public class PostsFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		this.inflater = inflater;
+		this.container = container;
 		View rootView = inflater.inflate(R.layout.fragment_main_posts,
 				container, false);
 		LinearLayout postsView = (LinearLayout) rootView.findViewById(R.id.postsView);
@@ -63,6 +67,29 @@ public class PostsFragment extends Fragment {
 					
 					
 					newPost.setText(Html.fromHtml("<b>" + jsonPost.getString("firstname") + "</b> @" + jsonPost.getString("username") + "<br/>" + jsonPost.getString("message")));
+					SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.getActivity().getApplicationContext());
+					final String username = prefs.getString("USERNAME", null);
+					final String password = prefs.getString("PASSWORD", null);
+					final int postId = jsonPost.getInt("postid");
+					newPost.setTag(postId);
+					//if the user owns this post
+					if(jsonPost.getString("username").equals(username)){
+						newPost.setOnClickListener(new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								/*
+								 * create popup with edit and delete options
+								 */
+								EditPostDialogFragment popup = new EditPostDialogFragment();
+								Bundle args = new Bundle();
+								args.putInt("postId", postId);
+								args.putString("username", username);
+								args.putString("pw", password);
+								popup.setArguments(args);
+								popup.show(getFragmentManager(), "edit_post_popup");
+							}
+						});
+					}
 					postsView.addView(newPost);
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
