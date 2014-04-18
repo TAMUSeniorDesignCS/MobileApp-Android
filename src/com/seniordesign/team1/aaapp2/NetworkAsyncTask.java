@@ -20,7 +20,7 @@ import android.os.AsyncTask;
 
 public class NetworkAsyncTask extends AsyncTask<String, Void, String> {
 	private static final String quoteURL = "http://www.aa.org/lang/en/aareflections.cfm";
-	private static final  String serverURL = "http://54.187.99.187/";
+	private static final  String serverURL = "https://paulgreco.net/";
 	public static final String serverLit = "server::";
 	public static final String quoteLit = "quote";
 	public static final String errorLit = "--error--";

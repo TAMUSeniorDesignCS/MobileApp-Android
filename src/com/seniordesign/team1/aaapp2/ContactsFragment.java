@@ -62,7 +62,7 @@ public class ContactsFragment extends Fragment {
 				newContact.setText(Html.fromHtml("<b>" + cursor.getString(cursor.getColumnIndex("firstname")) + "</b> @" + cursor.getString(cursor.getColumnIndex("username")) + "<br/>" ));
 				newContact.setOnClickListener(mViewContact);
 				String selected_user_tag = cursor.getString(cursor.getColumnIndex("username"));
-				newContact.setTag(selected_username);
+				newContact.setTag(selected_user_tag);
 				contactsView.addView(newContact);
 				cursor.moveToNext();
 			}

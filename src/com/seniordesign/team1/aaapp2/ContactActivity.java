@@ -21,6 +21,12 @@ public class ContactActivity extends Activity{
 	AlertDialogManager alert = new AlertDialogManager();
 	SharedPreferences user_prefs;
 	String selected_user = ContactsFragment.selected_username;
+	private static final int TITLE_FONT_SIZE = 48;
+	private static final int CONTENT_FONT_SIZE = 24;
+	private static final int SUBTITLE_FONT_SIZE = 24;
+	private static final int SUBCONTENT_FONT_SIZE = 24;
+	private static final String COLOR = "black";
+	private static final String FACE = "verdana";
 	@SuppressWarnings("deprecation")
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	@Override
@@ -79,7 +85,8 @@ public class ContactActivity extends Activity{
 					LinearLayout.LayoutParams fn_params = (LinearLayout.LayoutParams)firstname_textview.getLayoutParams();
 					fn_params.setMargins(6, 4, 6, 4); //substitute parameters for left, top, right, bottom
 					firstname_textview.setLayoutParams(fn_params);
-					firstname_textview.setText(Html.fromHtml("<b>" + firstname + "</b>" +  "<br/>"));
+					firstname_textview.setText(Html.fromHtml("<font size=" + TITLE_FONT_SIZE + " color=" + COLOR + " face =" + FACE + ">" + firstname + "</font>"));
+					firstname_textview.setTextSize(TITLE_FONT_SIZE);
 					if (Build.VERSION.SDK_INT >= 16){
 						firstname_textview.setBackground(getResources().getDrawable(R.drawable.bg_card)); 
 					} 
@@ -94,7 +101,8 @@ public class ContactActivity extends Activity{
 					LinearLayout.LayoutParams un_params = (LinearLayout.LayoutParams)username_textview.getLayoutParams();
 					un_params.setMargins(6, 4, 6, 4); //substitute parameters for left, top, right, bottom
 					username_textview.setLayoutParams(un_params);
-					firstname_textview.setText(Html.fromHtml("<b>" + selected_user + "</b>" +  "<br/>"));
+					username_textview.setText(Html.fromHtml("<br/>" + "<font size=" + CONTENT_FONT_SIZE + " color=" + COLOR + " face =" + FACE + "> @" + selected_user + "</font>" +  "<br/>"));
+					username_textview.setTextSize(CONTENT_FONT_SIZE);
 					if (Build.VERSION.SDK_INT >= 16){
 						username_textview.setBackground(getResources().getDrawable(R.drawable.bg_card)); 
 					} 
@@ -104,38 +112,41 @@ public class ContactActivity extends Activity{
 					user_name_layout.addView(username_textview);
 					user_name_layout.invalidate();
 					
-					//if(not null)
-					TextView phone_textview = new TextView(getApplicationContext());
-					phone_textview.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
-					LinearLayout.LayoutParams p_params = (LinearLayout.LayoutParams)phone_textview.getLayoutParams();
-					p_params.setMargins(6, 4, 6, 4); //substitute parameters for left, top, right, bottom
-					phone_textview.setLayoutParams(p_params);
-					firstname_textview.setText(Html.fromHtml("<b>" + phone + "</b>" +  "<br/>"));
-					if (Build.VERSION.SDK_INT >= 16){
-						phone_textview.setBackground(getResources().getDrawable(R.drawable.bg_card)); 
-					} 
-					else{
-						phone_textview.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_card));
+					if(!phone.equals(null)){
+						TextView phone_textview = new TextView(getApplicationContext());
+						phone_textview.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
+						LinearLayout.LayoutParams p_params = (LinearLayout.LayoutParams)phone_textview.getLayoutParams();
+						p_params.setMargins(6, 4, 6, 4); //substitute parameters for left, top, right, bottom
+						phone_textview.setLayoutParams(p_params);
+						phone_textview.setText(Html.fromHtml("<br/>" + "<font size=" + SUBTITLE_FONT_SIZE + " color=" + COLOR + " face =" + FACE + "> Phone: " + phone.substring(0, 3) + "-" + phone.substring(3, 6) + "-"+ phone.substring(6) + "</font>" + "<br/>"));
+						username_textview.setTextSize(SUBTITLE_FONT_SIZE);
+						if (Build.VERSION.SDK_INT >= 16){
+							phone_textview.setBackground(getResources().getDrawable(R.drawable.bg_card)); 
+						} 
+						else{
+							phone_textview.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_card));
+						}
+						phone_layout.addView(phone_textview);
+						phone_layout.invalidate();
 					}
-					phone_layout.addView(phone_textview);
-					phone_layout.invalidate();
 					
-					//if(not null)
-					TextView email_textview = new TextView(getApplicationContext());
-					email_textview.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
-					LinearLayout.LayoutParams e_params = (LinearLayout.LayoutParams)email_textview.getLayoutParams();
-					e_params.setMargins(6, 4, 6, 4); //substitute parameters for left, top, right, bottom
-					email_textview.setLayoutParams(e_params);
-					firstname_textview.setText(Html.fromHtml("<b>" + email + "</b>" +  "<br/>"));
-					if (Build.VERSION.SDK_INT >= 16){
-						email_textview.setBackground(getResources().getDrawable(R.drawable.bg_card)); 
-					} 
-					else{
-						email_textview.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_card));
+					if(!email.equals(null)){
+						TextView email_textview = new TextView(getApplicationContext());
+						email_textview.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
+						LinearLayout.LayoutParams e_params = (LinearLayout.LayoutParams)email_textview.getLayoutParams();
+						e_params.setMargins(6, 4, 6, 4); //substitute parameters for left, top, right, bottom
+						email_textview.setLayoutParams(e_params);
+						email_textview.setText(Html.fromHtml("<br/>" + "<font size=" + SUBTITLE_FONT_SIZE + " color=" + COLOR + " face =" + FACE + "> Email: " + email + "</font>" + "<br/>"));
+						email_textview.setTextSize(SUBCONTENT_FONT_SIZE);
+						if (Build.VERSION.SDK_INT >= 16){
+							email_textview.setBackground(getResources().getDrawable(R.drawable.bg_card)); 
+						} 
+						else{
+							email_textview.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_card));
+						}
+						email_layout.addView(email_textview);
+						email_layout.invalidate();
 					}
-					email_layout.addView(email_textview);
-					email_layout.invalidate();
-					
 				}catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
