@@ -38,6 +38,12 @@ public class WriteMailActivity extends Activity implements OnCheckedChangeListen
 	Editor login_editor; 
 	private WriteMailActivity _this;
 	AlertDialogManager alert = new AlertDialogManager();
+	private static final int TITLE_FONT_SIZE = 48;
+	private static final int CONTENT_FONT_SIZE = 24;
+	private static final int SUBTITLE_FONT_SIZE = 24;
+	private static final int SUBCONTENT_FONT_SIZE = 24;
+	private static final String COLOR = "black";
+	private static final String FACE = "verdana";
 	//NetworkAsyncTask newMailTask;
 	String receiverusername = ""; //hardcoded until receiver can be selected
 	Map<CheckBox, String> contactList = new HashMap<CheckBox, String>();
@@ -76,7 +82,7 @@ public class WriteMailActivity extends Activity implements OnCheckedChangeListen
 				
 				String thisFirstname = cursor.getString(cursor.getColumnIndex("firstname"));
 				String thisUsername = cursor.getString(cursor.getColumnIndex("username"));
-				newMailContact.setText(Html.fromHtml("<b>" + thisFirstname + "</b> @" + thisUsername + "<br/>" ));
+				newMailContact.setText(Html.fromHtml("<font size=" + TITLE_FONT_SIZE + " color=" + COLOR + " face =" + FACE + ">" + thisFirstname + " @" + thisUsername + "</font><br/>" ));
 				contactsMailView.addView(newMailContact);
 				//contactsMailView.setOnClickListener(mSelectRecipient);
 				newMailContact.setOnCheckedChangeListener(this);

@@ -1,8 +1,12 @@
 package com.seniordesign.team1.aaapp2;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,13 +22,16 @@ public class QuoteFragment extends Fragment {
 	public static final String USER = "Defualt User";
 	public static final String QOTD = "Default QotD";
 	public static final String TEMPSPONSORNUMBER = "5555555555";
-	
+	AlertDialogManager alert = new AlertDialogManager();
+	Context quoteContext;
+	SharedPreferences prefs;
 	public QuoteFragment(){
 		super();
 	}
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		quoteContext = this.getActivity().getApplicationContext();
 		View rootView = inflater.inflate(R.layout.fragment_main_quote,
 				container, false);
 		TextView userTextView = (TextView) rootView
@@ -48,6 +55,8 @@ public class QuoteFragment extends Fragment {
 		titleTextView.setTextSize(16);
 		bodyTextView.setTextSize(12);
 		
+		//SectionsPagerAdapter.prefs = PreferenceManager.getDefaultSharedPreferences(quoteContext);
+		prefs = PreferenceManager.getDefaultSharedPreferences(quoteContext);
 		Button callSponsor = (Button) rootView.findViewById(R.id.callSponsorButton);
 		callSponsor.setOnClickListener(mCallSponsorButton);
 		
@@ -58,11 +67,19 @@ public class QuoteFragment extends Fragment {
 	private OnClickListener mCallSponsorButton = new OnClickListener() { 	
 			
 			@Override
-	        public void onClick(View v) {
-				
-				Intent intent = new Intent(Intent.ACTION_DIAL);
-			    intent.setData(Uri.parse("tel:" + TEMPSPONSORNUMBER));
-			    startActivity(intent);
+	        public void onClick(View v) { //get the sponsor phone and call if possible.
+				String sponsor_phone = prefs.getString("SPONSOR_PHONE", TEMPSPONSORNUMBER);
+				try{
+					if(sponsor_phone.equals(TEMPSPONSORNUMBER)){
+						alert.showAlertDialog(getActivity(), "No Phone Number Available", "This contact has not made their number accessible.", false);
+					}else{
+						Intent intent = new Intent(Intent.ACTION_DIAL);
+					    intent.setData(Uri.parse("tel:" + sponsor_phone));
+					    startActivity(intent);
+					}
+				}catch(Exception e){
+					e.printStackTrace();
+				}
 	        }
 	};
 }	

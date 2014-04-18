@@ -44,9 +44,10 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 	private String response = emptyNetwork;
 	private NetworkAsyncTask networkTask;
 	private boolean[] pageUpdate;
+	public static SharedPreferences prefs;
 	private Fragment[] fragments;
 	FragmentManager fragMan;
-
+	
 	public SectionsPagerAdapter(MainActivity mainActivity, FragmentManager fm) {
 		super(fm);
 		this.mainActivity = mainActivity;
@@ -67,7 +68,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 	
 	public void serverRefresh(){
 		this.networkTask = new NetworkAsyncTask(this.mainActivity);
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.mainActivity.getApplicationContext());
+		prefs = PreferenceManager.getDefaultSharedPreferences(this.mainActivity.getApplicationContext());
 		int groupNo = prefs.getInt("GROUPID", -1);
 		String username = prefs.getString("USERNAME", null);
 		String password = prefs.getString("PASSWORD", null);

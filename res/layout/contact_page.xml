@@ -1,0 +1,68 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity$ContactSectionFragment" 
+   >
+
+   <LinearLayout 
+		    android:id="@+id/first_name_layout"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical" 
+	        >
+   </LinearLayout>	   
+   <LinearLayout
+		    android:id="@+id/user_name_layout"
+		    android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+		    android:layout_below="@+id/first_name_layout"
+		    android:orientation="vertical"
+		    >
+	</LinearLayout>
+	<LinearLayout
+		    android:id="@+id/phone_layout"
+		    android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+		    android:layout_below="@+id/user_name_layout"
+		    android:orientation="vertical"
+		    >
+	</LinearLayout>
+	<LinearLayout
+		    android:id="@+id/email_layout"
+		    android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+		    android:layout_below="@+id/phone_layout"
+		    android:orientation="vertical"
+		    >
+	</LinearLayout>
+	
+	<TextView
+	    android:id="@+id/empty_textview"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:text=""
+	    android:layout_marginTop="4dp"
+	    android:layout_marginBottom="4dp"
+	    android:layout_above="@+id/set_sponsor"
+	    android:textSize="32sp"
+	    />
+    <CheckBox
+        android:id="@+id/set_sponsor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/block_user"
+        android:layout_alignRight="@+id/empty_textview"
+        android:layout_marginRight="36dp"
+        android:text="@string/set_sponsor" />
+    
+    <CheckBox
+        android:id="@+id/block_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/set_sponsor"
+        android:layout_marginBottom="28dp"
+        android:text="@string/block_user" />
+
+</RelativeLayout>   
