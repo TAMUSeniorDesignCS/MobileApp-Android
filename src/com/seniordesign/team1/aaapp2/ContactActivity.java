@@ -1,5 +1,7 @@
 package com.seniordesign.team1.aaapp2;
 
+import java.util.HashMap;
+
 import com.seniordesign.team1.aaapp2.ContactsContract.ContactEntry;
 import com.seniordesign.team1.aaapp2.ContactsContract.ConversationEntry;
 
@@ -33,6 +35,8 @@ public class ContactActivity extends Activity implements OnCheckedChangeListener
 	private static final String COLOR = "black";
 	private static final String FACE = "verdana";
 	CheckBox setAsSponsor, blockUser;
+	public static HashMap<String, Boolean> sponsor_map = new HashMap<String, Boolean>(); //map to set the username to sponsor = true
+	public static HashMap<String, Boolean> blocked_map = new HashMap<String, Boolean>(); //map to set the username to blocked = true
 	
 	@SuppressWarnings("deprecation")
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -45,8 +49,16 @@ public class ContactActivity extends Activity implements OnCheckedChangeListener
 		user_prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		user_editor = user_prefs.edit();
 		setAsSponsor = (CheckBox) findViewById(R.id.set_sponsor);
+		if(sponsor_map.get(selected_user) != null){
+			setAsSponsor.setChecked(user_prefs.getBoolean("SETASSPONSOR", false));
+		}	
 		blockUser = (CheckBox) findViewById(R.id.block_user);
-		//
+		if(blocked_map.get(selected_user)!= null){
+			blockUser.setChecked(user_prefs.getBoolean("BLOCKUSER", false));
+		}
+		setAsSponsor.setOnCheckedChangeListener(this);
+		blockUser.setOnCheckedChangeListener(this);
+		
 		LinearLayout first_name_layout = (LinearLayout) findViewById(R.id.first_name_layout);
 		LinearLayout user_name_layout = (LinearLayout) findViewById(R.id.user_name_layout);
 		LinearLayout phone_layout = (LinearLayout) findViewById(R.id.phone_layout);
@@ -158,8 +170,7 @@ public class ContactActivity extends Activity implements OnCheckedChangeListener
 						email_layout.invalidate();
 					}
 					
-					setAsSponsor.setOnCheckedChangeListener(this);
-					blockUser.setOnCheckedChangeListener(this);
+					
 				}catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -176,21 +187,32 @@ public class ContactActivity extends Activity implements OnCheckedChangeListener
 			if(isChecked){
 				user_editor.putString("SPONSOR", selected_user);
 				user_editor.putString("SPONSOR_PHONE", phone);
+				user_editor.putBoolean("SETASSPONSOR", true);
 				user_editor.commit();
+				//for(int i = 0; i < sponsor_map.size(); i++{
+					sponsor_map.clear();
+				//}
+				sponsor_map.put(selected_user, true);
 				return;
 			} else {
 				//this should either be called only if the state changes, in which case we want to update the sponsor to null
 				//or it will be called no matter what, in which case we would only want to update the sponsor if this was previously the sponor
+				user_editor.putBoolean("SETASSPONSOR", false);
+				user_editor.commit();
+				sponsor_map.put(selected_user, false);
 				return;
 			}
 		}
 		if (buttonView == blockUser){
 			if(isChecked){
-				//receiverusername = (String)contactList.get(buttonView); //grabs value from the hashMap
+				user_editor.putBoolean("BLOCKUSER", true);
+				user_editor.commit();
+				blocked_map.put(selected_user, true);
 				return;
 			} else {
-				//receiverusername = "";
-				//alert.showAlertDialog(getApplicationContext(), "No recipient selected.", "Select a contact as a recipient.", false);
+				user_editor.putBoolean("BLOCKUSER", false);
+				user_editor.commit();
+				blocked_map.put(selected_user, false);
 				return;
 			}
 		}

@@ -24,14 +24,14 @@ public class QuoteFragment extends Fragment {
 	public static final String TEMPSPONSORNUMBER = "5555555555";
 	AlertDialogManager alert = new AlertDialogManager();
 	Context quoteContext;
-	
+	SharedPreferences prefs;
 	public QuoteFragment(){
 		super();
 	}
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		quoteContext = container.getContext();
+		quoteContext = this.getActivity().getApplicationContext();
 		View rootView = inflater.inflate(R.layout.fragment_main_quote,
 				container, false);
 		TextView userTextView = (TextView) rootView
@@ -56,6 +56,7 @@ public class QuoteFragment extends Fragment {
 		bodyTextView.setTextSize(12);
 		
 		//SectionsPagerAdapter.prefs = PreferenceManager.getDefaultSharedPreferences(quoteContext);
+		prefs = PreferenceManager.getDefaultSharedPreferences(quoteContext);
 		Button callSponsor = (Button) rootView.findViewById(R.id.callSponsorButton);
 		callSponsor.setOnClickListener(mCallSponsorButton);
 		
@@ -67,7 +68,7 @@ public class QuoteFragment extends Fragment {
 			
 			@Override
 	        public void onClick(View v) { //get the sponsor phone and call if possible.
-				String sponsor_phone = SectionsPagerAdapter.prefs.getString("SPONSOR_PHONE", TEMPSPONSORNUMBER);
+				String sponsor_phone = prefs.getString("SPONSOR_PHONE", TEMPSPONSORNUMBER);
 				try{
 					if(sponsor_phone.equals(TEMPSPONSORNUMBER)){
 						alert.showAlertDialog(getActivity(), "No Phone Number Available", "This contact has not made their number accessible.", false);
