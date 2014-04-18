@@ -6,27 +6,34 @@ import com.seniordesign.team1.aaapp2.ContactsContract.ConversationEntry;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Html;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class ContactActivity extends Activity{
+public class ContactActivity extends Activity implements OnCheckedChangeListener{
 	private ContactActivity _this;
 	AlertDialogManager alert = new AlertDialogManager();
 	SharedPreferences user_prefs;
+	Editor user_editor; 
 	String selected_user = ContactsFragment.selected_username;
+	private String firstname, phone, email;
 	private static final int TITLE_FONT_SIZE = 48;
 	private static final int CONTENT_FONT_SIZE = 24;
 	private static final int SUBTITLE_FONT_SIZE = 24;
 	private static final int SUBCONTENT_FONT_SIZE = 24;
 	private static final String COLOR = "black";
 	private static final String FACE = "verdana";
+	CheckBox setAsSponsor, blockUser;
+	
 	@SuppressWarnings("deprecation")
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	@Override
@@ -36,6 +43,9 @@ public class ContactActivity extends Activity{
 		setContentView(R.layout.contact_page);
 		
 		user_prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		user_editor = user_prefs.edit();
+		setAsSponsor = (CheckBox) findViewById(R.id.set_sponsor);
+		blockUser = (CheckBox) findViewById(R.id.block_user);
 		//
 		LinearLayout first_name_layout = (LinearLayout) findViewById(R.id.first_name_layout);
 		LinearLayout user_name_layout = (LinearLayout) findViewById(R.id.user_name_layout);
@@ -76,9 +86,9 @@ public class ContactActivity extends Activity{
 			int phone_index = contacts.getColumnIndex(ContactEntry.COLUMN_PHONE);
 			while(!contacts.isAfterLast()){
 				try {
-					String firstname = contacts.getString(firstname_index);
-					String email = contacts.getString(email_index);
-					String phone = contacts.getString(phone_index);
+					firstname = contacts.getString(firstname_index);
+					email = contacts.getString(email_index);
+					phone = contacts.getString(phone_index);
 					
 					TextView firstname_textview = new TextView(getApplicationContext());
 					firstname_textview.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -147,6 +157,9 @@ public class ContactActivity extends Activity{
 						email_layout.addView(email_textview);
 						email_layout.invalidate();
 					}
+					
+					setAsSponsor.setOnCheckedChangeListener(this);
+					blockUser.setOnCheckedChangeListener(this);
 				}catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -159,15 +172,28 @@ public class ContactActivity extends Activity{
 		}
 	}
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-		if(isChecked){
-			//receiverusername = (String)contactList.get(buttonView); //grabs value from the hashMap
-			return;
-		} else {
-			//receiverusername = "";
-			//alert.showAlertDialog(getApplicationContext(), "No recipient selected.", "Select a contact as a recipient.", false);
-			return;
+		if(buttonView == setAsSponsor){
+			if(isChecked){
+				user_editor.putString("SPONSOR", selected_user);
+				user_editor.putString("SPONSOR_PHONE", phone);
+				user_editor.commit();
+				return;
+			} else {
+				//this should either be called only if the state changes, in which case we want to update the sponsor to null
+				//or it will be called no matter what, in which case we would only want to update the sponsor if this was previously the sponor
+				return;
+			}
 		}
-		
+		if (buttonView == blockUser){
+			if(isChecked){
+				//receiverusername = (String)contactList.get(buttonView); //grabs value from the hashMap
+				return;
+			} else {
+				//receiverusername = "";
+				//alert.showAlertDialog(getApplicationContext(), "No recipient selected.", "Select a contact as a recipient.", false);
+				return;
+			}
+		}
 	}
 }
 
