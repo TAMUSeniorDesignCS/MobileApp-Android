@@ -67,9 +67,10 @@ private class MyOnClickListener implements OnClickListener{
 			// TODO Auto-generated method stub
 			EditText etUsername = (EditText)findViewById(R.id.username_entry);
 			EditText etPassword = (EditText)findViewById(R.id.password_entry);
-			String username, password, firstname = "", email = "";
+			String username, password, firstname = "", email = "", phone = "";
+			int display_phone;
 			int groupid;
-			String sponsorid;
+			String sponsorid ="";
 			String response = "";
 			SharedPreferences login_prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 			Editor login_editor = login_prefs.edit();
@@ -102,7 +103,8 @@ private class MyOnClickListener implements OnClickListener{
 								groupid = json_object.getInt("groupid");
 								email = json_object.getString("email");
 								sponsorid = json_object.getString("sponsorid");
-								
+								phone = json_object.getString("phonenumber");
+								display_phone = json_object.getInt("displayphonenumber");
 								//values to store locally
 								login_editor.putString("FIRSTNAME", firstname);	// value to store
 								login_editor.putString("USERNAME", username); 
@@ -110,8 +112,12 @@ private class MyOnClickListener implements OnClickListener{
 								login_editor.putInt("GROUPID", groupid);
 								login_editor.putString("EMAIL", email);
 								login_editor.putString("SPONSORID", sponsorid);
+								login_editor.putString("PHONE", phone);
+								login_editor.putInt("DISPLAYPHONE", 0);
 								login_editor.putBoolean("loggedIn", true);		//logs the user in for future opening of app
 								login_editor.commit();
+								
+								ContactActivity.sponsor_map.put(sponsorid, true); //save this sponsorid for use in ContactActivity
 								
 								Intent i = new Intent(getApplicationContext(), MainActivity.class);
 				                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

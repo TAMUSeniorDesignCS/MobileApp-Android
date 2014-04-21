@@ -19,7 +19,8 @@ public class ContactDbHelper extends SQLiteOpenHelper {
         ContactEntry.COLUMN_USERNAME + TEXT_TYPE + " PRIMARY KEY, " +
         ContactEntry.COLUMN_FIRST_NAME + TEXT_TYPE + COMMA_SEP +
         ContactEntry.COLUMN_EMAIL + TEXT_TYPE + COMMA_SEP +
-        ContactEntry.COLUMN_PHONE + TEXT_TYPE +
+        ContactEntry.COLUMN_PHONE + TEXT_TYPE + COMMA_SEP +
+        ContactEntry.COLUMN_SPONSOR_ID + TEXT_TYPE +
         " )";
     private static final String SQL_CREATE_CONVERSATION_ENTRIES =    
     	"CREATE TABLE " + ConversationEntry.TABLE_NAME + "(" +

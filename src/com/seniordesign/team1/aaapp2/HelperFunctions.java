@@ -46,4 +46,14 @@ public class HelperFunctions {
 	    }
 	    return result;
 	}
+	
+	public static int boolToInt(boolean Bool){
+		int value;
+		if(Bool){
+			value = 1;
+		}else{
+			value = 0;
+		}
+		return value;
+	}
 }

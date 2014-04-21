@@ -189,10 +189,25 @@ public class ContactActivity extends Activity implements OnCheckedChangeListener
 				user_editor.putString("SPONSOR_PHONE", phone);
 				user_editor.putBoolean("SETASSPONSOR", true);
 				user_editor.commit();
-				//for(int i = 0; i < sponsor_map.size(); i++{
-					sponsor_map.clear();
-				//}
+				
+				//wipe and update the local sponsor info
+				sponsor_map.clear();
 				sponsor_map.put(selected_user, true);
+				
+				//TODO: send member update with new sponsor info
+				String my_user, my_firstname, my_password, my_email, my_phone;
+				Boolean display_phone;
+				my_user = user_prefs.getString("USERNAME", null);
+				my_password = user_prefs.getString("PASSWORD", null);
+				my_firstname = user_prefs.getString("FIRSTNAME", null);
+				my_email = user_prefs.getString("EMAIL", null);
+				my_phone = user_prefs.getString("PHONE", null);
+				display_phone = user_prefs.getBoolean("pref_sharePhone", false);
+				
+				NetworkAsyncTask update_info_task = new NetworkAsyncTask(this);
+				String urlVariables = "member/edit?rusername=" + my_user + "&rpassword=" + my_password + "&oldusername=" + my_user + "&firstname=" + my_firstname + "&username=" + my_user + "&password=" + my_password + "&sponsorid=" + selected_user + "&email=" + my_email + "&phonenumber=" + my_phone + "&displayphonenumber=" + display_phone; 
+				update_info_task.execute(NetworkAsyncTask.serverLit + urlVariables);
+				
 				return;
 			} else {
 				//this should either be called only if the state changes, in which case we want to update the sponsor to null
@@ -200,6 +215,21 @@ public class ContactActivity extends Activity implements OnCheckedChangeListener
 				user_editor.putBoolean("SETASSPONSOR", false);
 				user_editor.commit();
 				sponsor_map.put(selected_user, false);
+				
+				//TODO:send member update with sponsor set to null
+				String my_user, my_firstname, my_password, my_email, my_phone;
+				int display_phone;
+				my_user = user_prefs.getString("USERNAME", null);
+				my_password = user_prefs.getString("PASSWORD", null);
+				my_firstname = user_prefs.getString("FIRSTNAME", null);
+				my_email = user_prefs.getString("EMAIL", null);
+				my_phone = user_prefs.getString("PHONE", null);
+				display_phone = HelperFunctions.boolToInt(user_prefs.getBoolean("pref_sharePhone", false));
+				
+				NetworkAsyncTask update_info_task = new NetworkAsyncTask(this);
+				String urlVariables = "member/edit?rusername=" + my_user + "&rpassword=" + my_password + "&oldusername=" + my_user + "&firstname=" + my_firstname + "&username=" + my_user + "&password=" + my_password + "&sponsorid=" + "null" + "&email=" + my_email + "&phonenumber=" + my_phone + "&displayphonenumber=" + display_phone; 
+				update_info_task.execute(NetworkAsyncTask.serverLit + urlVariables);
+				
 				return;
 			}
 		}

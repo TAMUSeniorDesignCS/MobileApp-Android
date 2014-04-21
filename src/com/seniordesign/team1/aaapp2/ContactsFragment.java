@@ -25,7 +25,8 @@ import android.widget.TextView;
 
 public class ContactsFragment extends Fragment {
 	public static String selected_username = "";
-
+	public static String sponsor_id = "";
+	
 	public ContactsFragment() {
 		super();
 	}
@@ -46,6 +47,8 @@ public class ContactsFragment extends Fragment {
 			Cursor cursor = cursors.get(0);
 			cursor.moveToFirst();
 			while(!cursor.isAfterLast()){
+				//sponsor_id = cursor.getString(cursor.getColumnIndex("sponsor_id"));//get the sponsor id for the activity
+				
 				TextView newContact = new TextView(container.getContext());
 				newContact.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
 				LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)newContact.getLayoutParams();

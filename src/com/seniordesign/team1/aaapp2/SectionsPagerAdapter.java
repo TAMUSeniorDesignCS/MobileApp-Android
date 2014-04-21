@@ -154,11 +154,13 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 								String firstName = obj.getString("firstname");
 								String phone = obj.getString("phonenumber");
 								String email = "Null"; //quick fix to avoid schema change. we no longer share emails
+								String sponsorid = obj.getString("sponsorid");
 								String query = "INSERT OR IGNORE INTO " + ContactEntry.TABLE_NAME + 
 										" (" + ContactEntry.COLUMN_USERNAME + ", " +
 										ContactEntry.COLUMN_FIRST_NAME + ", " +
 										ContactEntry.COLUMN_PHONE + ", " +
-										ContactEntry.COLUMN_EMAIL + ") VALUES (" +
+										ContactEntry.COLUMN_EMAIL + ", " +
+										ContactEntry.COLUMN_SPONSOR_ID + ") VALUES (" +
 										"'" + userName + "', " + "'" + firstName + "', ";
 								if(phone.equalsIgnoreCase("null")){
 									query += "NULL, ";
@@ -167,10 +169,16 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 									query += "'" + phone + "', ";
 								}
 								if(email.equalsIgnoreCase("null")){
-									query += "NULL)";
+									query += "NULL, ";
 								}
 								else{
 									query += "'" + email + "')";
+								}
+								if(sponsorid.equalsIgnoreCase("null") || sponsorid.equals(0) || sponsorid.equals("")){
+									query += "NULL)";
+								}
+								else{
+									query += "" + sponsorid + ")";
 								}
 								queries.add(query);
 										
@@ -276,7 +284,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 			args.putString(MailFragment.MAIL, mail);
 			fragment.setArguments(args);
 		}
-		else if (position == 3){
+		else if (position == 3){ //contact fragment
 			fragment = new ContactsFragment();
 			Bundle args = new Bundle();
 			args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
