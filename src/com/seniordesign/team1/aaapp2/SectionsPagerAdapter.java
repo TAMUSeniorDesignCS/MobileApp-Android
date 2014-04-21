@@ -178,7 +178,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 									query += "NULL)";
 								}
 								else{
-									query += "" + sponsorid + ")";
+									query += "'" + sponsorid + "')";
 								}
 								queries.add(query);
 										
