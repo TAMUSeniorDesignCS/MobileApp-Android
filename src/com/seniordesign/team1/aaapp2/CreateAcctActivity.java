@@ -65,17 +65,25 @@ public class CreateAcctActivity extends Activity  {
 		
 		@Override
         public void onClick(View v) {
+		    try {
 			firstname = etFirstName.getText().toString();
         	username = etUsername.getText().toString();  
         	password = etPassword.getText().toString();  
         	conf_password = etConf_password.getText().toString();
-        	groupid = Integer.parseInt(etGroupID.getText().toString());
+        	String groupid_str = etGroupID.getText().toString();
+        	if(groupid_str.equals("") || groupid_str.equals("0")){
+        		alert.showAlertDialog(CreateAcctActivity.this, "Entry error", "You must enter the group ID.", false);
+        		return;
+        	}else{
+        		groupid = Integer.parseInt(groupid_str);
+        	}
+        	
         	phone_number = null;
         	String response = "";
         	JSONArray json_array = null;
         	JSONObject json_object = null;
         	
-           // try {
+           
             	if(firstname.length()==0){
             		alert.showAlertDialog(CreateAcctActivity.this, "Entry error", "You must enter your first name.", false);
             	} else if(username.length()==0){
@@ -84,6 +92,7 @@ public class CreateAcctActivity extends Activity  {
             		alert.showAlertDialog(CreateAcctActivity.this, "Entry error", "You must create a password.", false);
             	}else if(groupid==0){
             		alert.showAlertDialog(CreateAcctActivity.this, "Entry error", "You must enter the group ID.", false);
+            		return;
             	}else if(password.equals(conf_password)){//
             		
 	                //commit settings to server
@@ -124,9 +133,10 @@ public class CreateAcctActivity extends Activity  {
             		//display "passwords don't match" error
             		alert.showAlertDialog(CreateAcctActivity.this, "Entry error", "Passwords don't match, please try again.", false);
             	}
-            //} catch (Exception e) {
+            } catch (Exception e) {
                 //setResult(e.toString());
-            //}
+            	e.printStackTrace();
+            }
              
              
         }

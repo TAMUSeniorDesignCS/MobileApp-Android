@@ -152,7 +152,7 @@ public class ContactActivity extends Activity implements OnCheckedChangeListener
 						phone_layout.invalidate();
 					}
 					
-					if(!email.equals(null)){
+					if(!email.equals(null) || !email.equals("")){
 						TextView email_textview = new TextView(getApplicationContext());
 						email_textview.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
 						LinearLayout.LayoutParams e_params = (LinearLayout.LayoutParams)email_textview.getLayoutParams();
