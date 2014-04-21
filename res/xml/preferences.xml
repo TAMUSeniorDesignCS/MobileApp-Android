@@ -42,19 +42,19 @@
             android:defaultValue="48"
             />
     </PreferenceCategory>
-    <PreferenceCategory 
-        android:title="@string/pref_geoSettings"
-        android:key="pref_geoSettings">
-        <CheckBoxPreference
-	        android:key="pref_geoAlerts"
-	        android:title="@string/pref_geoAlerts"
-	        android:summary="@string/pref_geoAlerts_summ"
-	        android:defaultValue="false" />
-        <CheckBoxPreference
-	        android:key="pref_alertSpon"
-	        android:title="@string/pref_alertSpons"
-	        android:summary="@string/pref_alertSpons_summ"
-	        android:defaultValue="false"
-	        android:dependency="pref_geoAlerts" />
-    </PreferenceCategory>
+<!--     <PreferenceCategory  -->
+<!--         android:title="@string/pref_geoSettings" -->
+<!--         android:key="pref_geoSettings"> -->
+<!--         <CheckBoxPreference -->
+<!-- 	        android:key="pref_geoAlerts" -->
+<!-- 	        android:title="@string/pref_geoAlerts" -->
+<!-- 	        android:summary="@string/pref_geoAlerts_summ" -->
+<!-- 	        android:defaultValue="false" /> -->
+<!--         <CheckBoxPreference -->
+<!-- 	        android:key="pref_alertSpon" -->
+<!-- 	        android:title="@string/pref_alertSpons" -->
+<!-- 	        android:summary="@string/pref_alertSpons_summ" -->
+<!-- 	        android:defaultValue="false" -->
+<!-- 	        android:dependency="pref_geoAlerts" /> -->
+<!--     </PreferenceCategory> -->
 </PreferenceScreen>
