@@ -42,8 +42,6 @@ public class MainActivity extends FragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		SharedPreferences login_settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-		//TODO: no commit?
-		Editor login_editor = login_settings.edit();
 		boolean logged_in = login_settings.getBoolean("loggedIn", false); 						//Is going to need to be a persistent data object
 		
 		if(!logged_in){
@@ -51,6 +49,16 @@ public class MainActivity extends FragmentActivity implements
 			//intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			startActivity(intent);
 		}else if(logged_in){
+			
+			if(login_settings.getBoolean("firstLaunch", true)){
+				Editor login_editor = login_settings.edit();
+				login_editor.putBoolean("firstLaunch", false);
+				login_editor.commit();
+				Intent intent = new Intent(this, DemoActivity.class);
+				startActivity(intent);
+			}
+			 
+			
 			
 			setContentView(R.layout.activity_main);
 	

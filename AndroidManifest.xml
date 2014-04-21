@@ -72,6 +72,14 @@
             	android:name="android.support.PARENT_ACTIVITY"
             	android:value="com.seniordesign.team1.aaapp2.MainActivity" />
         </activity>
+        <activity 
+            android:name="com.seniordesign.team1.aaapp2.DemoActivity"
+        	android:parentActivityName="com.seniordesign.team1.aaapp2.MainActivity"
+        	android:theme="@style/Theme.Transparent">
+            <meta-data
+            	android:name="android.support.PARENT_ACTIVITY"
+            	android:value="com.seniordesign.team1.aaapp2.MainActivity" />
+        </activity>
         <service android:name="AuthenticatationService">  
 		    <intent-filter>  
 		        <action 
