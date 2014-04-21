@@ -35,6 +35,9 @@ public class ConversationActivity extends Activity{
 	AlertDialogManager alert = new AlertDialogManager();
 	SharedPreferences user_prefs;
 	String receiverusername = MailFragment.selected_receiver;
+	private static final int TITLE_FONT_SIZE = 48;
+	private static final String COLOR = "black";
+	private static final String FACE = "verdana";
 	//NetworkAsyncTask newPostTask;
 	
 	@SuppressWarnings("deprecation")
@@ -104,10 +107,10 @@ public class ConversationActivity extends Activity{
 					params.setMargins(6, 4, 6, 4); //substitute parameters for left, top, right, bottom
 					newMail.setLayoutParams(params);
 					if(sender.equals(username)){//set alignment right if mine, left if reciever's
-						newMail.setText(Html.fromHtml("<b>" + sender + "</b>" +  "<br/>" + message));
+						newMail.setText(Html.fromHtml("<font size=" + TITLE_FONT_SIZE + " color=" + COLOR + " face =" + FACE + ">" + sender + "<br/>" + message));
 						newMail.setGravity(Gravity.RIGHT); //= RelativeLayout.ALIGN_PARENT_RIGHT;
 					}else if(!(sender.equals(username))){
-						newMail.setText(Html.fromHtml("<b>" + sender + "</b>"+  "<br/>" + message));
+						newMail.setText(Html.fromHtml("<font size=" + TITLE_FONT_SIZE + " color=" + COLOR + " face =" + FACE + ">" + sender + "<br/>" + message));
 						//params.gravity = RelativeLayout.ALIGN_PARENT_LEFT;
 						newMail.setGravity(Gravity.LEFT);
 					}
