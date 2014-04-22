@@ -101,6 +101,25 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 		}
 	}
 	
+	public String getPostTextById(int id){
+		String ret = null;
+		final String[] resps = this.response.split("===");
+		try{
+			JSONArray posts = new JSONArray(resps[1]);
+			for(int i=0; i<posts.length(); i++){
+				JSONObject json = posts.getJSONObject(i);
+				if(json.getInt("postid") == id){
+					ret = json.getString("message");
+					break;
+				}
+			}
+		}
+		catch(JSONException e){
+			e.printStackTrace();
+		}
+		return ret;
+	}
+	
 	public void updatePage(int i){
 		this.fragMan.beginTransaction().remove(fragments[i]).commit();
 		this.fragments[i] = this.getItem(i);

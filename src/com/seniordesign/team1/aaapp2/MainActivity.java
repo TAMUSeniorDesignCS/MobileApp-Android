@@ -123,6 +123,17 @@ public class MainActivity extends FragmentActivity implements
 	
 	@Override
 	public void onFinishEditPostDialogFragment(int selection, int postId){
+		if(selection == 0){
+			//launch activity with text from postId.
+			//get the string
+			String value = this.mSectionsPagerAdapter.getPostTextById(postId);
+			Intent intent_new_post = new Intent(this, WritePostActivity.class);
+			Bundle b = new Bundle();
+			b.putInt("postIdToEdit", postId);
+			b.putString("toEdit", value);
+			intent_new_post.putExtras(b);
+			startActivity(intent_new_post);
+		}
 		if(selection == 1){
 			this.mSectionsPagerAdapter.quickRemovePost(postId);
 			this.mSectionsPagerAdapter.updatePage(1);

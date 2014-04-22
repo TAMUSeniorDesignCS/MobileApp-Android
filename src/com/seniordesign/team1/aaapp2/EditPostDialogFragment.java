@@ -31,7 +31,6 @@ public class EditPostDialogFragment extends DialogFragment {
 				
 				if(which == 0){
 					//edit post
-					Log.w("AAApp2", "Edit Post doesn't work yet.");
 				}
 				else if(which == 1){
 					//delete post
