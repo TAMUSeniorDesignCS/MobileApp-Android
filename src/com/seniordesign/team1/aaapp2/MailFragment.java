@@ -27,8 +27,8 @@ import android.widget.TextView;
 
 public class MailFragment extends Fragment {
 	
-	public static final String MAIL = "";
-	public static final String MYUSERNAME = "";
+	public static final String MAIL = "mail";
+	public static final String MYUSERNAME = "username";
 	AlertDialogManager alert = new AlertDialogManager();
 	public static String selected_receiver;
 	
@@ -62,7 +62,7 @@ public class MailFragment extends Fragment {
 					String send_username = jsonMail.getString("username");
 					//String message = jsonMail.getString("message");
 					//String messageid = Integer.toString(jsonMail.getInt("directmessageid"));
-					if(my_name.equals(receiver_username)){
+					if(my_name.equalsIgnoreCase(receiver_username)){
 						if(!uniqueNames.contains(send_username)){
 							uniqueNames.add(send_username);
 						}
