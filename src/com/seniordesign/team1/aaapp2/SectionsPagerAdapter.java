@@ -212,6 +212,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 										String my_username = jsonMail.getString("username");
 										String receiver_username = jsonMail.getString("receiversusername");
 										String message = jsonMail.getString("message");
+										message = message.replace("'", "''");
 										String messageid = Integer.toString(jsonMail.getInt("directmessageid"));
 										String query = "INSERT OR IGNORE INTO " + ConversationEntry.TABLE_NAME + 
 												"(" + ConversationEntry.COLUMN_MESSAGEID + ", "  +
