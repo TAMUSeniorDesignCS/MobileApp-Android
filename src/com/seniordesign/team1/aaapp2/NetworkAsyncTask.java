@@ -66,6 +66,9 @@ public class NetworkAsyncTask extends AsyncTask<String, Void, String> {
 					String path = split[0];
 					if(split.length > 1){
 						String query = split[1];
+						for(int i=2; i<split.length; i++){
+							query += "?" + split[i];
+						}
 						retAppend(doNetworkCall(serverURL + path,query));
 					}
 					else{
